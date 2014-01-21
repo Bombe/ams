@@ -1,5 +1,7 @@
 package net.pterodactylus.ams.core;
 
+import java.io.IOException;
+
 /**
  * TODO
  *
@@ -13,7 +15,7 @@ public class CommandProcessor {
 		this.session = session;
 	}
 
-	public void process(Command command) {
+	public void process(Command command) throws IOException {
 		command.process(session);
 	}
 

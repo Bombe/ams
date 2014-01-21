@@ -3,6 +3,8 @@ package net.pterodactylus.ams.core;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 /**
@@ -13,7 +15,7 @@ import org.junit.Test;
 public class CommandProcessorTest {
 
 	@Test
-	public void canCallCommandWithSession() {
+	public void canCallCommandWithSession() throws IOException {
 		Command command = mock(Command.class);
 		Session session = new Session();
 		CommandProcessor commandProcessor = new CommandProcessor(session);

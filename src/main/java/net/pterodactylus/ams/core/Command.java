@@ -1,5 +1,7 @@
 package net.pterodactylus.ams.core;
 
+import java.io.IOException;
+
 /**
  * Interface for commands.
  *
@@ -7,6 +9,6 @@ package net.pterodactylus.ams.core;
  */
 public interface Command {
 
-	void process(Session session);
+	void process(Session session) throws IOException;
 
 }
