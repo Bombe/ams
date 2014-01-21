@@ -21,7 +21,6 @@ public class ListCommand implements Command {
 		for (File file : session.getFiles()) {
 			session.getOutput().write(format("%s\n", file.getAbsolutePath()));
 		}
-		session.getOutput().write("End of LIST.\n");
 	}
 
 }

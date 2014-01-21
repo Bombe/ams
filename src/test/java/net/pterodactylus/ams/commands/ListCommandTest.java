@@ -3,6 +3,8 @@ package net.pterodactylus.ams.commands;
 import static java.io.File.listRoots;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.not;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,7 +26,7 @@ public class ListCommandTest {
 		StringWriter stringWriter = new StringWriter();
 		Session session = createSession(stringWriter);
 		listCommand.process(session);
-		assertThat(stringWriter.toString(), endsWith("End of LIST.\n"));
+		assertThat(stringWriter.toString(), not(isEmptyString()));
 	}
 
 	private static Session createSession(StringWriter stringWriter) {
