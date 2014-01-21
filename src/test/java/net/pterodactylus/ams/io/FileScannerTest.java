@@ -1,6 +1,7 @@
 package net.pterodactylus.ams.io;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
 import java.io.File;
@@ -30,5 +31,14 @@ public class FileScannerTest {
 		));
 	}
 
+	@Test
+	public void scanningASingleFileResultsInThatFile() throws IOException {
+		FileScanner fileScanner = new FileScanner(new File("src/test/resources/files/second.id3v1.mp3"));
+		Set<File> files = new HashSet<>();
+		fileScanner.scan(files::add);
+		assertThat(files, contains(
+				new File("src/test/resources/files/second.id3v1.mp3")
+		));
+	}
 
 }
