@@ -3,10 +3,14 @@ package net.pterodactylus.ams.core;
 import static java.io.File.listRoots;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collection;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -24,6 +28,18 @@ public class SessionTest {
 		session.addFile(root);
 		Collection<File> files = session.getFiles();
 		assertThat(files, contains(root));
+	}
+
+	@Test
+	public void newSessionHasADefaultWriter() {
+		assertThat(session.getOutput(), notNullValue());
+	}
+
+	@Test
+	public void sessionStoresGivenWriter() {
+		StringWriter stringWriter = new StringWriter();
+		session.setOutput(stringWriter);
+		assertThat(session.getOutput(), Matchers.<Writer>is(stringWriter));
 	}
 
 }

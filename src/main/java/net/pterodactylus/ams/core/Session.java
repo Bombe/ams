@@ -3,6 +3,8 @@ package net.pterodactylus.ams.core;
 import static java.util.Collections.unmodifiableCollection;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +17,7 @@ import java.util.Set;
  */
 public class Session {
 
+	private Writer writer = createNullWriter();
 	private final Set<File> files = new HashSet<>();
 
 	public void addFile(File file) {
@@ -25,4 +28,30 @@ public class Session {
 		return unmodifiableCollection(files);
 	}
 
+	public Writer getOutput() {
+		return writer;
+	}
+
+	public void setOutput(Writer writer) {
+		this.writer = writer;
+	}
+
+	private static Writer createNullWriter() {
+		return new Writer() {
+			@Override
+			public void write(char[] buffer, int offset, int length) {
+				/* do nothing. */
+			}
+
+			@Override
+			public void flush() {
+				/* do nothing. */
+			}
+
+			@Override
+			public void close() {
+				/* do nothing. */
+			}
+		};
+	}
 }
