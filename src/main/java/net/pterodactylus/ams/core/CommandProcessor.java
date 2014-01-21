@@ -3,7 +3,7 @@ package net.pterodactylus.ams.core;
 import java.io.IOException;
 
 /**
- * TODO
+ * Processes multiple {@link Command}s with a single {@link Session}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
