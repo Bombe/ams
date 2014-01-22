@@ -23,16 +23,8 @@ import org.junit.Test;
  */
 public class CommandDispatcherTest {
 
-	private final CommandProcessor commandProcessor = mock(CommandProcessor.class);
-	private final CommandDispatcher commandDispatcher = new CommandDispatcher(commandProcessor);
-
-	@Before
-	public void setup() throws IOException {
-		doAnswer((invocation) -> {
-			((Command) invocation.getArguments()[0]).process(null, (List<String>) invocation.getArguments()[1]);
-			return null;
-		}).when(commandProcessor).process(any(), any());
-	}
+	private final Session session = new Session();
+	private final CommandDispatcher commandDispatcher = new CommandDispatcher(session);
 
 	@Test
 	public void canAddCommandToDispatcher() {
