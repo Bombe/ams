@@ -1,0 +1,79 @@
+package net.pterodactylus.ams.core;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Unit test for {@link CommandDispatcher}.
+ *
+ * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+ */
+public class CommandDispatcherTest {
+
+	private final CommandProcessor commandProcessor = mock(CommandProcessor.class);
+	private final CommandDispatcher commandDispatcher = new CommandDispatcher(commandProcessor);
+
+	@Before
+	public void setup() throws IOException {
+		doAnswer((invocation) -> {
+			((Command) invocation.getArguments()[0]).process(null);
+			return null;
+		}).when(commandProcessor).process(any());
+	}
+
+	@Test
+	public void canAddCommandToDispatcher() {
+		Command command = createCommand("Test");
+		commandDispatcher.addCommand(command);
+	}
+
+	@Test
+	public void noDispatchIfNoArgumentsAreGiven() throws IOException {
+		Command firstCommand = createCommand("first");
+		Command secondCommand = createCommand("second");
+		commandDispatcher.addCommand(firstCommand);
+		commandDispatcher.addCommand(secondCommand);
+		commandDispatcher.dispatch("");
+		verify(firstCommand, never()).process(any());
+		verify(secondCommand, never()).process(any());
+	}
+
+	@Test
+	public void canDispatchACommand() throws IOException {
+		Command firstCommand = createCommand("first");
+		Command secondCommand = createCommand("second");
+		commandDispatcher.addCommand(firstCommand);
+		commandDispatcher.addCommand(secondCommand);
+		commandDispatcher.dispatch("first");
+		verify(firstCommand).process(any());
+		verify(secondCommand, never()).process(any());
+	}
+
+	@Test
+	public void doesNotDispatchANonExistingCommand() throws IOException {
+		Command firstCommand = createCommand("first");
+		Command secondCommand = createCommand("second");
+		commandDispatcher.addCommand(firstCommand);
+		commandDispatcher.addCommand(secondCommand);
+		commandDispatcher.dispatch("third");
+		verify(firstCommand, never()).process(any());
+		verify(secondCommand, never()).process(any());
+	}
+
+	private Command createCommand(String name) {
+		Command command = mock(Command.class);
+		when(command.getName()).thenReturn(name);
+		return command;
+	}
+
+
+}
