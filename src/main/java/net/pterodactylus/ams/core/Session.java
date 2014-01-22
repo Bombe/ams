@@ -3,7 +3,6 @@ package net.pterodactylus.ams.core;
 import static java.util.Collections.unmodifiableCollection;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
