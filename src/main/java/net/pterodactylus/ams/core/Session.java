@@ -5,8 +5,8 @@ import static java.util.Collections.unmodifiableCollection;
 import java.io.File;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A session binds together the execution of several {@link Command}s and can
@@ -17,7 +17,7 @@ import java.util.Set;
 public class Session {
 
 	private Writer writer = createNullWriter();
-	private final Set<File> files = new HashSet<>();
+	private final SortedSet<File> files = new TreeSet<>();
 	private boolean exit;
 
 	public void addFile(File file) {
