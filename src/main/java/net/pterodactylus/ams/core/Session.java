@@ -18,6 +18,7 @@ public class Session {
 
 	private Writer writer = createNullWriter();
 	private final Set<File> files = new HashSet<>();
+	private boolean exit;
 
 	public void addFile(File file) {
 		files.add(file);
@@ -25,6 +26,14 @@ public class Session {
 
 	public Collection<File> getFiles() {
 		return unmodifiableCollection(files);
+	}
+
+	public boolean shouldExit() {
+		return exit;
+	}
+
+	public void exit() {
+		exit = true;
 	}
 
 	public Writer getOutput() {
@@ -53,4 +62,5 @@ public class Session {
 			}
 		};
 	}
+
 }

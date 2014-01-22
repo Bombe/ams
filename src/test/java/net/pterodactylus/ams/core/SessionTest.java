@@ -3,6 +3,7 @@ package net.pterodactylus.ams.core;
 import static java.io.File.listRoots;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.File;
@@ -40,6 +41,17 @@ public class SessionTest {
 		StringWriter stringWriter = new StringWriter();
 		session.setOutput(stringWriter);
 		assertThat(session.getOutput(), Matchers.<Writer>is(stringWriter));
+	}
+
+	@Test
+	public void newSessionDoesNotHaveExitFlagSet() {
+		assertThat(session.shouldExit(), is(false));
+	}
+
+	@Test
+	public void sessionStoresExitFlagCorrectly() {
+		session.exit();
+		assertThat(session.shouldExit(), is(true));
 	}
 
 }
