@@ -1,6 +1,7 @@
 package net.pterodactylus.ams.core;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Interface for commands.
@@ -13,6 +14,6 @@ public interface Command {
 		return getClass().getSimpleName().replaceAll("Command$", "");
 	}
 
-	void process(Session session) throws IOException;
+	void process(Session session, List<String> parameters) throws IOException;
 
 }

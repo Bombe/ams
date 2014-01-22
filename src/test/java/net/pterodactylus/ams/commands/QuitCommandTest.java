@@ -18,7 +18,7 @@ public class QuitCommandTest {
 	public void quiteCommandSetsExitFlagInSession() {
 		QuitCommand quitCommand = new QuitCommand();
 		Session session = new Session();
-		quitCommand.process(session);
+		quitCommand.process(session, null);
 		assertThat(session.shouldExit(), is(true));
 	}
 

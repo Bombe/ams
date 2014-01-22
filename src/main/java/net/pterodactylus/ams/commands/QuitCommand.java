@@ -1,5 +1,7 @@
 package net.pterodactylus.ams.commands;
 
+import java.util.List;
+
 import net.pterodactylus.ams.core.Command;
 import net.pterodactylus.ams.core.Session;
 
@@ -12,7 +14,7 @@ import net.pterodactylus.ams.core.Session;
 public class QuitCommand implements Command {
 
 	@Override
-	public void process(Session session) {
+	public void process(Session session, List<String> parameters) {
 		session.exit();
 	}
 

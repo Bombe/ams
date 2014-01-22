@@ -1,6 +1,7 @@
 package net.pterodactylus.ams.core;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class CommandProcessor {
 	}
 
 	public void process(Command command) throws IOException {
-		command.process(session);
+		command.process(session, emptyList());
 		session.getOutput().write(format("End of %s.\n", command.getName().toUpperCase()));
 		session.getOutput().flush();
 	}

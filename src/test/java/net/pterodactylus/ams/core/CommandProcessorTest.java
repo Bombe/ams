@@ -1,5 +1,6 @@
 package net.pterodactylus.ams.core;
 
+import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,7 +23,7 @@ public class CommandProcessorTest {
 		Session session = new Session();
 		CommandProcessor commandProcessor = new CommandProcessor(session);
 		commandProcessor.process(command);
-		verify(command).process(session);
+		verify(command).process(session, emptyList());
 	}
 
 }

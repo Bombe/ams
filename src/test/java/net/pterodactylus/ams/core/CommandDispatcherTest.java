@@ -25,7 +25,7 @@ public class CommandDispatcherTest {
 	@Before
 	public void setup() throws IOException {
 		doAnswer((invocation) -> {
-			((Command) invocation.getArguments()[0]).process(null);
+			((Command) invocation.getArguments()[0]).process(null, null);
 			return null;
 		}).when(commandProcessor).process(any());
 	}
@@ -43,8 +43,8 @@ public class CommandDispatcherTest {
 		commandDispatcher.addCommand(firstCommand);
 		commandDispatcher.addCommand(secondCommand);
 		commandDispatcher.dispatch("");
-		verify(firstCommand, never()).process(any());
-		verify(secondCommand, never()).process(any());
+		verify(firstCommand, never()).process(any(), any());
+		verify(secondCommand, never()).process(any(), any());
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class CommandDispatcherTest {
 		commandDispatcher.addCommand(firstCommand);
 		commandDispatcher.addCommand(secondCommand);
 		commandDispatcher.dispatch("first");
-		verify(firstCommand).process(any());
-		verify(secondCommand, never()).process(any());
+		verify(firstCommand).process(any(), any());
+		verify(secondCommand, never()).process(any(),any() );
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class CommandDispatcherTest {
 		commandDispatcher.addCommand(firstCommand);
 		commandDispatcher.addCommand(secondCommand);
 		commandDispatcher.dispatch("third");
-		verify(firstCommand, never()).process(any());
-		verify(secondCommand, never()).process(any());
+		verify(firstCommand, never()).process(any(), any());
+		verify(secondCommand, never()).process(any(), any());
 	}
 
 	private Command createCommand(String name) {
