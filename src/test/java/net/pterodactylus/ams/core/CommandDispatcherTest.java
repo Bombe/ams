@@ -1,6 +1,9 @@
 package net.pterodactylus.ams.core;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -8,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +29,9 @@ public class CommandDispatcherTest {
 	@Before
 	public void setup() throws IOException {
 		doAnswer((invocation) -> {
-			((Command) invocation.getArguments()[0]).process(null, null);
+			((Command) invocation.getArguments()[0]).process(null, (List<String>) invocation.getArguments()[1]);
 			return null;
-		}).when(commandProcessor).process(any());
+		}).when(commandProcessor).process(any(), any());
 	}
 
 	@Test
@@ -56,6 +60,17 @@ public class CommandDispatcherTest {
 		commandDispatcher.dispatch("first");
 		verify(firstCommand).process(any(), any());
 		verify(secondCommand, never()).process(any(),any() );
+	}
+
+	@Test
+	public void canDispatchACommandWithParameters() throws IOException {
+		Command firstCommand = createCommand("first");
+		Command secondCommand = createCommand("second");
+		commandDispatcher.addCommand(firstCommand);
+		commandDispatcher.addCommand(secondCommand);
+		commandDispatcher.dispatch("first with parameter");
+		verify(firstCommand).process(any(), eq(asList("with", "parameter")));
+		verify(secondCommand, never()).process(any(),eq(emptyList()));
 	}
 
 	@Test

@@ -36,7 +36,7 @@ public class CommandDispatcher {
 		if (command == null) {
 			return;
 		}
-		commandProcessor.process(command);
+		commandProcessor.process(command, tokens.subList(1, tokens.size()));
 	}
 
 }

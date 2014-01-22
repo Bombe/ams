@@ -1,9 +1,9 @@
 package net.pterodactylus.ams.core;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Processes multiple {@link Command}s with a single {@link Session}.
@@ -18,8 +18,8 @@ public class CommandProcessor {
 		this.session = session;
 	}
 
-	public void process(Command command) throws IOException {
-		command.process(session, emptyList());
+	public void process(Command command, List<String> arguments) throws IOException {
+		command.process(session, arguments);
 		session.getOutput().write(format("End of %s.\n", command.getName().toUpperCase()));
 		session.getOutput().flush();
 	}
