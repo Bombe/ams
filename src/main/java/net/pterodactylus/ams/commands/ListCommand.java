@@ -24,7 +24,7 @@ public class ListCommand implements Command {
 		List<Pattern> patterns = parameters.stream().map(Pattern::compile).collect(toList());
 		for (File file : session.getFiles()) {
 			if (patterns.isEmpty() || patterns.stream().allMatch((pattern) -> pattern.matcher(file.getPath()).find())) {
-				session.getOutput().write(format("%s\n", file.getAbsolutePath()));
+				session.getOutput().write(format("%s\n", file.getPath()));
 			}
 		}
 	}
