@@ -37,4 +37,11 @@ public class MetadataScannerTest {
 		assertThat(metadata.get().getType(), is(AUDIO));
 	}
 
+	@Test
+	public void detectThatAnOggFileIsAnAudioFile() {
+		Optional<Metadata> metadata = metadataScanner.scan("test.ogg");
+		assertThat(metadata.isPresent(), is(true));
+		assertThat(metadata.get().getType(), is(AUDIO));
+	}
+
 }

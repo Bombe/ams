@@ -19,6 +19,8 @@ public class MetadataScanner {
 			return of(new Metadata(FileType.AUDIO));
 		} else if (filename.toLowerCase().endsWith(".flac")) {
 			return of(new Metadata(FileType.AUDIO));
+		} else if (filename.toLowerCase().endsWith(".ogg")) {
+			return of(new Metadata(FileType.AUDIO));
 		}
 		return empty();
 	}
