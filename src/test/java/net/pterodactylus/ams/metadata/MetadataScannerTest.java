@@ -30,4 +30,11 @@ public class MetadataScannerTest {
 		assertThat(metadata.get().getType(), is(AUDIO));
 	}
 
+	@Test
+	public void detectThatAFlacFileIsAnAudioFile() {
+		Optional<Metadata> metadata = metadataScanner.scan("test.flac");
+		assertThat(metadata.isPresent(), is(true));
+		assertThat(metadata.get().getType(), is(AUDIO));
+	}
+
 }

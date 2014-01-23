@@ -17,6 +17,8 @@ public class MetadataScanner {
 	public Optional<Metadata> scan(String filename) {
 		if (filename.toLowerCase().endsWith(".mp3")) {
 			return of(new Metadata(FileType.AUDIO));
+		} else if (filename.toLowerCase().endsWith(".flac")) {
+			return of(new Metadata(FileType.AUDIO));
 		}
 		return empty();
 	}
