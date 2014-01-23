@@ -44,4 +44,11 @@ public class AlbumCommandTest {
 		assertThat(session.getAlbum(), is(of("Some Album")));
 	}
 
+	@Test
+	public void unsetAlbumIsShown() throws IOException {
+		session.setAlbum(null);
+		albumCommand.process(session, emptyList());
+		assertThat(stringWriter.toString(), containsString("No album set"));
+	}
+
 }
