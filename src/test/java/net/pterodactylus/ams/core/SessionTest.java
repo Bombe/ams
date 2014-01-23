@@ -1,6 +1,8 @@
 package net.pterodactylus.ams.core;
 
 import static java.io.File.listRoots;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
@@ -52,6 +54,29 @@ public class SessionTest {
 	public void sessionStoresExitFlagCorrectly() {
 		session.exit();
 		assertThat(session.shouldExit(), is(true));
+	}
+
+	@Test
+	public void newSessionDoesNotHaveAlbumInformation() {
+		assertThat(session.getAlbum(), is(empty()));
+	}
+
+	@Test
+	public void sessionStoresAlbum() {
+		session.setAlbum("Test Album");
+		assertThat(session.getAlbum(), is(of("Test Album")));
+	}
+
+	@Test
+	public void nullAlbumResultsInNoAlbum() {
+		session.setAlbum(null);
+		assertThat(session.getAlbum(), is(empty()));
+	}
+
+	@Test
+	public void albumNameThatOnlyConsistsOfSpacesIsNotAnAlbumNameEither() {
+		session.setAlbum("           ");
+		assertThat(session.getAlbum(), is(empty()));
 	}
 
 }
