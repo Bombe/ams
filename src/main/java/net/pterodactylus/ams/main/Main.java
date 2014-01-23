@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import net.pterodactylus.ams.commands.AlbumCommand;
 import net.pterodactylus.ams.commands.ListCommand;
 import net.pterodactylus.ams.commands.QuitCommand;
 import net.pterodactylus.ams.core.CommandDispatcher;
@@ -67,6 +68,7 @@ public class Main {
 		CommandDispatcher commandDispatcher = new CommandDispatcher(session);
 		commandDispatcher.addCommand(new ListCommand());
 		commandDispatcher.addCommand(new QuitCommand());
+		commandDispatcher.addCommand(new AlbumCommand());
 		return commandDispatcher;
 	}
 
