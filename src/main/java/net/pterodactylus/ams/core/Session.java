@@ -1,15 +1,19 @@
 package net.pterodactylus.ams.core;
 
-import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * A session binds together the execution of several {@link Command}s and can
@@ -29,7 +33,12 @@ public class Session {
 	}
 
 	public Collection<File> getFiles() {
-		return unmodifiableCollection(files);
+		return getFiles(emptyList());
+	}
+
+	public Collection<File> getFiles(List<String> filters) {
+		List<Pattern> patterns = filters.stream().map(Pattern::compile).collect(toList());
+		return files.stream().filter((file) -> patterns.isEmpty() || patterns.stream().allMatch((pattern) -> pattern.matcher(file.getPath()).find())).collect(Collectors.<File>toList());
 	}
 
 	public boolean shouldExit() {
