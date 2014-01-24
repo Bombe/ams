@@ -4,6 +4,8 @@ import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
+import static net.pterodactylus.util.StringUtils.isNullOrEmptyString;
+import static net.pterodactylus.util.StringUtils.trim;
 
 import java.io.File;
 import java.io.Writer;
@@ -63,14 +65,6 @@ public class Session {
 
 	public void setAlbum(String album) {
 		this.album = isNullOrEmptyString(album) ? empty() : of(trim(album));
-	}
-
-	private boolean isNullOrEmptyString(String album) {
-		return (album == null) || "".equals(trim(album));
-	}
-
-	private String trim(String album) {
-		return album.trim();
 	}
 
 	private static Writer createNullWriter() {
