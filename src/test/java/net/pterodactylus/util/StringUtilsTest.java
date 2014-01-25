@@ -1,5 +1,7 @@
 package net.pterodactylus.util;
 
+import static net.pterodactylus.util.StringUtils.isNullOrEmptyString;
+import static net.pterodactylus.util.StringUtils.trim;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -14,18 +16,18 @@ public class StringUtilsTest {
 
 	@Test
 	public void trimRemovesWhitespaceAtBeginningAndEndOfString() {
-		assertThat(StringUtils.trim("  test  "), is("test"));
-		assertThat(StringUtils.trim("\t  test \t"), is("test"));
+		assertThat(trim("  test  "), is("test"));
+		assertThat(trim("\t  test \t"), is("test"));
 	}
 
 	@Test
 	public void nullValuesAreRecognizedAsNullOrEmpty() {
-		assertThat(StringUtils.isNullOrEmptyString(null), is(true));
+		assertThat(isNullOrEmptyString(null), is(true));
 	}
 
 	@Test
 	public void stringsContainingOnlyWhitespaceAreRecognizedAsNullOrEmpty() {
-		assertThat(StringUtils.isNullOrEmptyString("  \t  "), is(true));
+		assertThat(isNullOrEmptyString("  \t  "), is(true));
 	}
 
 }
