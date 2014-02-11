@@ -24,6 +24,7 @@ public class FileScannerTest {
 		Set<File> files = new HashSet<>();
 		fileScanner.scan(files::add);
 		assertThat(files, containsInAnyOrder(
+				new File("src/test/resources/files/test.unknown"),
 				new File("src/test/resources/files/second.id3v1.mp3"),
 				new File("src/test/resources/files/a/second.id3v2.mp3"),
 				new File("src/test/resources/files/a/b/second.vorbis.flac"),
