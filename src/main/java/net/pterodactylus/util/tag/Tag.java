@@ -22,6 +22,18 @@ public interface Tag {
 	Optional<LocalDate> getDate();
 	Optional<String> getComment();
 
+	Tag setName(String name);
+	Tag setArtist(String artist);
+	Tag setAlbumArtist(String albumArtist);
+	Tag setAlbum(String album);
+	Tag setTrack(int track);
+	Tag setTotalTracks(int totalTracks);
+	Tag setDisc(int disc);
+	Tag setTotalDiscs(int totalDiscs);
+	Tag setGenre(String genre);
+	Tag setDate(LocalDate date);
+	Tag setComment(String comment);
+
 	/**
 	 * Checks whether this tag can encode all its fields and their values. An ID3v1
 	 * tag, for example, can only encode texts up to 30 characters, and genre is

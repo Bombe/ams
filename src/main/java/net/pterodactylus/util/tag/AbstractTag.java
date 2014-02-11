@@ -26,92 +26,103 @@ public abstract class AbstractTag implements Tag {
 	private Optional<LocalDate> date = empty();
 	private Optional<String> comment = empty();
 
-	public void setName(String name) {
-		this.name = ofNullable(name);
-	}
-
 	public Optional<String> getName() {
 		return name;
 	}
 
-	public void setArtist(String artist) {
-		this.artist = ofNullable(artist);
+	public Tag setName(String name) {
+		this.name = ofNullable(name);
+		return this;
 	}
 
 	public Optional<String> getArtist() {
 		return artist;
 	}
 
+	public Tag setArtist(String artist) {
+		this.artist = ofNullable(artist);
+		return this;
+	}
+
 	public Optional<String> getAlbumArtist() {
 		return albumArtist;
 	}
 
-	public void setAlbumArtist(String albumArtist) {
+	public Tag setAlbumArtist(String albumArtist) {
 		this.albumArtist = ofNullable(albumArtist);
+		return this;
 	}
 
 	public Optional<String> getAlbum() {
 		return album;
 	}
 
-	public void setAlbum(String album) {
+	public Tag setAlbum(String album) {
 		this.album = ofNullable(album);
+		return this;
 	}
 
 	public Optional<Integer> getTrack() {
 		return track;
 	}
 
-	public void setTrack(int track) {
+	public Tag setTrack(int track) {
 		this.track = (track == 0) ? empty() : of(track);
+		return this;
 	}
 
 	public Optional<Integer> getTotalTracks() {
 		return totalTracks;
 	}
 
-	public void setTotalTracks(int totalTracks) {
+	public Tag setTotalTracks(int totalTracks) {
 		this.totalTracks = (totalTracks == 0) ? empty() : of(totalTracks);
+		return this;
 	}
 
 	public Optional<Integer> getDisc() {
 		return disc;
 	}
 
-	public void setDisc(int Disc) {
+	public Tag setDisc(int Disc) {
 		this.disc = (Disc == 0) ? empty() : of(Disc);
+		return this;
 	}
 
 	public Optional<Integer> getTotalDiscs() {
 		return totalDiscs;
 	}
 
-	public void setTotalDiscs(int totalDiscs) {
+	public Tag setTotalDiscs(int totalDiscs) {
 		this.totalDiscs = (totalDiscs == 0) ? empty() : of(totalDiscs);
+		return this;
 	}
 
 	public Optional<String> getGenre() {
 		return genre;
 	}
 
-	public void setGenre(String genre) {
+	public Tag setGenre(String genre) {
 		this.genre = ofNullable(genre);
+		return this;
 	}
 
 	public Optional<LocalDate> getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public Tag setDate(LocalDate date) {
 		this.date = ofNullable(date);
+		return this;
 	}
 
 	public Optional<String> getComment() {
 		return comment;
 	}
 
-	public void setComment(String comment) {
+	public Tag setComment(String comment) {
 		this.comment = ofNullable(comment);
+		return this;
 	}
 
 }
