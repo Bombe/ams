@@ -2,7 +2,7 @@ package net.pterodactylus.util.tag;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Reads a {@link Tag} from a {@link File}.
@@ -15,14 +15,15 @@ import java.util.List;
 public interface TagReader {
 
 	/**
-	 * Tries to read one or more tags from the given file.
+	 * Tries to read a tag from the given file.
 	 *
 	 * @param file
-	 * 		The file to read the tags from
-	 * @return A list of zero or more tags read from the file
+	 * 		The file to read the tag from
+	 * @return The tag read from the file, or {@link Optional#empty()} if no tag
+	 *         could be found
 	 * @throws IOException
 	 * 		if an I/O error occurs
 	 */
-	List<Tag> readTags(File file) throws IOException;
+	Optional<Tag> readTags(File file) throws IOException;
 
 }
