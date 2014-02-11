@@ -22,4 +22,14 @@ public interface Tag {
 	Optional<LocalDate> getDate();
 	Optional<String> getComment();
 
+	/**
+	 * Checks whether this tag can encode all its fields and their values. An ID3v1
+	 * tag, for example, can only encode texts up to 30 characters, and genre is
+	 * not a free-text field.
+	 *
+	 * @return {@code true} if the values of this tag can be encoded, {@code false}
+	 *         otherwise
+	 */
+	boolean isEncodable();
+
 }
