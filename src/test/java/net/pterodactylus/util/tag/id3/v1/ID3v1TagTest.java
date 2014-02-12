@@ -6,6 +6,13 @@ import static java.lang.System.arraycopy;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static net.pterodactylus.util.tag.id3.v1.Genre.getName;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.ALBUM_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.ARTIST_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.COMMENT_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.GENRE_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TITLE_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TRACK_OFFSET;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.YEAR_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Tag.parse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -24,14 +31,6 @@ import org.junit.Test;
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class ID3v1TagTest {
-
-	private static final int TITLE_OFFSET = 3;
-	private static final int ARTIST_OFFSET = 33;
-	private static final int ALBUM_OFFSET = 63;
-	private static final int YEAR_OFFSET = 93;
-	private static final int COMMENT_OFFSET = 97;
-	private static final int TRACK_OFFSET = 126;
-	private static final int GENRE_OFFSET = 127;
 
 	private final Tag tag = new ID3v1Tag();
 
