@@ -24,7 +24,7 @@ import net.pterodactylus.util.tag.Tag;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class ID3v1TagEncoder {
+class ID3v1TagEncoder {
 
 	private static final Charset utf8Charset = forName("UTF-8");
 

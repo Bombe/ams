@@ -5,7 +5,7 @@ package net.pterodactylus.util.tag.id3.v1;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public interface ID3v1Constants {
+interface ID3v1Constants {
 
 	int TITLE_OFFSET = 3;
 	int ARTIST_OFFSET = 33;
