@@ -1,5 +1,7 @@
 package net.pterodactylus.util.tag;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -43,5 +45,7 @@ public interface Tag {
 	 *         otherwise
 	 */
 	boolean isEncodable();
+
+	boolean write(File file) throws IOException;
 
 }

@@ -5,6 +5,8 @@ import static java.util.Optional.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -20,6 +22,11 @@ public class AbstractTagTest {
 	private final AbstractTag abstractTag = new AbstractTag() {
 		@Override
 		public boolean isEncodable() {
+			return false;
+		}
+
+		@Override
+		public boolean write(File file) throws IOException {
 			return false;
 		}
 	};

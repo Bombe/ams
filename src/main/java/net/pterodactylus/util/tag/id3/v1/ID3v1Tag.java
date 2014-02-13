@@ -8,6 +8,8 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static net.pterodactylus.util.tag.id3.v1.Genre.getNumber;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
@@ -32,6 +34,8 @@ public class ID3v1Tag extends AbstractTag {
 	private static final int MAX_TRACK_NUMBER = 99;
 	private static final int MAX_COMMENT_LENGTH = 30;
 	private static final int REDUCED_MAX_COMMENT_LENGTH = 28;
+
+	private static final ID3v1TagWriter tagWriter = new ID3v1TagWriter();
 
 	@Override
 	public boolean isEncodable() {
@@ -71,6 +75,11 @@ public class ID3v1Tag extends AbstractTag {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public boolean write(File file) throws IOException {
+		return tagWriter.writeTag(file, this);
 	}
 
 	public static Optional<Tag> parse(byte[] tagData) {
