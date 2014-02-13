@@ -1,8 +1,8 @@
 package net.pterodactylus.util.tag.id3.v1;
 
 import static java.util.Optional.empty;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1Utils.readBuffer;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -33,19 +33,6 @@ public class ID3v1TagReader implements TagReader {
 	private byte[] readTag(RandomAccessFile randomAccessFile) throws IOException {
 		randomAccessFile.seek(randomAccessFile.length() - 128);
 		byte[] tagBuffer = readBuffer(randomAccessFile);
-		return tagBuffer;
-	}
-
-	private byte[] readBuffer(RandomAccessFile randomAccessFile) throws IOException {
-		byte[] tagBuffer = new byte[128];
-		int remaining = 128;
-		while (remaining > 0) {
-			int r = randomAccessFile.read(tagBuffer, 128 - remaining, remaining);
-			if (r == -1) {
-				throw new EOFException();
-			}
-			remaining -= r;
-		}
 		return tagBuffer;
 	}
 
