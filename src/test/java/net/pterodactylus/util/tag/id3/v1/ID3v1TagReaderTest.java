@@ -3,19 +3,17 @@ package net.pterodactylus.util.tag.id3.v1;
 import static java.time.LocalDate.ofYearDay;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static net.pterodactylus.util.tag.id3.TestUtils.createFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
+import net.pterodactylus.util.tag.id3.TestUtils;
 
-import com.google.common.io.ByteStreams;
 import org.junit.Test;
 
 /**
@@ -29,7 +27,7 @@ public class ID3v1TagReaderTest {
 
 	@Test
 	public void readValidTagFromFile() throws IOException {
-		File file = createFile("files/second.id3v1.mp3");
+		File file = createFile("files/second.id3v1.mp3", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(true));
 		assertThat(tag.get().getName(), is(of("Some Song")));
@@ -42,25 +40,16 @@ public class ID3v1TagReaderTest {
 
 	@Test
 	public void dontReadTagFromFile() throws IOException {
-		File file = createFile("files/c/second.vorbis.ogg");
+		File file = createFile("files/c/second.vorbis.ogg", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(false));
 	}
 
 	@Test
 	public void dontReadTagFromTooSmallFile() throws IOException {
-		File file = createFile("files/test.unknown");
+		File file = createFile("files/test.unknown", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(false));
-	}
-
-	private File createFile(String resourceName) throws IOException {
-		File temporaryFile = File.createTempFile("test-", ".dat");
-		temporaryFile.deleteOnExit();
-		try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName); OutputStream outputStream = new FileOutputStream(temporaryFile)) {
-			ByteStreams.copy(inputStream, outputStream);
-		}
-		return temporaryFile;
 	}
 
 }
