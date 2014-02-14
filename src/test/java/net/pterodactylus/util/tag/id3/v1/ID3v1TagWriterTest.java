@@ -25,12 +25,11 @@ public class ID3v1TagWriterTest {
 	private final ID3v1TagEncoder tagEncoder = new ID3v1TagEncoder();
 	private final ID3v1TagReader tagReader = new ID3v1TagReader();
 	private final File tempFile;
-	private final ID3v1Tag tag;
+	private final Tag tag = new Tag();
 
 	public ID3v1TagWriterTest() throws IOException {
 		tempFile = createTempFile("tag-writer-", ".test");
 		tempFile.deleteOnExit();
-		tag = new ID3v1Tag();
 		tag.setName("Test Name");
 		tag.setArtist("Test Artist");
 		tag.setAlbum("Test Album");

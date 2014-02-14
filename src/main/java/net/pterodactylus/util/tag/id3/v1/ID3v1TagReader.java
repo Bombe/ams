@@ -1,6 +1,7 @@
 package net.pterodactylus.util.tag.id3.v1;
 
 import static java.util.Optional.empty;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1TagDecoder.parse;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Utils.readBuffer;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagReader;
 
 /**
- * Reads an {@link ID3v1Tag} from a {@link File}.
+ * Reads an ID3v1 {@link Tag} from a {@link File}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
@@ -25,7 +26,7 @@ public class ID3v1TagReader implements TagReader {
 		}
 		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
 			byte[] tagBuffer = readTag(randomAccessFile);
-			Optional<Tag> id3v1Tag = ID3v1Tag.parse(tagBuffer);
+			Optional<Tag> id3v1Tag = parse(tagBuffer);
 			return id3v1Tag;
 		}
 	}

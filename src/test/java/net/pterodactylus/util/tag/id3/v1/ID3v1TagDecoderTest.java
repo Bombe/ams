@@ -13,7 +13,7 @@ import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.GENRE_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TITLE_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TRACK_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.YEAR_OFFSET;
-import static net.pterodactylus.util.tag.id3.v1.ID3v1Tag.parse;
+import static net.pterodactylus.util.tag.id3.v1.ID3v1TagDecoder.parse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -26,13 +26,13 @@ import net.pterodactylus.util.tag.Tag;
 import org.junit.Test;
 
 /**
- * Unit test for {@link ID3v1Tag}.
+ * Unit test for {@link ID3v1TagDecoder}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class ID3v1TagTest {
+public class ID3v1TagDecoderTest {
 
-	private final Tag tag = new ID3v1Tag();
+	private final Tag tag = new Tag();
 
 	@Test
 	public void titleIsDecodedCorrectlyAsUtf8() throws UnsupportedEncodingException {

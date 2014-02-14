@@ -6,10 +6,7 @@ import static java.nio.charset.Charset.forName;
 import static java.nio.charset.CodingErrorAction.REPORT;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static net.pterodactylus.util.tag.id3.v1.Genre.getNumber;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
@@ -18,7 +15,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import net.pterodactylus.util.StringUtils;
-import net.pterodactylus.util.tag.AbstractTag;
 import net.pterodactylus.util.tag.Tag;
 
 /**
@@ -26,7 +22,7 @@ import net.pterodactylus.util.tag.Tag;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class ID3v1Tag extends AbstractTag {
+public class ID3v1TagDecoder {
 
 	public static Optional<Tag> parse(byte[] tagData) {
 		checkArgument(tagData.length == 128);
@@ -46,7 +42,7 @@ public class ID3v1Tag extends AbstractTag {
 			comment = decodeString(tagData, 97, 30);
 		}
 		Optional<Integer> genre = ((tagData[127] & 0xff) != 0xff) ? of(tagData[127] & 0xff) : empty();
-		return of(new ID3v1Tag().setName(title.orElse(null)).setArtist(artist.orElse(null)).setAlbum(album.orElse(null)).setDate(year.map(y -> LocalDate.ofYearDay(y, 1)).orElse(null)).setComment(comment.orElse(null)).setTrack(track.orElse(0)).setGenre(genre.flatMap(Genre::getName).orElse(null)));
+		return of(new Tag().setName(title.orElse(null)).setArtist(artist.orElse(null)).setAlbum(album.orElse(null)).setDate(year.map(y -> LocalDate.ofYearDay(y, 1)).orElse(null)).setComment(comment.orElse(null)).setTrack(track.orElse(0)).setGenre(genre.flatMap(Genre::getName).orElse(null)));
 	}
 
 	private static Optional<Integer> decodeInteger(byte[] buffer, int offset, int length) {

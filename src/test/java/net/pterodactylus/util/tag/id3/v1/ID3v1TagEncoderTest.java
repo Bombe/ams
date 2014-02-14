@@ -17,6 +17,8 @@ import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import net.pterodactylus.util.tag.Tag;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -31,10 +33,10 @@ public class ID3v1TagEncoderTest {
 
 	private static final Charset utf8Charset = forName("UTF-8");
 	private final ID3v1TagEncoder tagEncoder = new ID3v1TagEncoder();
-	private final ID3v1Tag tag = createTag();
+	private final Tag tag = createTag();
 
-	private ID3v1Tag createTag() {
-		ID3v1Tag id3v1Tag = new ID3v1Tag();
+	public Tag createTag() {
+		Tag id3v1Tag = new Tag();
 		id3v1Tag.setName("Test Name");
 		id3v1Tag.setArtist("Test Artist");
 		id3v1Tag.setAlbum("Test Album");

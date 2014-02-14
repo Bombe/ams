@@ -5,8 +5,6 @@ import static java.util.Optional.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -17,10 +15,9 @@ import org.junit.Test;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class AbstractTagTest {
+public class TagTest {
 
-	private final AbstractTag abstractTag = new AbstractTag() {
-	};
+	private final AbstractTag abstractTag = new AbstractTag();
 
 	@Test
 	public void newTagContainsNoName() {
