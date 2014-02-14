@@ -28,60 +28,6 @@ import net.pterodactylus.util.tag.Tag;
  */
 public class ID3v1Tag extends AbstractTag {
 
-	private static final int MAX_NAME_LENGTH = 30;
-	private static final int MAX_ARTIST_LENGTH = 30;
-	private static final int MAX_ALBUM_LENGTH = 30;
-	private static final int MAX_TRACK_NUMBER = 99;
-	private static final int MAX_COMMENT_LENGTH = 30;
-	private static final int REDUCED_MAX_COMMENT_LENGTH = 28;
-
-	private static final ID3v1TagWriter tagWriter = new ID3v1TagWriter();
-
-	@Override
-	public boolean isEncodable() {
-		if (getName().isPresent() && (getName().get().length() > MAX_NAME_LENGTH)) {
-			return false;
-		}
-		if (getArtist().isPresent() && (getArtist().get().length() > MAX_ARTIST_LENGTH)) {
-			return false;
-		}
-		if (getAlbumArtist().isPresent()) {
-			return false;
-		}
-		if (getAlbum().isPresent() && (getAlbum().get().length() > MAX_ALBUM_LENGTH)) {
-			return false;
-		}
-		if (getTrack().isPresent() && ((getTrack().get() < 0) || (getTrack().get() > MAX_TRACK_NUMBER))) {
-			return false;
-		}
-		if (getTotalTracks().isPresent()) {
-			return false;
-		}
-		if (getDisc().isPresent()) {
-			return false;
-		}
-		if (getTotalDiscs().isPresent()) {
-			return false;
-		}
-		if (getGenre().isPresent() && !getNumber(getGenre().get()).isPresent()) {
-			return false;
-		}
-		if (getComment().isPresent()) {
-			if (getComment().get().length() > MAX_COMMENT_LENGTH) {
-				return false;
-			}
-			if (getTrack().isPresent() && (getComment().get().length() > REDUCED_MAX_COMMENT_LENGTH)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean write(File file) throws IOException {
-		return tagWriter.writeTag(file, this);
-	}
-
 	public static Optional<Tag> parse(byte[] tagData) {
 		checkArgument(tagData.length == 128);
 		if ((tagData[0] != 'T') || (tagData[1] != 'A') || (tagData[2] != 'G')) {

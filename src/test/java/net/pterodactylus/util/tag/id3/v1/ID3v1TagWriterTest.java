@@ -42,14 +42,14 @@ public class ID3v1TagWriterTest {
 
 	@Test
 	public void canWriteTagToFileWithoutTag() throws IOException {
-		tagWriter.writeTag(tempFile, tag);
+		tagWriter.write(tag, tempFile);
 		verifyFileContainsTag(tempFile, 0, tagEncoder.encode(tag));
 	}
 
 	@Test
 	public void canWriteToFileWithExistingTag() throws IOException {
 		writeTagHeaderToFile(tempFile, 400);
-		tagWriter.writeTag(tempFile, tag);
+		tagWriter.write(tag, tempFile);
 		verifyFileContainsTag(tempFile, 400, tagEncoder.encode(tag));
 	}
 
@@ -69,6 +69,93 @@ public class ID3v1TagWriterTest {
 			Optional<Tag> parsedTagFromFile = tagReader.readTags(file);
 			assertThat(tagEncoder.encode(parsedTagFromFile.get()), is(tag));
 		}
+	}
+
+	@Test
+	public void emptyTagIsEncodable() {
+		assertThat(tagWriter.isEncodable(tag), is(true));
+	}
+
+	@Test
+	public void tagWithNameLongerThan30CharactersIsNotEncodable() {
+		tag.setName("123456789012345678901234567890");
+		assertThat(tagWriter.isEncodable(tag), is(true));
+		tag.setName("1234567890123456789012345678901");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithArtistLongerThan30CharactersIsNotEncodable() {
+		tag.setArtist("123456789012345678901234567890");
+		assertThat(tagWriter.isEncodable(tag), is(true));
+		tag.setArtist("1234567890123456789012345678901");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithAlbumArtistIsNotEncodable() {
+		tag.setAlbumArtist("Album Artist");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithAlbumLongerThan30CharactersIsNotEncodable() {
+		tag.setAlbum("123456789012345678901234567890");
+		assertThat(tagWriter.isEncodable(tag), is(true));
+		tag.setAlbum("1234567890123456789012345678901");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithNegativeTrackIsNotEncodable() {
+		tag.setTrack(-1);
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithTooLargeTrackIsNotEncodable() {
+		tag.setTrack(100);
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithTotalTracksIsNotEncodable() {
+		tag.setTotalTracks(15);
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithDiscIsNotEncodable() {
+		tag.setDisc(1);
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithTotalDiscsIsNotEncodable() {
+		tag.setTotalDiscs(2);
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithUnknownGenreIsNotEncodable() {
+		tag.setGenre("Hugendubel");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithCommentLongerThan30CharactersIsNotEncodable() {
+		tag.setTrack(0);
+		tag.setComment("123456789012345678901234567890");
+		assertThat(tagWriter.isEncodable(tag), is(true));
+		tag.setComment("1234567890123456789012345678901");
+		assertThat(tagWriter.isEncodable(tag), is(false));
+	}
+
+	@Test
+	public void tagWithCommentLongerThan28CharactersAndATrackNumberIsNotEncodable() {
+		tag.setTrack(13);
+		tag.setComment("12345678901234567890123456789");
+		assertThat(tagWriter.isEncodable(tag), is(false));
 	}
 
 }

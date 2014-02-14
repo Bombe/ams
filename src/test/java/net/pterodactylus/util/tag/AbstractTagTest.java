@@ -20,15 +20,6 @@ import org.junit.Test;
 public class AbstractTagTest {
 
 	private final AbstractTag abstractTag = new AbstractTag() {
-		@Override
-		public boolean isEncodable() {
-			return false;
-		}
-
-		@Override
-		public boolean write(File file) throws IOException {
-			return false;
-		}
 	};
 
 	@Test
