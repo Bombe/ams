@@ -24,7 +24,7 @@ import net.pterodactylus.util.tag.Tag;
  */
 public class ID3v1TagDecoder {
 
-	public static Optional<Tag> parse(byte[] tagData) {
+	public Optional<Tag> parse(byte[] tagData) {
 		checkArgument(tagData.length == 128);
 		if ((tagData[0] != 'T') || (tagData[1] != 'A') || (tagData[2] != 'G')) {
 			return empty();
@@ -45,7 +45,7 @@ public class ID3v1TagDecoder {
 		return of(new Tag().setName(title.orElse(null)).setArtist(artist.orElse(null)).setAlbum(album.orElse(null)).setDate(year.map(y -> LocalDate.ofYearDay(y, 1)).orElse(null)).setComment(comment.orElse(null)).setTrack(track.orElse(0)).setGenre(genre.flatMap(Genre::getName).orElse(null)));
 	}
 
-	private static Optional<Integer> decodeInteger(byte[] buffer, int offset, int length) {
+	private Optional<Integer> decodeInteger(byte[] buffer, int offset, int length) {
 		try {
 			return decodeString(buffer, offset, length).map(Integer::parseInt);
 		} catch (NumberFormatException nfe1) {
@@ -53,7 +53,7 @@ public class ID3v1TagDecoder {
 		}
 	}
 
-	private static Optional<String> decodeString(byte[] buffer, int offset, int length) {
+	private Optional<String> decodeString(byte[] buffer, int offset, int length) {
 		Optional<String> decodedString = tryDecoding("UTF-8", buffer, offset, length);
 		if (decodedString.isPresent()) {
 			return StringUtils.normalize(decodedString.get());
@@ -65,7 +65,7 @@ public class ID3v1TagDecoder {
 		return empty();
 	}
 
-	private static Optional<String> tryDecoding(String charsetName, byte[] buffer, int offset, int length) {
+	private Optional<String> tryDecoding(String charsetName, byte[] buffer, int offset, int length) {
 		CharsetDecoder charsetDecoder = getCharsetDecoder(charsetName);
 		try {
 			CharBuffer decodedBuffer = charsetDecoder.decode(wrap(buffer, offset, length));
@@ -75,7 +75,7 @@ public class ID3v1TagDecoder {
 		}
 	}
 
-	private static CharsetDecoder getCharsetDecoder(String charsetName) {
+	private CharsetDecoder getCharsetDecoder(String charsetName) {
 		Charset charset = forName(charsetName);
 		CharsetDecoder charsetDecoder = charset.newDecoder();
 		charsetDecoder.onMalformedInput(REPORT);

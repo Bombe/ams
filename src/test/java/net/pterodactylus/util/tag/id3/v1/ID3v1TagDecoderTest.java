@@ -13,7 +13,6 @@ import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.GENRE_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TITLE_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.TRACK_OFFSET;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.YEAR_OFFSET;
-import static net.pterodactylus.util.tag.id3.v1.ID3v1TagDecoder.parse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -32,6 +31,7 @@ import org.junit.Test;
  */
 public class ID3v1TagDecoderTest {
 
+	private final ID3v1TagDecoder tagDecoder = new ID3v1TagDecoder();
 	private final Tag tag = new Tag();
 
 	@Test
@@ -104,7 +104,7 @@ public class ID3v1TagDecoderTest {
 	public void twentyEightCharactersLongCommentAndTrackNumberAreParserCorrectly() throws UnsupportedEncodingException {
 		byte[] tag = createTag(COMMENT_OFFSET, 30, "1234567890123456789012345678".getBytes("ISO8859-15"));
 		tag[TRACK_OFFSET] = 4;
-		Optional<Tag> id3v1Tag = parse(tag);
+		Optional<Tag> id3v1Tag = tagDecoder.parse(tag);
 		assertThat(id3v1Tag.get().getComment().get().length(), is(28));
 		assertThat(id3v1Tag.get().getTrack(), is(of(4)));
 	}
@@ -112,26 +112,26 @@ public class ID3v1TagDecoderTest {
 	@Test
 	public void genreIsParsedCorrectly() {
 		byte[] tag = createTag(GENRE_OFFSET, 1, new byte[]{46});
-		Optional<Tag> id3v1Tag = parse(tag);
+		Optional<Tag> id3v1Tag = tagDecoder.parse(tag);
 		assertThat(id3v1Tag.get().getGenre(), is(getName(46)));
 	}
 
 	@Test
 	public void markerForNoGenreIsRecognized() {
 		byte[] tag = createTag(GENRE_OFFSET, 1, new byte[]{(byte) 255});
-		Optional<Tag> id3v1Tag = parse(tag);
+		Optional<Tag> id3v1Tag = tagDecoder.parse(tag);
 		assertThat(id3v1Tag.get().getGenre(), is(empty()));
 	}
 
 	@Test
 	public void invalidTagIsRecognizedAndNotParsed() {
-		Optional<Tag> id3v1Tag = parse(new byte[128]);
+		Optional<Tag> id3v1Tag = tagDecoder.parse(new byte[128]);
 		assertThat(id3v1Tag, is(Optional.<Tag>empty()));
 	}
 
 	private Optional<Tag> parseTag(int offset, int length, String value, String charsetName) throws UnsupportedEncodingException {
 		byte[] tag = createTag(offset, length, value.getBytes(charsetName));
-		return parse(tag);
+		return tagDecoder.parse(tag);
 	}
 
 	private static byte[] createTag(int offset, int length, byte[] value) {

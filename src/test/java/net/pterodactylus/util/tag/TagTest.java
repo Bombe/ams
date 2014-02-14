@@ -11,13 +11,13 @@ import java.util.Optional;
 import org.junit.Test;
 
 /**
- * Unit test for {@link AbstractTag}.
+ * Unit test for {@link Tag}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class TagTest {
 
-	private final AbstractTag abstractTag = new AbstractTag();
+	private final Tag abstractTag = new Tag();
 
 	@Test
 	public void newTagContainsNoName() {
