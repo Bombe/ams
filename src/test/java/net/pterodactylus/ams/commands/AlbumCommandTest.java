@@ -3,6 +3,7 @@ package net.pterodactylus.ams.commands;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
+import static net.pterodactylus.util.tag.id3.TestUtils.createFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -22,20 +23,24 @@ import org.junit.Test;
 public class AlbumCommandTest {
 
 	private final StringWriter stringWriter = new StringWriter();
-	private final Session session = createSession(stringWriter);
+	private final Session session;
 	private final AlbumCommand albumCommand = new AlbumCommand();
 
-	private Session createSession(StringWriter stringWriter) {
+	public AlbumCommandTest() throws IOException {
+		session = createSession(stringWriter);
+	}
+
+	private Session createSession(StringWriter stringWriter) throws IOException {
 		Session session = new Session();
+		session.addFile(createFile("files/test.unknown", getClass()));
 		session.setOutput(stringWriter);
-		session.setAlbum("Test Album");
 		return session;
 	}
 
 	@Test
 	public void commandWithoutParameterShowsCurrentAlbum() throws IOException {
 		albumCommand.process(session, emptyList());
-		assertThat(stringWriter.toString(), containsString("Test Album"));
+		assertThat(stringWriter.toString(), containsString("No album set."));
 	}
 
 	@Test

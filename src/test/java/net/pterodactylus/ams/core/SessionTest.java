@@ -6,13 +6,21 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.startsWith;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.pterodactylus.util.tag.Tag;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -27,7 +35,7 @@ public class SessionTest {
 	private final Session session = new Session();
 
 	@Test
-	public void sessionCanStoreFiles() {
+	public void sessionCanStoreFiles() throws IOException {
 		File root = listRoots()[0];
 		session.addFile(root);
 		Collection<File> files = session.getFiles();
@@ -77,19 +85,28 @@ public class SessionTest {
 	}
 
 	@Test
-	public void sessionStoresAlbum() {
+	public void emptySessionCanNotStoreAlbum() {
+		session.setAlbum("Test Album");
+		assertThat(session.getAlbum(), is(empty()));
+	}
+
+	@Test
+	public void sessionWithFilesStoresAlbum() {
+		storeFilesInSession();
 		session.setAlbum("Test Album");
 		assertThat(session.getAlbum(), is(of("Test Album")));
 	}
 
 	@Test
 	public void nullAlbumResultsInNoAlbum() {
+		storeFilesInSession();
 		session.setAlbum(null);
 		assertThat(session.getAlbum(), is(empty()));
 	}
 
 	@Test
 	public void albumNameThatOnlyConsistsOfSpacesIsNotAnAlbumNameEither() {
+		storeFilesInSession();
 		session.setAlbum("           ");
 		assertThat(session.getAlbum(), is(empty()));
 	}
