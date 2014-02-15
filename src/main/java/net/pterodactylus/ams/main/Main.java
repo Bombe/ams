@@ -11,7 +11,6 @@ import java.util.List;
 import net.pterodactylus.ams.commands.AlbumCommand;
 import net.pterodactylus.ams.commands.ListCommand;
 import net.pterodactylus.ams.commands.QuitCommand;
-import net.pterodactylus.ams.commands.ScanCommand;
 import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.ams.io.FileScanner;
@@ -70,7 +69,6 @@ public class Main {
 		commandDispatcher.addCommand(new ListCommand());
 		commandDispatcher.addCommand(new QuitCommand());
 		commandDispatcher.addCommand(new AlbumCommand());
-		commandDispatcher.addCommand(new ScanCommand());
 		return commandDispatcher;
 	}
 
