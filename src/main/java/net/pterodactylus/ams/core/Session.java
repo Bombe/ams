@@ -6,16 +6,23 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 import static net.pterodactylus.util.StringUtils.isNullOrEmptyString;
 import static net.pterodactylus.util.StringUtils.trim;
+import static net.pterodactylus.util.tag.TagReaders.defaultTagReaders;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import net.pterodactylus.util.tag.Tag;
+import net.pterodactylus.util.tag.TagReader;
 
 /**
  * A session binds together the execution of several {@link Command}s and can
@@ -25,13 +32,20 @@ import java.util.stream.Collectors;
  */
 public class Session {
 
+	private final TagReader tagReader = defaultTagReaders();
 	private Writer writer = createNullWriter();
 	private final SortedSet<File> files = new TreeSet<>();
+	private final Map<File, Tag> tags = new HashMap<>();
 	private boolean exit;
 	private Optional<String> album = empty();
 
 	public void addFile(File file) {
 		files.add(file);
+		try {
+			tags.put(file, tagReader.readTags(file).orElse(new Tag()));
+		} catch (IOException e) {
+			tags.put(file, new Tag());
+		}
 	}
 
 	public Collection<File> getFiles() {
