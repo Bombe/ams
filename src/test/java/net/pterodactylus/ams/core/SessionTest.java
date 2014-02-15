@@ -35,13 +35,17 @@ public class SessionTest {
 	}
 
 	@Test
-	public void sessionCanFilterFiles() {
+	public void sessionCanFilterFiles() throws IOException {
+		storeFilesInSession();
+		Collection<File> files = session.getFiles(asList("a", "3"));
+		assertThat(files, contains(new File("src/test/resources/files/a/second.id3v2.mp3")));
+	}
+
+	private void storeFilesInSession() {
 		session.addFile(new File("src/test/resources/files/second.id3v1.mp3"));
 		session.addFile(new File("src/test/resources/files/a/second.id3v2.mp3"));
 		session.addFile(new File("src/test/resources/files/a/b/second.vorbis.flac"));
 		session.addFile(new File("src/test/resources/files/c/second.vorbis.ogg"));
-		Collection<File> files = session.getFiles(asList("a", "3"));
-		assertThat(files, contains(new File("src/test/resources/files/a/second.id3v2.mp3")));
 	}
 
 	@Test
