@@ -16,6 +16,10 @@ import java.util.Optional;
  */
 class Header {
 
+	public static final int UNSYNCHRONIZATION_FLAG = 0b10000000;
+	public static final int EXTENDED_HEADER_FLAG = 0b01000000;
+	public static final int EXPERIMENTAL_FLAG = 0b00100000;
+
 	private final int majorVersion;
 	private final int revision;
 	private final boolean unsynchronized;
@@ -65,9 +69,9 @@ class Header {
 		int revision = readByte(inputStream);
 		int flags = readByte(inputStream);
 		int size = read28Bits(inputStream);
-		boolean unsychronized = (flags & 0b10000000) != 0;
-		boolean extendedHeaderFollows = (flags & 0b01000000) != 0;
-		boolean experimental = (flags & 0b00100000) != 0;
+		boolean unsychronized = (flags & UNSYNCHRONIZATION_FLAG) != 0;
+		boolean extendedHeaderFollows = (flags & EXTENDED_HEADER_FLAG) != 0;
+		boolean experimental = (flags & EXPERIMENTAL_FLAG) != 0;
 		return of(new Header(majorVersion, revision, unsychronized, extendedHeaderFollows, experimental, size));
 	}
 
