@@ -3,6 +3,7 @@ package net.pterodactylus.util.tag.id3.v2_3;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.read28Bits;
+import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.readBuffer;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.readByte;
 
 import java.io.IOException;
@@ -61,7 +62,12 @@ class Header {
 	}
 
 	public static Optional<Header> parseHeader(InputStream inputStream) throws IOException {
-		byte[] header = ID3v23Utils.readBuffer(inputStream, new byte[3]);
+		byte[] header;
+		try {
+			header = readBuffer(inputStream, new byte[3]);
+		} catch (IOException ioe1) {
+			return empty();
+		}
 		if ((header[0] != 'I') || (header[1] != 'D') || (header[2] != '3')) {
 			return empty();
 		}
