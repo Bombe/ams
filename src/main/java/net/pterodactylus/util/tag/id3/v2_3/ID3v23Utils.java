@@ -18,9 +18,22 @@ class ID3v23Utils {
 		return ((buffer[0] & 0xff) << 8) | (buffer[1] & 0xff);
 	}
 
+	public static byte[] encode28Bits(int data) {
+		return new byte[] {
+				(byte) ((data >>> 21) & 0x7f),
+				(byte) ((data >>> 14) & 0x7f),
+				(byte) ((data >>> 7) & 0x7f),
+				(byte) (data & 0x7f),
+		};
+	}
+
 	public static int read28Bits(InputStream inputStream) throws IOException {
 		byte[] buffer = readBuffer(inputStream, new byte[4]);
 		return (buffer[0] << 21) | (buffer[1] << 14) | (buffer[2] << 7) | buffer[3];
+	}
+
+	public static int read28Bits(byte[] buffer, int offset) {
+		return (buffer[offset + 0] << 21) | (buffer[offset + 1] << 14) | (buffer[offset + 2] << 7) | buffer[offset + 3];
 	}
 
 	public static int read32Bits(InputStream inputStream) throws IOException {
@@ -41,4 +54,10 @@ class ID3v23Utils {
 		return buffer;
 	}
 
+	static byte[] encode16Bits(int data) {
+		return new byte[] {
+				(byte) (data >>> 8),
+				(byte) data
+		};
+	}
 }
