@@ -67,6 +67,8 @@ public class ID3v23TagReader implements TagReader {
 			tag.setAlbum(frame.getDecodedText());
 		} else if (frameIdentifier.equals("TIT2")) {
 			tag.setName(frame.getDecodedText());
+		} else if (frameIdentifier.equals("TPE2")) {
+			tag.setAlbumArtist(frame.getDecodedText());
 		} else if (frameIdentifier.equals("TPOS")) {
 			Optional<Counters> counters = parseCounters(frame.getDecodedText());
 			if (counters.isPresent()) {
