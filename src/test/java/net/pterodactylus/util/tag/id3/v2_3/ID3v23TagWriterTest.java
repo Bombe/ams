@@ -28,6 +28,11 @@ public class ID3v23TagWriterTest {
 
 	private final ID3v23TagWriter tagWriter = new ID3v23TagWriter();
 	private final Tag tag = new Tag();
+	private final File mp3File;
+
+	public ID3v23TagWriterTest() throws IOException {
+		mp3File = createMp3File();
+	}
 
 	@Test
 	public void nonMp3FileIsNotChanged() throws IOException {
@@ -40,14 +45,12 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void mp3FileIsChanged() throws IOException {
-		File mp3File = createMp3File();
 		tagWriter.write(tag, mp3File);
 		assertThat(toByteArray(mp3File).length, greaterThan(2));
 	}
 
 	@Test
 	public void artistIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setArtist("Some Ärtist");
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
@@ -56,7 +59,6 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void titleIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setName("Som€ Name");
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
@@ -65,7 +67,6 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void albumIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setAlbum("Some Album");
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
@@ -74,7 +75,6 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void albumArtistIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setAlbumArtist("Some Album Artist");
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
@@ -83,7 +83,6 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void trackNumberIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setTrack(17);
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
@@ -92,7 +91,6 @@ public class ID3v23TagWriterTest {
 
 	@Test
 	public void totalTrackNumberIsCorrectlyWrittenToFile() throws IOException {
-		File mp3File = createMp3File();
 		tag.setTotalTracks(23);
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
