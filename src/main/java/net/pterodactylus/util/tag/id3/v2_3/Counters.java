@@ -21,7 +21,7 @@ class Counters {
 	private final int current;
 	private final int total;
 
-	private Counters(int current, int total) {
+	Counters(int current, int total) {
 		this.current = current;
 		this.total = total;
 	}
@@ -32,6 +32,18 @@ class Counters {
 
 	public int getTotal() {
 		return total;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder counters = new StringBuilder();
+		if (current > 0) {
+			counters.append(current);
+		}
+		if (total > 0) {
+			counters.append('/').append(total);
+		}
+		return counters.toString();
 	}
 
 	public static Optional<Counters> parseCounters(String text) {

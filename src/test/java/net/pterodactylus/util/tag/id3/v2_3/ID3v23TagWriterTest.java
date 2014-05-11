@@ -81,6 +81,24 @@ public class ID3v23TagWriterTest {
 		assertThat(readTag.get().getAlbumArtist(), is(of("Some Album Artist")));
 	}
 
+	@Test
+	public void trackNumberIsCorrectlyWrittenToFile() throws IOException {
+		File mp3File = createMp3File();
+		tag.setTrack(17);
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getTrack(), is(of(17)));
+	}
+
+	@Test
+	public void totalTrackNumberIsCorrectlyWrittenToFile() throws IOException {
+		File mp3File = createMp3File();
+		tag.setTotalTracks(23);
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getTotalTracks(), is(of(23)));
+	}
+
 	private File createMp3File() throws IOException {
 		File mp3File = createTempFile("mp3-", ".mp3");
 		writeMp3FrameHeaderToFile(mp3File);
