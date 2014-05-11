@@ -36,6 +36,9 @@ public class TagEncoder {
 			if (tag.getArtist().isPresent()) {
 				frameStream.write(createTextFrame("TPE1", tag.getArtist().get()));
 			}
+			if (tag.getName().isPresent()) {
+				frameStream.write(createTextFrame("TIT2", tag.getName().get()));
+			}
 			return createTag(frameStream.toByteArray());
 		} catch (IOException ioe1) {
 			/* this should never happen. */

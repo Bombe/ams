@@ -54,6 +54,15 @@ public class ID3v23TagWriterTest {
 		assertThat(readTag.get().getArtist(), is(of("Some Ärtist")));
 	}
 
+	@Test
+	public void titleIsCorrectlyWrittenToFile() throws IOException {
+		File mp3File = createMp3File();
+		tag.setName("Som€ Name");
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getName(), is(of("Som€ Name")));
+	}
+
 	private File createMp3File() throws IOException {
 		File mp3File = createTempFile("mp3-", ".mp3");
 		writeMp3FrameHeaderToFile(mp3File);
