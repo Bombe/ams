@@ -97,6 +97,22 @@ public class ID3v23TagWriterTest {
 		assertThat(readTag.get().getTotalTracks(), is(of(23)));
 	}
 
+	@Test
+	public void discNumberIsCorrectlyWrittenToFile() throws IOException {
+		tag.setDisc(1);
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getDisc(), is(of(1)));
+	}
+
+	@Test
+	public void totalDiscNumberIsCorrectlyWrittenToFile() throws IOException {
+		tag.setTotalDiscs(2);
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getTotalDiscs(), is(of(2)));
+	}
+
 	private File createMp3File() throws IOException {
 		File mp3File = createTempFile("mp3-", ".mp3");
 		writeMp3FrameHeaderToFile(mp3File);

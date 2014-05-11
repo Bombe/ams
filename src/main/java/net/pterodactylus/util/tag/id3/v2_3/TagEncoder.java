@@ -48,6 +48,9 @@ public class TagEncoder {
 			if (tag.getTrack().isPresent() || tag.getTotalTracks().isPresent()) {
 				frameStream.write(createTextFrame("TRCK", new Counters(tag.getTrack().orElse(0), tag.getTotalTracks().orElse(0)).toString()));
 			}
+			if (tag.getDisc().isPresent() || tag.getTotalDiscs().isPresent()) {
+				frameStream.write(createTextFrame("TPOS", new Counters(tag.getDisc().orElse(0), tag.getTotalDiscs().orElse(0)).toString()));
+			}
 			return createTag(frameStream.toByteArray());
 		} catch (IOException ioe1) {
 			/* this should never happen. */
