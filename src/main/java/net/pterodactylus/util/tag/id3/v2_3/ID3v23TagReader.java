@@ -1,9 +1,12 @@
 package net.pterodactylus.util.tag.id3.v2_3;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.primitives.Ints.tryParse;
 import static java.time.LocalDate.ofYearDay;
 import static java.util.Arrays.copyOf;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static net.pterodactylus.util.tag.id3.v2_3.Counters.parseCounters;
 import static net.pterodactylus.util.tag.id3.v2_3.Frame.parseFrame;
 import static net.pterodactylus.util.tag.id3.v2_3.Header.parseHeader;
@@ -14,11 +17,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagReader;
 
+import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 
 /**
@@ -84,7 +89,20 @@ public class ID3v23TagReader implements TagReader {
 		} else if (frameIdentifier.equals("TCON")) {
 			tag.setGenre(frame.getDecodedText());
 		} else if (frameIdentifier.equals("TYER")) {
-			tag.setDate(of(frame.getDecodedText()).map(Ints::tryParse).map(year -> ofYearDay(year, 1)).orElse(null));
+			LocalDate oldDate = tag.getDate().orElse(LocalDate.of(0, 1, 1));
+			tag.setDate(LocalDate.of(of(frame.getDecodedText()).map(Ints::tryParse).orElse(0), oldDate.getMonthValue(), oldDate.getDayOfMonth()));
+		} else if (frameIdentifier.equals("TDAT")) {
+			String formattedDate = frame.getDecodedText();
+			if (formattedDate.length() != 4) {
+				return;
+			}
+			int day = ofNullable(tryParse(formattedDate.substring(0, 2))).orElse(0);
+			int month = ofNullable(tryParse(formattedDate.substring(2, 4))).orElse(0);
+			if ((day == 0) || (month == 0)) {
+				return;
+			}
+			LocalDate oldDate = tag.getDate().orElse(LocalDate.of(0, 1, 1));
+			tag.setDate(LocalDate.of(oldDate.getYear(), month, day));
 		}
 	}
 

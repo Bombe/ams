@@ -1,5 +1,6 @@
 package net.pterodactylus.util.tag.id3.v2_3;
 
+import static java.lang.String.format;
 import static java.lang.System.arraycopy;
 import static java.nio.CharBuffer.wrap;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -50,6 +51,10 @@ public class TagEncoder {
 			}
 			if (tag.getDisc().isPresent() || tag.getTotalDiscs().isPresent()) {
 				frameStream.write(createTextFrame("TPOS", new Counters(tag.getDisc().orElse(0), tag.getTotalDiscs().orElse(0)).toString()));
+			}
+			if (tag.getDate().isPresent()) {
+				frameStream.write(createTextFrame("TYER", format("%tY", tag.getDate().get())));
+				frameStream.write(createTextFrame("TDAT", format("%1$td%1$tm", tag.getDate().get())));
 			}
 			return createTag(frameStream.toByteArray());
 		} catch (IOException ioe1) {

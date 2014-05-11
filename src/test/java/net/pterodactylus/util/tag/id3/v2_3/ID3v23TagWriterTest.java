@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
@@ -111,6 +112,14 @@ public class ID3v23TagWriterTest {
 		tagWriter.write(tag, mp3File);
 		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
 		assertThat(readTag.get().getTotalDiscs(), is(of(2)));
+	}
+
+	@Test
+	public void dateIsCorrectlyWrittenToFile() throws IOException {
+		tag.setDate(LocalDate.of(2014, 9, 28));
+		tagWriter.write(tag, mp3File);
+		Optional<Tag> readTag = new ID3v23TagReader().readTags(mp3File);
+		assertThat(readTag.get().getDate(), is(of(LocalDate.of(2014, 9, 28))));
 	}
 
 	private File createMp3File() throws IOException {
