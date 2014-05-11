@@ -2,7 +2,8 @@ package net.pterodactylus.util.tag.id3.v2_3;
 
 import static com.google.common.primitives.Bytes.concat;
 import static java.lang.String.format;
-import static java.nio.charset.Charset.forName;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_16;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -13,7 +14,6 @@ import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.readByte;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Optional;
 
 /**
@@ -25,9 +25,6 @@ class Frame {
 
 	private static final int STRING_ENCODING_LATIN1 = 0;
 	private static final int STRING_ENCODING_UTF16 = 1;
-
-	private static final Charset LATIN1 = forName("ISO8859-1");
-	private static final Charset UTF16 = forName("UTF-16");
 
 	private final String identifier;
 	private final int size;
@@ -67,11 +64,11 @@ class Frame {
 	}
 
 	private String decodeAsUTF16(byte[] buffer) {
-		return new String(buffer, UTF16);
+		return new String(buffer, UTF_16);
 	}
 
 	private String decodeAsLatin1(byte[] buffer) {
-		return new String(buffer, LATIN1);
+		return new String(buffer, ISO_8859_1);
 	}
 
 	public static Optional<Frame> parseFrame(InputStream inputStream) throws IOException {
