@@ -60,4 +60,13 @@ class ID3v23Utils {
 				(byte) data
 		};
 	}
+
+	static byte[] encode32Bits(int data) {
+		return new byte[] {
+				(byte) (data >>> 24),
+				(byte) (data >>> 16),
+				(byte) (data >>> 8),
+				(byte) data
+		};
+	}
 }

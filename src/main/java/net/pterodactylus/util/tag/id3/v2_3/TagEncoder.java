@@ -7,7 +7,9 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.nio.charset.StandardCharsets.UTF_16BE;
 import static net.pterodactylus.util.tag.id3.v2_3.Header.UNSYNCHRONIZATION_FLAG;
+import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode16Bits;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode28Bits;
+import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode32Bits;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.read28Bits;
 
 import java.io.ByteArrayOutputStream;
@@ -96,19 +98,10 @@ public class TagEncoder {
 		try (ByteArrayOutputStream frame = new ByteArrayOutputStream()) {
 			frame.write(frameType.getBytes(US_ASCII));
 			frame.write(encode32Bits(framePayload.length));
-			frame.write(ID3v23Utils.encode16Bits(0));
+			frame.write(encode16Bits(0));
 			frame.write(framePayload);
 			return frame.toByteArray();
 		}
-	}
-
-	private byte[] encode32Bits(int data) {
-		return new byte[] {
-				(byte) (data >>> 24),
-				(byte) (data >>> 16),
-				(byte) (data >>> 8),
-				(byte) data
-		};
 	}
 
 	private boolean headerRequiresUnsynchronisation(byte[] id3Header) {
