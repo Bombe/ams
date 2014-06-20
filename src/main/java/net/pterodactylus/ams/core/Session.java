@@ -33,7 +33,7 @@ import net.pterodactylus.util.tag.TagReader;
 public class Session {
 
 	private final TagReader tagReader = defaultTagReaders();
-	private Writer writer = createNullWriter();
+	private Writer writer = new NullWriter();
 	private final SortedSet<File> files = new TreeSet<>();
 	private final Map<File, Tag> tags = new HashMap<>();
 	private boolean exit;
@@ -86,26 +86,29 @@ public class Session {
 	}
 
 	public void setOutput(Writer writer) {
+		if (this.writer instanceof NullWriter) {
+			((NullWriter) this.writer).close();
+		}
 		this.writer = writer;
 	}
 
-	private static Writer createNullWriter() {
-		return new Writer() {
-			@Override
-			public void write(char[] buffer, int offset, int length) {
-				/* do nothing. */
-			}
+	private static class NullWriter extends Writer {
 
-			@Override
-			public void flush() {
+		@Override
+		public void write(char[] buffer, int offset, int length) {
 				/* do nothing. */
-			}
+		}
 
-			@Override
-			public void close() {
+		@Override
+		public void flush() {
 				/* do nothing. */
-			}
-		};
+		}
+
+		@Override
+		public void close() {
+				/* do nothing. */
+		}
+
 	}
 
 }
