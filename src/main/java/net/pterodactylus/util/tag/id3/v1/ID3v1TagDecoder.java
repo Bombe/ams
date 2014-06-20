@@ -6,6 +6,7 @@ import static java.nio.charset.Charset.forName;
 import static java.nio.charset.CodingErrorAction.REPORT;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static net.pterodactylus.util.StringUtils.normalize;
 
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -14,7 +15,6 @@ import java.nio.charset.CharsetDecoder;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import net.pterodactylus.util.StringUtils;
 import net.pterodactylus.util.tag.Tag;
 
 /**
@@ -56,7 +56,7 @@ public class ID3v1TagDecoder {
 	private Optional<String> decodeString(byte[] buffer, int offset, int length) {
 		Optional<String> decodedString = tryDecoding("UTF-8", buffer, offset, length);
 		if (decodedString.isPresent()) {
-			return StringUtils.normalize(decodedString.get());
+			return normalize(decodedString.get());
 		}
 		decodedString = tryDecoding("ISO8859-15", buffer, offset, length);
 		if (decodedString.isPresent()) {
