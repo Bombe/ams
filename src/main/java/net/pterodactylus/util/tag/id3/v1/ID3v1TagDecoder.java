@@ -24,6 +24,8 @@ import net.pterodactylus.util.tag.Tag;
  */
 public class ID3v1TagDecoder {
 
+	private static final Charset LATIN_9 = forName("ISO8859-15");
+
 	public Optional<Tag> parse(byte[] tagData) {
 		checkArgument(tagData.length == 128);
 		if ((tagData[0] != 'T') || (tagData[1] != 'A') || (tagData[2] != 'G')) {
@@ -58,11 +60,7 @@ public class ID3v1TagDecoder {
 		if (decodedString.isPresent()) {
 			return normalize(decodedString.get());
 		}
-		decodedString = tryDecoding("ISO8859-15", buffer, offset, length);
-		if (decodedString.isPresent()) {
-			return StringUtils.normalize(decodedString.get());
-		}
-		return empty();
+		return normalize(new String(buffer, offset, length, LATIN_9));
 	}
 
 	private Optional<String> tryDecoding(String charsetName, byte[] buffer, int offset, int length) {
