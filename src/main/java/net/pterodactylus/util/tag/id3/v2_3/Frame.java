@@ -60,7 +60,15 @@ class Frame {
 		} else if (stringEncoding == STRING_ENCODING_UTF16) {
 			return decodeAsUTF16(copyOfRange(data, 1, data.length));
 		}
-		throw new RuntimeException(format("Invalid string encoding: %d", stringEncoding));
+		throw new InvalidStringEncoding(stringEncoding);
+	}
+
+	public static class InvalidStringEncoding extends RuntimeException {
+
+		public InvalidStringEncoding(byte stringEncoding) {
+			super(format("Invalid string encoding: %d", stringEncoding));
+		}
+
 	}
 
 	private String decodeAsUTF16(byte[] buffer) {
