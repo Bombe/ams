@@ -38,9 +38,16 @@ public class AlbumCommandTest {
 	}
 
 	@Test
-	public void commandWithoutParameterShowsCurrentAlbum() throws IOException {
+	public void commandWithoutParameterShowsWhenNoAlbumIsSet() throws IOException {
 		albumCommand.process(session, emptyList());
 		assertThat(stringWriter.toString(), containsString("No album set."));
+	}
+
+	@Test
+	public void commandWithoutParameterShowsCurrentAlbum() throws IOException {
+		session.setAlbum("Some Album");
+		albumCommand.process(session, emptyList());
+		assertThat(stringWriter.toString(), containsString("Some Album"));
 	}
 
 	@Test
