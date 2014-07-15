@@ -10,8 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import org.junit.Test;
 
@@ -106,21 +107,28 @@ public class PipelineTest {
 
 	private static class DoublingFilter implements Filter {
 
-		private final LinkedBlockingDeque<Byte> queue = new LinkedBlockingDeque<>();
-		private volatile boolean closed;
+		private final List<Byte> queue = new ArrayList<>();
+		private boolean closed;
 
 		@Override
 		public InputStream getInputStream() throws IOException {
 			return new InputStream() {
 				@Override
 				public int read() throws IOException {
-					if (queue.isEmpty() && closed) {
-						return -1;
-					}
-					try {
-						return queue.takeFirst();
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
+					synchronized (queue) {
+						while (true) {
+							if (!queue.isEmpty()) {
+								return queue.remove(0);
+							}
+							if (closed) {
+								return -1;
+							}
+							try {
+								queue.wait();
+							} catch (InterruptedException ie1) {
+								throw new RuntimeException(ie1);
+							}
+						}
 					}
 				}
 			};
@@ -131,13 +139,19 @@ public class PipelineTest {
 			return new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
-					queue.add((byte) b);
-					queue.add((byte) b);
+					synchronized (queue) {
+						queue.add((byte) b);
+						queue.add((byte) b);
+						queue.notifyAll();
+					}
 				}
 
 				@Override
 				public void close() throws IOException {
-					closed = true;
+					synchronized (queue) {
+						closed = true;
+						queue.notifyAll();
+					}
 				}
 			};
 		}
