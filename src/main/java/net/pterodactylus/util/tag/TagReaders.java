@@ -21,17 +21,14 @@ public class TagReaders {
 	}
 
 	public static TagReader combine(TagReader... tagReaders) {
-		return new TagReader() {
-			@Override
-			public Optional<Tag> readTags(File file) throws IOException {
-				for (TagReader tagReader : tagReaders) {
-					Optional<Tag> tag = tagReader.readTags(file);
-					if (tag.isPresent()) {
-						return tag;
-					}
+		return file -> {
+			for (TagReader tagReader : tagReaders) {
+				Optional<Tag> tag = tagReader.readTags(file);
+				if (tag.isPresent()) {
+					return tag;
 				}
-				return empty();
 			}
+			return empty();
 		};
 	}
 
