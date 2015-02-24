@@ -12,6 +12,7 @@ import java.util.Optional;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
+@FunctionalInterface
 public interface TagReader {
 
 	/**
