@@ -34,6 +34,11 @@ public class TagReadersTest {
 	}
 
 	@Test
+	public void tagReadersCanBeCreatedToIncreaseCoverage() {
+	    new TagReaders();
+	}
+
+	@Test
 	public void firstMatchingTagReaderTerminatesTagReading() throws IOException {
 		TagReader combinedTagReaders = combine(matchingTagReader, nonMatchingTagReader);
 		Optional<Tag> readTag = combinedTagReaders.readTags(mock(File.class));
