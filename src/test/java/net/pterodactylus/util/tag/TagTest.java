@@ -8,6 +8,8 @@ import static org.hamcrest.Matchers.is;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -38,6 +40,12 @@ public class TagTest {
 	}
 
 	@Test
+	public void settingNameClearsWhitespaceAtBeginningAndEnd() {
+		abstractTag.setName(" \tTest  Name\n\u00a0\r");
+		MatcherAssert.assertThat(abstractTag.getName(), Matchers.is(Optional.of("Test  Name")));
+	}
+
+	@Test
 	public void newTagContainsNoArtist() {
 		assertThat(abstractTag.getArtist(), is(Optional.<String>empty()));
 	}
@@ -46,6 +54,12 @@ public class TagTest {
 	public void canStoreArtist() {
 		abstractTag.setArtist("Test Artist");
 		assertThat(abstractTag.getArtist(), is(of("Test Artist")));
+	}
+
+	@Test
+	public void settingArtistStripsWhitespaceAtBeginningAndEnd() {
+		abstractTag.setArtist(" \tTest  Artist\n\u00a0\r");
+		MatcherAssert.assertThat(abstractTag.getArtist(), Matchers.is(Optional.of("Test  Artist")));
 	}
 
 	@Test
@@ -67,6 +81,12 @@ public class TagTest {
 	}
 
 	@Test
+	public void settingAlbumArtistStripsWhitespaceAtBeginningAndEnd() {
+		abstractTag.setAlbumArtist(" \tTest  Album Artist\n\u00a0\r");
+		MatcherAssert.assertThat(abstractTag.getAlbumArtist(), Matchers.is(Optional.of("Test  Album Artist")));
+	}
+
+	@Test
 	public void nullAlbumArtistClearsTheAlbumArtist() {
 		abstractTag.setAlbumArtist("Test Album Artist");
 		abstractTag.setAlbumArtist(null);
@@ -82,6 +102,12 @@ public class TagTest {
 	public void canStoreAlbum() {
 		abstractTag.setAlbum("Test Album");
 		assertThat(abstractTag.getAlbum(), is(of("Test Album")));
+	}
+
+	@Test
+	public void settingAlbumStripsWhitespaceAtBeginningAndEnd() {
+		abstractTag.setAlbum(" \tTest  Album\n\u00a0\r");
+		MatcherAssert.assertThat(abstractTag.getAlbum(), Matchers.is(Optional.of("Test  Album")));
 	}
 
 	@Test
@@ -209,6 +235,12 @@ public class TagTest {
 	public void canStoreComment() {
 		abstractTag.setComment("Test Comment");
 		assertThat(abstractTag.getComment(), is(of("Test Comment")));
+	}
+
+	@Test
+	public void settingCommentStripsWhitespaceAtBeginningAndEnd() {
+		abstractTag.setComment(" \tTest  Comment\n\u00a0\r");
+		MatcherAssert.assertThat(abstractTag.getComment(), Matchers.is(Optional.of("Test  Comment")));
 	}
 
 	@Test

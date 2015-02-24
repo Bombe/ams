@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Generlization of data that can be stored in tags.
@@ -15,6 +16,8 @@ import java.util.Optional;
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class Tag {
+
+	private static final Pattern WHITESPACE_STRIPPER =Pattern.compile("^[ \t\r\n\u00a0]*(.*?)[ \t\r\n\u00a0]*$");
 
 	private Optional<String> name = empty();
 	private Optional<String> artist = empty();
@@ -33,8 +36,15 @@ public class Tag {
 	}
 
 	public Tag setName(String name) {
-		this.name = ofNullable(name);
+		this.name = stripWhitespace(name);
 		return this;
+	}
+
+	private Optional<String> stripWhitespace(String name) {
+		if (name == null) {
+			return Optional.empty();
+		}
+		return Optional.of(WHITESPACE_STRIPPER.matcher(name).replaceAll("$1"));
 	}
 
 	public Optional<String> getArtist() {
@@ -42,7 +52,7 @@ public class Tag {
 	}
 
 	public Tag setArtist(String artist) {
-		this.artist = ofNullable(artist);
+		this.artist = stripWhitespace(artist);
 		return this;
 	}
 
@@ -51,7 +61,7 @@ public class Tag {
 	}
 
 	public Tag setAlbumArtist(String albumArtist) {
-		this.albumArtist = ofNullable(albumArtist);
+		this.albumArtist = stripWhitespace(albumArtist);
 		return this;
 	}
 
@@ -60,7 +70,7 @@ public class Tag {
 	}
 
 	public Tag setAlbum(String album) {
-		this.album = ofNullable(album);
+		this.album = stripWhitespace(album);
 		return this;
 	}
 
@@ -123,7 +133,7 @@ public class Tag {
 	}
 
 	public Tag setComment(String comment) {
-		this.comment = ofNullable(comment);
+		this.comment = stripWhitespace(comment);
 		return this;
 	}
 
