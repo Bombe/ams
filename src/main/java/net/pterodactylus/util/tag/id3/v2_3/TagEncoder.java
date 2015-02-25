@@ -28,6 +28,7 @@ public class TagEncoder {
 
 	private static final CharsetEncoder latin1Encoder = ISO_8859_1.newEncoder();
 	private static final CharsetEncoder utf16Encoder = UTF_16BE.newEncoder();
+	private static final Unsynchronizer unsynchronizer = new Unsynchronizer();
 
 	public byte[] encode(Tag tag, Optional<Integer> paddingSize) {
 		byte[] id3Header = createId3Tag(tag);
@@ -105,30 +106,15 @@ public class TagEncoder {
 	}
 
 	private boolean headerRequiresUnsynchronisation(byte[] id3Header) {
-		for (int index = 0; index < id3Header.length - 2; ++index) {
-			if (((id3Header[index] & 0xff) == 0xff) && ((id3Header[index + 1] & 0xe0) == 0xe0)) {
-				return true;
-			}
-		}
-		return false;
+		return unsynchronizer.isUnsychronizationRequired(id3Header);
 	}
 
 	private byte[] unsynchronize(byte[] id3Header) {
-		ByteArrayOutputStream synchronizedHeaderStream = new ByteArrayOutputStream();
-		int additionalBytes = 0;
-		for (byte headerByte : id3Header) {
-			synchronizedHeaderStream.write(headerByte);
-			if ((headerByte & 0xff) == 0xff) {
-				synchronizedHeaderStream.write(0);
-				additionalBytes++;
-			}
-		}
-		byte[] synchronizedHeader = synchronizedHeaderStream.toByteArray();
-		synchronizedHeader[5] |= UNSYNCHRONIZATION_FLAG;
-		int oldHeaderSize = read28Bits(synchronizedHeader, 6);
-		int newHeaderSize = oldHeaderSize + additionalBytes;
-		arraycopy(encode28Bits(newHeaderSize), 0, synchronizedHeader, 6, 4);
-		return synchronizedHeader;
+		byte[] unsynchronizedHeader = unsynchronizer.unsynchronize(id3Header);
+		unsynchronizedHeader[5] |= UNSYNCHRONIZATION_FLAG;
+		int newHeaderSize = unsynchronizedHeader.length;
+		arraycopy(encode28Bits(newHeaderSize), 0, unsynchronizedHeader, 6, 4);
+		return unsynchronizedHeader;
 	}
 
 }
