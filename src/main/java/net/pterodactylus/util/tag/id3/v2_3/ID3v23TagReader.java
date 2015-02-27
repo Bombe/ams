@@ -33,6 +33,8 @@ import com.google.common.primitives.Ints;
  */
 public class ID3v23TagReader implements TagReader {
 
+	private final Unsynchronizer unsynchronizer = new Unsynchronizer();
+
 	@Override
 	public Optional<Tag> readTags(File file) throws IOException {
 		try (InputStream fileInputStream = new FileInputStream(file)) {
@@ -45,7 +47,7 @@ public class ID3v23TagReader implements TagReader {
 			}
 			byte[] completeHeader = readBuffer(fileInputStream, new byte[header.get().getSize()]);
 			if (header.get().isUnsynchronized()) {
-				completeHeader = deunsynchronize(completeHeader);
+				completeHeader = unsynchronizer.deunsynchronize(completeHeader);
 			}
 			if (header.get().isExtendedHeaderFollows()) {
 				ExtendedHeader extendedHeader = ExtendedHeader.parse(completeHeader);
@@ -112,24 +114,6 @@ public class ID3v23TagReader implements TagReader {
 		} catch (IOException ioe1) {
 			return empty();
 		}
-	}
-
-	private byte[] deunsynchronize(byte[] completeHeader) {
-		byte[] deunsynchronizedHeader = new byte[completeHeader.length];
-		boolean lastWas0xff = false;
-		int currentIndex = 0;
-		for (byte b : completeHeader) {
-			if (lastWas0xff) {
-				lastWas0xff = false;
-				if (b == 0) {
-					continue;
-				}
-			} else if (b == (byte) 0xff) {
-				lastWas0xff = true;
-			}
-			deunsynchronizedHeader[currentIndex++] = b;
-		}
-		return copyOf(deunsynchronizedHeader, currentIndex);
 	}
 
 }
