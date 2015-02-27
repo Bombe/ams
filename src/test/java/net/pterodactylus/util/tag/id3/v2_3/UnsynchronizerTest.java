@@ -38,4 +38,11 @@ public class UnsynchronizerTest {
 		MatcherAssert.assertThat(unsynchronizer.unsynchronize(data), Matchers.is(expectedData));
 	}
 
+	@Test
+	public void deunsynchronizedIsPerformedCorrectly() {
+		byte[] data = { 0x00, (byte) 0xff, 0x01, (byte) 0xff, 0x00, (byte) 0xff, 0x00, (byte) 0xff };
+		byte[] expectedData = { 0x00, (byte) 0xff, 0x01, (byte) 0xff, (byte) 0x0ff, (byte) 0xff };
+		MatcherAssert.assertThat(unsynchronizer.deunsynchronize(data), Matchers.is(expectedData));
+	}
+
 }

@@ -2,6 +2,7 @@ package net.pterodactylus.util.tag.id3.v2_3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Performs unsychronization necessary in ID3v2 tags.
@@ -42,6 +43,24 @@ public class Unsynchronizer {
 			/* ignore, won’t happen. */
 			throw new IllegalStateException("ByteArrayOutputStream threw exception", ioe1);
 		}
+	}
+
+	public byte[] deunsynchronize(byte[] data) {
+		byte[] deunsynchronizedData = new byte[data.length];
+		boolean lastWas0xff = false;
+		int currentIndex = 0;
+		for (byte b : data) {
+			if (lastWas0xff) {
+				lastWas0xff = false;
+				if (b == 0) {
+					continue;
+				}
+			} else if (b == (byte) 0xff) {
+				lastWas0xff = true;
+			}
+			deunsynchronizedData[currentIndex++] = b;
+		}
+		return Arrays.copyOf(deunsynchronizedData, currentIndex);
 	}
 
 }
