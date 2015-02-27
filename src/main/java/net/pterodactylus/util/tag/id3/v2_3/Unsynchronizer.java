@@ -15,7 +15,7 @@ public class Unsynchronizer {
 			return false;
 		}
 		for (int offset = 0; offset < data.length - 1; offset++) {
-			if (((data[offset] & 0xff) == 0xff) && ((data[offset + 1] & 0xe0) == 0xe0)) {
+			if (((data[offset] & 0xff) == 0xff) && (((data[offset + 1] & 0xe0) == 0xe0) || (data[offset + 1] == 0))) {
 				return true;
 			}
 		}
@@ -26,10 +26,10 @@ public class Unsynchronizer {
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length * 4 / 3)) {
 			boolean previousWas0xFF = false;
 			for (int dataByte : data) {
-				if (previousWas0xFF && ((dataByte & 0xe0) == 0xe0)) {
+				if (previousWas0xFF && (((dataByte & 0xe0) == 0xe0) || (dataByte == 0))) {
 					outputStream.write(0);
 					outputStream.write(dataByte);
-					previousWas0xFF = false;
+					previousWas0xFF = (dataByte & 0xff) == 0xff;
 					continue;
 				}
 				if ((dataByte & 0xff) == 0xff) {

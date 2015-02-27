@@ -34,7 +34,7 @@ public class UnsynchronizerTest {
 	@Test
 	public void unsynchronizationIsPerformedCorrectlyWhenSyncBytesPresent() {
 		byte[] data = { 0x00, (byte) 0xff, (byte) 0xff, 0x00, (byte) 0xff, (byte) 0xe4 };
-		byte[] expectedData = { 0x00, (byte) 0xff, 0x00, (byte) 0xff, 0x00, (byte) 0xff, 0x00, (byte) 0xe4 };
+		byte[] expectedData = { 0x00, (byte) 0xff, 0x00, (byte) 0xff, 0x00, 0x00, (byte) 0xff, 0x00, (byte) 0xe4 };
 		MatcherAssert.assertThat(unsynchronizer.unsynchronize(data), Matchers.is(expectedData));
 	}
 
