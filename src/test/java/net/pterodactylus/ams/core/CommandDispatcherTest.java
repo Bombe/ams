@@ -1,20 +1,13 @@
 package net.pterodactylus.ams.core;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 /**
  * Unit test for {@link CommandDispatcher}.
@@ -23,64 +16,47 @@ import org.junit.Test;
  */
 public class CommandDispatcherTest {
 
-	private final Session session = new Session();
-	private final CommandDispatcher commandDispatcher = new CommandDispatcher(session);
-
-	@Test
-	public void canAddCommandToDispatcher() {
-		Command command = createCommand("Test");
-		commandDispatcher.addCommand(command);
-	}
-
-	@Test
-	public void noDispatchIfNoArgumentsAreGiven() throws IOException {
-		Command firstCommand = createCommand("first");
-		Command secondCommand = createCommand("second");
-		commandDispatcher.addCommand(firstCommand);
-		commandDispatcher.addCommand(secondCommand);
-		commandDispatcher.dispatch("");
-		verify(firstCommand, never()).process(any(), any());
-		verify(secondCommand, never()).process(any(), any());
-	}
-
-	@Test
-	public void canDispatchACommand() throws IOException {
-		Command firstCommand = createCommand("first");
-		Command secondCommand = createCommand("second");
-		commandDispatcher.addCommand(firstCommand);
-		commandDispatcher.addCommand(secondCommand);
-		commandDispatcher.dispatch("first");
-		verify(firstCommand).process(any(), any());
-		verify(secondCommand, never()).process(any(),any() );
-	}
-
-	@Test
-	public void canDispatchACommandWithParameters() throws IOException {
-		Command firstCommand = createCommand("first");
-		Command secondCommand = createCommand("second");
-		commandDispatcher.addCommand(firstCommand);
-		commandDispatcher.addCommand(secondCommand);
-		commandDispatcher.dispatch("first with parameter");
-		verify(firstCommand).process(any(), eq(asList("with", "parameter")));
-		verify(secondCommand, never()).process(any(),eq(emptyList()));
-	}
-
-	@Test
-	public void doesNotDispatchANonExistingCommand() throws IOException {
-		Command firstCommand = createCommand("first");
-		Command secondCommand = createCommand("second");
-		commandDispatcher.addCommand(firstCommand);
-		commandDispatcher.addCommand(secondCommand);
-		commandDispatcher.dispatch("third");
-		verify(firstCommand, never()).process(any(), any());
-		verify(secondCommand, never()).process(any(), any());
-	}
+	private final Context context = Mockito.mock(Context.class);
+	private final CommandDispatcher commandDispatcher = new CommandDispatcher(context);
+	private final Command testCommand = createCommand("test");
+	private final Command fooCommand = createCommand("foo");
+	private final Command barCommand = createCommand("bar");
 
 	private Command createCommand(String name) {
-		Command command = mock(Command.class);
-		when(command.getName()).thenReturn(name);
+		Command command = Mockito.mock(Command.class);
+		Mockito.when(command.getName()).thenReturn(name);
 		return command;
 	}
 
+	@Before
+	public void setupCommandProcessor() {
+		commandDispatcher.addCommand(testCommand);
+		commandDispatcher.addCommand(fooCommand);
+		commandDispatcher.addCommand(barCommand);
+	}
+
+	@Test
+	public void commandProcessorRunsNoCommandIfCommandCanNotBeFound() throws IOException {
+		commandDispatcher.runCommand("stuff", Arrays.asList("bar", "baz"));
+		verifyCommandWasNotExecuted(testCommand);
+		verifyCommandWasNotExecuted(fooCommand);
+		verifyCommandWasNotExecuted(barCommand);
+	}
+
+	private void verifyCommandWasExecutedWithParameters(Command command, List<String> parameters) throws IOException {
+		Mockito.verify(command).execute(context, parameters);
+	}
+
+	private void verifyCommandWasNotExecuted(Command command) throws IOException {
+		Mockito.verify(command, Mockito.never()).execute(Matchers.any(Context.class), Matchers.anyList());
+	}
+
+	@Test
+	public void commandProcessorSelectsCorrectCommand() throws IOException {
+		commandDispatcher.runCommand("foo", Arrays.asList("bar", "baz"));
+		verifyCommandWasNotExecuted(testCommand);
+		verifyCommandWasExecutedWithParameters(fooCommand, Arrays.asList("bar", "baz"));
+		verifyCommandWasNotExecuted(barCommand);
+	}
 
 }

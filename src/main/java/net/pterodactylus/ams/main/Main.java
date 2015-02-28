@@ -1,19 +1,14 @@
 package net.pterodactylus.ams.main;
 
-import static java.util.Arrays.asList;
-
-import java.io.Console;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.io.Writer;
 
-import net.pterodactylus.ams.commands.AlbumCommand;
-import net.pterodactylus.ams.commands.ListCommand;
-import net.pterodactylus.ams.commands.QuitCommand;
 import net.pterodactylus.ams.core.CommandDispatcher;
+import net.pterodactylus.ams.core.CommandReader;
+import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
-import net.pterodactylus.ams.io.FileScanner;
+import net.pterodactylus.ams.core.commands.QuitCommand;
 
 /**
  * Main starter class for AMS.
@@ -29,46 +24,19 @@ public class Main {
 	}
 
 	private void run() throws IOException {
-		Session session = createSession();
-		Console console = System.console();
-		PrintWriter writer = console.writer();
-		session.setOutput(writer);
-		CommandDispatcher commandDispatcher = createCommandDispatcher(session);
-		do {
-			writer.write("> ");
-			writer.flush();
-			String line = console.readLine();
-			if (line == null) {
-				break;
-			}
-			commandDispatcher.dispatch(line);
-		} while (!session.shouldExit());
-	}
-
-	private Session createSession() throws IOException {
-		Session session;
-		if (arguments.length == 0) {
-			session = createSessionWithFiles(asList("."));
-		} else {
-			session = createSessionWithFiles(asList(arguments));
+		try (Writer writer = System.console().writer();
+			 BufferedReader reader = new BufferedReader(System.console().reader())) {
+			Session session = new Session();
+			Context context = new Context(session, writer);
+			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
+			CommandReader commandReader = new CommandReader(commandDispatcher, reader, context);
+			commandReader.run();
 		}
-		return session;
 	}
 
-	static Session createSessionWithFiles(List<String> files) throws IOException {
-		Session session = new Session();
-		for (String file : files) {
-			FileScanner fileScanner = new FileScanner(new File(file));
-			fileScanner.scan(session::addFile);
-		}
-		return session;
-	}
-
-	private CommandDispatcher createCommandDispatcher(Session session) {
-		CommandDispatcher commandDispatcher = new CommandDispatcher(session);
-		commandDispatcher.addCommand(new ListCommand());
+	private CommandDispatcher createCommandDispatcher(Context context) {
+		CommandDispatcher commandDispatcher = new CommandDispatcher(context);
 		commandDispatcher.addCommand(new QuitCommand());
-		commandDispatcher.addCommand(new AlbumCommand());
 		return commandDispatcher;
 	}
 

@@ -1,114 +1,124 @@
 package net.pterodactylus.ams.core;
 
-import static java.util.Collections.emptyList;
-import static java.util.Optional.empty;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static net.pterodactylus.util.StringUtils.normalize;
-import static net.pterodactylus.util.tag.TagReaders.defaultTagReaders;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import net.pterodactylus.util.tag.Tag;
-import net.pterodactylus.util.tag.TagReader;
+import net.pterodactylus.util.tag.TaggedFile;
 
 /**
- * A session binds together the execution of several {@link Command}s and can be
- * used to transport data from one command to another.
+ * A session is a unit of files that is processed together.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class Session {
 
-	private final TagReader tagReader = defaultTagReaders();
-	private Writer writer = new NullWriter();
-	private final SortedSet<File> files = new TreeSet<>();
-	private final Map<File, Tag> tags = new HashMap<>();
-	private boolean exit;
+	private final Map<TaggedFile, Optional<Tag>> fileTags = new HashMap<>();
+	private final Tag sessionTag = new Tag();
 
-	public void addFile(File file) {
-		files.add(file);
-		try {
-			tags.put(file, tagReader.readTags(file).orElse(new Tag()));
-		} catch (IOException e) {
-			tags.put(file, new Tag());
-		}
+	public void addFile(TaggedFile file) {
+		fileTags.put(file, file.get());
 	}
 
-	public Collection<File> getFiles() {
-		return getFiles(emptyList());
+	public Collection<TaggedFile> getFiles() {
+		return fileTags.keySet();
 	}
 
-	public Collection<File> getFiles(List<String> filters) {
-		List<Pattern> patterns = filters.stream().map(Pattern::compile).collect(toList());
-		return files.stream().filter((file) -> patterns.isEmpty() || patterns.stream().allMatch((pattern) -> pattern.matcher(file.getPath()).find())).collect(Collectors.<File>toList());
+	public Optional<String> getName(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getName);
 	}
 
-	public Optional<String> getAlbum() {
-		return getSingleValueOrEmpty(Tag::getAlbum);
+	private <T> Optional<T> getTagValuePreferringSession(Optional<Tag> tag, Function<Tag, Optional<T>> valueExtractor) {
+		return valueExtractor.apply(sessionTag).isPresent() ? valueExtractor.apply(sessionTag) :
+				(tag.isPresent() ? valueExtractor.apply(tag.get()) : Optional.<T>empty());
 	}
 
-	private <T> Optional<T> getSingleValueOrEmpty(Function<Tag, Optional<T>> propertyExtractor) {
-		Map<Optional<T>, List<File>> albumFiles = groupFilesByTagProperty(propertyExtractor);
-		return (albumFiles.size() == 1) ? albumFiles.keySet().iterator().next() : empty();
+	public void setName(String name) {
+		sessionTag.setName(name);
 	}
 
-	private <T> Map<Optional<T>, List<File>> groupFilesByTagProperty(Function<Tag, Optional<T>> propertyExtractor) {
-		return tags.keySet().stream().collect(groupingBy(file -> propertyExtractor.apply(tags.get(file))));
+	public Optional<String> getAlbum(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getAlbum);
 	}
 
 	public void setAlbum(String album) {
-		tags.values().stream().forEach(tag -> tag.setAlbum(normalize(album).orElse(null)));
+		sessionTag.setAlbum(album);
 	}
 
-	public boolean shouldExit() {
-		return exit;
+	public Optional<String> getArtist(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getArtist);
 	}
 
-	public void exit() {
-		exit = true;
+	public void setArtist(String artist) {
+		sessionTag.setArtist(artist);
 	}
 
-	public Writer getOutput() {
-		return writer;
+	public Optional<String> getAlbumArtist(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getAlbumArtist);
 	}
 
-	public void setOutput(Writer writer) {
-		if (this.writer instanceof NullWriter) {
-			((NullWriter) this.writer).close();
-		}
-		this.writer = writer;
+	public void setAlbumArtist(String albumArtist) {
+		sessionTag.setAlbumArtist(albumArtist);
 	}
 
-	private static class NullWriter extends Writer {
+	public Optional<String> getComment(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getComment);
+	}
 
-		@Override
-		public void write(char[] buffer, int offset, int length) {
-				/* do nothing. */
-		}
+	public void setComment(String comment) {
+		sessionTag.setComment(comment);
+	}
 
-		@Override
-		public void flush() {
-				/* do nothing. */
-		}
+	public Optional<String> getGenre(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getGenre);
+	}
 
-		@Override
-		public void close() {
-				/* do nothing. */
-		}
+	public void setGenre(String genre) {
+		sessionTag.setGenre(genre);
+	}
 
+	public Optional<Integer> getTrack(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getTrack);
+	}
+
+	public void setTrack(int track) {
+		sessionTag.setTrack(track);
+	}
+
+	public Optional<Integer> getTotalTracks(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getTotalTracks);
+	}
+
+	public void setTotalTracks(int totalTracks) {
+		sessionTag.setTotalTracks(totalTracks);
+	}
+
+	public Optional<Integer> getDisc(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getDisc);
+	}
+
+	public void setDisc(int disc) {
+		sessionTag.setDisc(disc);
+	}
+
+	public Optional<Integer> getTotalDiscs(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getTotalDiscs);
+	}
+
+	public void setTotalDiscs(int totalDiscs) {
+		sessionTag.setTotalDiscs(totalDiscs);
+	}
+
+	public Optional<LocalDate> getDate(TaggedFile file) {
+		return getTagValuePreferringSession(fileTags.get(file), Tag::getDate);
+	}
+
+	public void setDate(LocalDate date) {
+		sessionTag.setDate(date);
 	}
 
 }
