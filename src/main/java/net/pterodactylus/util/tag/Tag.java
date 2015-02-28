@@ -44,7 +44,8 @@ public class Tag {
 		if (name == null) {
 			return Optional.empty();
 		}
-		return Optional.of(WHITESPACE_STRIPPER.matcher(name).replaceAll("$1"));
+		String strippedName = WHITESPACE_STRIPPER.matcher(name).replaceAll("$1");
+		return strippedName.isEmpty() ? Optional.empty() : Optional.of(strippedName);
 	}
 
 	public Optional<String> getArtist() {
