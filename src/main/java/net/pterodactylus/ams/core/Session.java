@@ -1,8 +1,11 @@
 package net.pterodactylus.ams.core;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -17,15 +20,15 @@ import net.pterodactylus.util.tag.TaggedFile;
  */
 public class Session {
 
-	private final Map<TaggedFile, Optional<Tag>> fileTags = new HashMap<>();
+	private final LinkedHashMap<TaggedFile, Optional<Tag>> fileTags = new LinkedHashMap<>();
 	private final Tag sessionTag = new Tag();
 
 	public void addFile(TaggedFile file) {
 		fileTags.put(file, file.get());
 	}
 
-	public Collection<TaggedFile> getFiles() {
-		return fileTags.keySet();
+	public List<TaggedFile> getFiles() {
+		return new ArrayList<>(fileTags.keySet());
 	}
 
 	public Optional<String> getName(TaggedFile file) {
