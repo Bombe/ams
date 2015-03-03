@@ -26,6 +26,8 @@ public class CommandDispatcher {
 	public void runCommand(String commandName, List<String> parameters) throws IOException {
 		Command command = commands.get(commandName);
 		if (command == null) {
+			context.write("Invalid command.\n");
+			context.flush();
 			return;
 		}
 		command.execute(context, parameters);
