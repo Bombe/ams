@@ -29,6 +29,23 @@ public class Tag {
 	private Optional<LocalDate> date = empty();
 	private Optional<String> comment = empty();
 
+	public Tag() {
+	}
+
+	public Tag(Tag tag) {
+		this.name = tag.name;
+		this.artist = tag.artist;
+		this.albumArtist = tag.albumArtist;
+		this.album = tag.album;
+		this.track = tag.track;
+		this.totalTracks = tag.totalTracks;
+		this.disc = tag.disc;
+		this.totalDiscs = tag.totalDiscs;
+		this.genre = tag.genre;
+		this.date = tag.date;
+		this.comment = tag.comment;
+	}
+
 	public Optional<String> getName() {
 		return name;
 	}

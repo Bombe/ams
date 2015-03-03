@@ -20,6 +20,7 @@ import org.junit.Test;
 public class TagTest {
 
 	private final Tag tag = new Tag();
+	private final LocalDate now = LocalDate.now();
 
 	@Test
 	public void newTagContainsNoName() {
@@ -248,6 +249,33 @@ public class TagTest {
 		tag.setComment("Test Comment");
 		tag.setComment(null);
 		assertThat(tag.getComment(), is(Optional.<String>empty()));
+	}
+
+	@Test
+	public void copyConstructorCopiesTag() {
+		tag.setName("Test Name");
+		tag.setArtist("Test Artist");
+		tag.setAlbumArtist("Test Album Artist");
+		tag.setAlbum("Test Album");
+		tag.setTrack(1);
+		tag.setTotalTracks(2);
+		tag.setDisc(3);
+		tag.setTotalDiscs(4);
+		tag.setGenre("Test Genre");
+		tag.setDate(now);
+		tag.setComment("Test Comment");
+		Tag newTag = new Tag(tag);
+		MatcherAssert.assertThat(newTag.getName().get(), Matchers.is("Test Name"));
+		MatcherAssert.assertThat(newTag.getArtist().get(), Matchers.is("Test Artist"));
+		MatcherAssert.assertThat(newTag.getAlbumArtist().get(), Matchers.is("Test Album Artist"));
+		MatcherAssert.assertThat(newTag.getAlbum().get(), Matchers.is("Test Album"));
+		MatcherAssert.assertThat(newTag.getTrack().get(), Matchers.is(1));
+		MatcherAssert.assertThat(newTag.getTotalTracks().get(), Matchers.is(2));
+		MatcherAssert.assertThat(newTag.getDisc().get(), Matchers.is(3));
+		MatcherAssert.assertThat(newTag.getTotalDiscs().get(), Matchers.is(4));
+		MatcherAssert.assertThat(newTag.getGenre().get(), Matchers.is("Test Genre"));
+		MatcherAssert.assertThat(newTag.getDate().get(), Matchers.is(now));
+		MatcherAssert.assertThat(newTag.getComment().get(), Matchers.is("Test Comment"));
 	}
 
 }
