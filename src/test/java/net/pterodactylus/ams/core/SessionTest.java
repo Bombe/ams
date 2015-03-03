@@ -23,8 +23,8 @@ public class SessionTest {
 
 	@Test
 	public void sessionRetainsAddedFiles() {
-		TaggedFile file1 = Mockito.mock(TaggedFile.class);
-		TaggedFile file2 = Mockito.mock(TaggedFile.class);
+		TaggedFile file1 = createTaggedFile(new Tag());
+		TaggedFile file2 = createTaggedFile(new Tag());
 		session.addFile(file1);
 		session.addFile(file2);
 		MatcherAssert.assertThat(session.getFiles(), Matchers.containsInAnyOrder(file1, file2));
