@@ -8,7 +8,6 @@ import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagReader;
 
 import com.google.common.io.Files;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
