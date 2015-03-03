@@ -31,6 +31,20 @@ public class SessionTest {
 	}
 
 	@Test
+	public void addingAFileAndGettingTheTagReturnsATagWithTheSameValues() {
+		Tag tag = new Tag().setName("Test Name");
+		TaggedFile file = createTaggedFile(tag);
+		session.addFile(file);
+		MatcherAssert.assertThat(session.getTag(file), Matchers.is(tag));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void gettingATagForAFileThatWasNotAddedThrowsAnException() {
+		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
+		session.getTag(file);
+	}
+
+	@Test
 	public void addingAFileWithANameReturnsTheNameOfTheFileForTheFile() {
 		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
 		session.addFile(file);
@@ -63,6 +77,22 @@ public class SessionTest {
 		session.setName("Override Name");
 		MatcherAssert.assertThat(session.getName(file), Matchers.is(Optional.of("Override Name")));
 		MatcherAssert.assertThat(session.isSessionName(), Matchers.is(true));
+	}
+
+	@Test
+	public void modifiedNameOfAFilesTagInTheSessionRetainsModification() {
+		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
+		session.addFile(file);
+		session.getTag(file).setName("Override Name");
+		MatcherAssert.assertThat(session.getName(file).get(), Matchers.is("Override Name"));
+	}
+
+	@Test
+	public void modifyingTheNameOfAFilesTagInTheSessionDoesNotModifyTheFilesTag() {
+		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
+		session.addFile(file);
+		session.getTag(file).setName("Override Name");
+		MatcherAssert.assertThat(file.get().get().getName().get(), Matchers.is("Test Name"));
 	}
 
 	@Test

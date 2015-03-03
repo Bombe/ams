@@ -31,6 +31,13 @@ public class Session {
 		return new ArrayList<>(fileTags.keySet());
 	}
 
+	public Tag getTag(TaggedFile taggedFile) throws IllegalArgumentException {
+		if (!fileTags.containsKey(taggedFile)) {
+			throw new IllegalArgumentException();
+		}
+		return fileTags.get(taggedFile);
+	}
+
 	public Optional<String> getName(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getName);
 	}
