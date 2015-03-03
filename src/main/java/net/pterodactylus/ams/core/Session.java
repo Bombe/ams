@@ -37,12 +37,20 @@ public class Session {
 				(tag.isPresent() ? valueExtractor.apply(tag.get()) : Optional.<T>empty());
 	}
 
+	public boolean isSessionName() {
+		return sessionTag.getName().isPresent();
+	}
+
 	public void setName(String name) {
 		sessionTag.setName(name);
 	}
 
 	public Optional<String> getAlbum(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getAlbum);
+	}
+
+	public boolean isSessionAlbum() {
+		return sessionTag.getAlbum().isPresent();
 	}
 
 	public void setAlbum(String album) {
@@ -53,12 +61,20 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getArtist);
 	}
 
+	public boolean isSessionArtist() {
+		return sessionTag.getArtist().isPresent();
+	}
+
 	public void setArtist(String artist) {
 		sessionTag.setArtist(artist);
 	}
 
 	public Optional<String> getAlbumArtist(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getAlbumArtist);
+	}
+
+	public boolean isSessionAlbumArtist() {
+		return sessionTag.getAlbumArtist().isPresent();
 	}
 
 	public void setAlbumArtist(String albumArtist) {
@@ -69,12 +85,20 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getComment);
 	}
 
+	public boolean isSessionComment() {
+		return sessionTag.getComment().isPresent();
+	}
+
 	public void setComment(String comment) {
 		sessionTag.setComment(comment);
 	}
 
 	public Optional<String> getGenre(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getGenre);
+	}
+
+	public boolean isSessionGenre() {
+		return sessionTag.getGenre().isPresent();
 	}
 
 	public void setGenre(String genre) {
@@ -85,12 +109,20 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getTrack);
 	}
 
+	public boolean isSessionTrack() {
+		return sessionTag.getTrack().isPresent();
+	}
+
 	public void setTrack(int track) {
 		sessionTag.setTrack(track);
 	}
 
 	public Optional<Integer> getTotalTracks(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getTotalTracks);
+	}
+
+	public boolean isSessionTotalTracks() {
+		return sessionTag.getTotalTracks().isPresent();
 	}
 
 	public void setTotalTracks(int totalTracks) {
@@ -101,6 +133,10 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getDisc);
 	}
 
+	public boolean isSessionDisc() {
+		return sessionTag.getDisc().isPresent();
+	}
+
 	public void setDisc(int disc) {
 		sessionTag.setDisc(disc);
 	}
@@ -109,12 +145,20 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getTotalDiscs);
 	}
 
+	public boolean isSessionTotalDiscs() {
+		return sessionTag.getTotalDiscs().isPresent();
+	}
+
 	public void setTotalDiscs(int totalDiscs) {
 		sessionTag.setTotalDiscs(totalDiscs);
 	}
 
 	public Optional<LocalDate> getDate(TaggedFile file) {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getDate);
+	}
+
+	public boolean isSessionDate() {
+		return sessionTag.getDate().isPresent();
 	}
 
 	public void setDate(LocalDate date) {

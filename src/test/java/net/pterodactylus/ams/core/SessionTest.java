@@ -3,7 +3,6 @@ package net.pterodactylus.ams.core;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TaggedFile;
@@ -36,6 +35,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getName(file), Matchers.is(Optional.of("Test Name")));
+		MatcherAssert.assertThat(session.isSessionName(), Matchers.is(false));
 	}
 
 	private TaggedFile createTaggedFile(Tag tag) {
@@ -54,6 +54,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setName("Override Name");
 		MatcherAssert.assertThat(session.getName(file), Matchers.is(Optional.of("Override Name")));
+		MatcherAssert.assertThat(session.isSessionName(), Matchers.is(true));
 	}
 
 	@Test
@@ -61,6 +62,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
 		session.setName("Override Name");
 		MatcherAssert.assertThat(session.getName(file), Matchers.is(Optional.of("Override Name")));
+		MatcherAssert.assertThat(session.isSessionName(), Matchers.is(true));
 	}
 
 	@Test
@@ -68,6 +70,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setArtist("Test Artist"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getArtist(file), Matchers.is(Optional.of("Test Artist")));
+		MatcherAssert.assertThat(session.isSessionArtist(), Matchers.is(false));
 	}
 
 	@Test
@@ -76,6 +79,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setArtist("Override Artist");
 		MatcherAssert.assertThat(session.getArtist(file), Matchers.is(Optional.of("Override Artist")));
+		MatcherAssert.assertThat(session.isSessionArtist(), Matchers.is(true));
 	}
 
 	@Test
@@ -83,6 +87,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setArtist("Test Artist"));
 		session.setArtist("Override Artist");
 		MatcherAssert.assertThat(session.getArtist(file), Matchers.is(Optional.of("Override Artist")));
+		MatcherAssert.assertThat(session.isSessionArtist(), Matchers.is(true));
 	}
 
 	@Test
@@ -90,6 +95,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setAlbum("Test Album"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getAlbum(file), Matchers.is(Optional.of("Test Album")));
+		MatcherAssert.assertThat(session.isSessionAlbum(), Matchers.is(false));
 	}
 
 	@Test
@@ -98,6 +104,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setAlbum("Override Album");
 		MatcherAssert.assertThat(session.getAlbum(file), Matchers.is(Optional.of("Override Album")));
+		MatcherAssert.assertThat(session.isSessionAlbum(), Matchers.is(true));
 	}
 
 	@Test
@@ -105,6 +112,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setAlbum("Test Album"));
 		session.setAlbum("Override Album");
 		MatcherAssert.assertThat(session.getAlbum(file), Matchers.is(Optional.of("Override Album")));
+		MatcherAssert.assertThat(session.isSessionAlbum(), Matchers.is(true));
 	}
 
 	@Test
@@ -112,6 +120,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setAlbumArtist("Test Album Artist"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getAlbumArtist(file), Matchers.is(Optional.of("Test Album Artist")));
+		MatcherAssert.assertThat(session.isSessionAlbumArtist(), Matchers.is(false));
 	}
 
 	@Test
@@ -120,6 +129,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setAlbumArtist("Override Album Artist");
 		MatcherAssert.assertThat(session.getAlbumArtist(file), Matchers.is(Optional.of("Override Album Artist")));
+		MatcherAssert.assertThat(session.isSessionAlbumArtist(), Matchers.is(true));
 	}
 
 	@Test
@@ -127,6 +137,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setAlbumArtist("Test Album Artist"));
 		session.setAlbumArtist("Override Album Artist");
 		MatcherAssert.assertThat(session.getAlbumArtist(file), Matchers.is(Optional.of("Override Album Artist")));
+		MatcherAssert.assertThat(session.isSessionAlbumArtist(), Matchers.is(true));
 	}
 
 	@Test
@@ -134,6 +145,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setComment("Test Comment"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getComment(file), Matchers.is(Optional.of("Test Comment")));
+		MatcherAssert.assertThat(session.isSessionComment(), Matchers.is(false));
 	}
 
 	@Test
@@ -142,6 +154,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setComment("Override Comment");
 		MatcherAssert.assertThat(session.getComment(file), Matchers.is(Optional.of("Override Comment")));
+		MatcherAssert.assertThat(session.isSessionComment(), Matchers.is(true));
 	}
 
 	@Test
@@ -149,6 +162,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setComment("Test Comment"));
 		session.setComment("Override Comment");
 		MatcherAssert.assertThat(session.getComment(file), Matchers.is(Optional.of("Override Comment")));
+		MatcherAssert.assertThat(session.isSessionComment(), Matchers.is(true));
 	}
 
 	@Test
@@ -156,6 +170,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setGenre("Test Genre"));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getGenre(file), Matchers.is(Optional.of("Test Genre")));
+		MatcherAssert.assertThat(session.isSessionGenre(), Matchers.is(false));
 	}
 
 	@Test
@@ -164,6 +179,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setGenre("Override Genre");
 		MatcherAssert.assertThat(session.getGenre(file), Matchers.is(Optional.of("Override Genre")));
+		MatcherAssert.assertThat(session.isSessionGenre(), Matchers.is(true));
 	}
 
 	@Test
@@ -171,6 +187,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setGenre("Test Genre"));
 		session.setGenre("Override Genre");
 		MatcherAssert.assertThat(session.getGenre(file), Matchers.is(Optional.of("Override Genre")));
+		MatcherAssert.assertThat(session.isSessionGenre(), Matchers.is(true));
 	}
 
 	@Test
@@ -178,6 +195,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTrack(17));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getTrack(file), Matchers.is(Optional.of(17)));
+		MatcherAssert.assertThat(session.isSessionTrack(), Matchers.is(false));
 	}
 
 	@Test
@@ -186,6 +204,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setTrack(12);
 		MatcherAssert.assertThat(session.getTrack(file), Matchers.is(Optional.of(12)));
+		MatcherAssert.assertThat(session.isSessionTrack(), Matchers.is(true));
 	}
 
 	@Test
@@ -193,6 +212,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTrack(17));
 		session.setTrack(12);
 		MatcherAssert.assertThat(session.getTrack(file), Matchers.is(Optional.of(12)));
+		MatcherAssert.assertThat(session.isSessionTrack(), Matchers.is(true));
 	}
 
 	@Test
@@ -200,6 +220,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTotalTracks(20));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getTotalTracks(file), Matchers.is(Optional.of(20)));
+		MatcherAssert.assertThat(session.isSessionTotalTracks(), Matchers.is(false));
 	}
 
 	@Test
@@ -208,6 +229,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setTotalTracks(25);
 		MatcherAssert.assertThat(session.getTotalTracks(file), Matchers.is(Optional.of(25)));
+		MatcherAssert.assertThat(session.isSessionTotalTracks(), Matchers.is(true));
 	}
 
 	@Test
@@ -215,6 +237,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTotalTracks(20));
 		session.setTotalTracks(25);
 		MatcherAssert.assertThat(session.getTotalTracks(file), Matchers.is(Optional.of(25)));
+		MatcherAssert.assertThat(session.isSessionTotalTracks(), Matchers.is(true));
 	}
 
 	@Test
@@ -222,6 +245,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setDisc(17));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getDisc(file), Matchers.is(Optional.of(17)));
+		MatcherAssert.assertThat(session.isSessionDisc(), Matchers.is(false));
 	}
 
 	@Test
@@ -230,6 +254,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setDisc(12);
 		MatcherAssert.assertThat(session.getDisc(file), Matchers.is(Optional.of(12)));
+		MatcherAssert.assertThat(session.isSessionDisc(), Matchers.is(true));
 	}
 
 	@Test
@@ -237,6 +262,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setDisc(17));
 		session.setDisc(12);
 		MatcherAssert.assertThat(session.getDisc(file), Matchers.is(Optional.of(12)));
+		MatcherAssert.assertThat(session.isSessionDisc(), Matchers.is(true));
 	}
 
 	@Test
@@ -244,6 +270,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTotalDiscs(20));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getTotalDiscs(file), Matchers.is(Optional.of(20)));
+		MatcherAssert.assertThat(session.isSessionTotalDiscs(), Matchers.is(false));
 	}
 
 	@Test
@@ -252,6 +279,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setTotalDiscs(25);
 		MatcherAssert.assertThat(session.getTotalDiscs(file), Matchers.is(Optional.of(25)));
+		MatcherAssert.assertThat(session.isSessionTotalDiscs(), Matchers.is(true));
 	}
 
 	@Test
@@ -259,6 +287,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setTotalDiscs(20));
 		session.setTotalDiscs(25);
 		MatcherAssert.assertThat(session.getTotalDiscs(file), Matchers.is(Optional.of(25)));
+		MatcherAssert.assertThat(session.isSessionTotalDiscs(), Matchers.is(true));
 	}
 
 	@Test
@@ -266,6 +295,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setDate(LocalDate.of(2015, 02, 28)));
 		session.addFile(file);
 		MatcherAssert.assertThat(session.getDate(file), Matchers.is(Optional.of(LocalDate.of(2015, 02, 28))));
+		MatcherAssert.assertThat(session.isSessionDate(), Matchers.is(false));
 	}
 
 	@Test
@@ -274,6 +304,7 @@ public class SessionTest {
 		session.addFile(file);
 		session.setDate(LocalDate.of(2014, 9, 28));
 		MatcherAssert.assertThat(session.getDate(file), Matchers.is(Optional.of(LocalDate.of(2014, 9, 28))));
+		MatcherAssert.assertThat(session.isSessionDate(), Matchers.is(true));
 	}
 
 	@Test
@@ -281,6 +312,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setDate(LocalDate.of(2015, 02, 28)));
 		session.setDate(LocalDate.of(2014, 9, 28));
 		MatcherAssert.assertThat(session.getDate(file), Matchers.is(Optional.of(LocalDate.of(2014, 9, 28))));
+		MatcherAssert.assertThat(session.isSessionDate(), Matchers.is(true));
 	}
 
 }
