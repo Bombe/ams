@@ -20,11 +20,11 @@ import net.pterodactylus.util.tag.TaggedFile;
  */
 public class Session {
 
-	private final LinkedHashMap<TaggedFile, Optional<Tag>> fileTags = new LinkedHashMap<>();
+	private final LinkedHashMap<TaggedFile, Tag> fileTags = new LinkedHashMap<>();
 	private final Tag sessionTag = new Tag();
 
 	public void addFile(TaggedFile file) {
-		fileTags.put(file, file.get());
+		fileTags.put(file, file.get().isPresent() ? new Tag(file.get().get()) : new Tag());
 	}
 
 	public List<TaggedFile> getFiles() {
@@ -35,9 +35,9 @@ public class Session {
 		return getTagValuePreferringSession(fileTags.get(file), Tag::getName);
 	}
 
-	private <T> Optional<T> getTagValuePreferringSession(Optional<Tag> tag, Function<Tag, Optional<T>> valueExtractor) {
+	private <T> Optional<T> getTagValuePreferringSession(Tag tag, Function<Tag, Optional<T>> valueExtractor) {
 		return valueExtractor.apply(sessionTag).isPresent() ? valueExtractor.apply(sessionTag) :
-				(tag.isPresent() ? valueExtractor.apply(tag.get()) : Optional.<T>empty());
+				valueExtractor.apply(tag);
 	}
 
 	public boolean isSessionName() {
