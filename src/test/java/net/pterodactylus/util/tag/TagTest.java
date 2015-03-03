@@ -19,235 +19,235 @@ import org.junit.Test;
  */
 public class TagTest {
 
-	private final Tag abstractTag = new Tag();
+	private final Tag tag = new Tag();
 
 	@Test
 	public void newTagContainsNoName() {
-		assertThat(abstractTag.getName(), is(Optional.<String>empty()));
+		assertThat(tag.getName(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreName() {
-		abstractTag.setName("Test Name");
-		assertThat(abstractTag.getName(), is(of("Test Name")));
+		tag.setName("Test Name");
+		assertThat(tag.getName(), is(of("Test Name")));
 	}
 
 	@Test
 	public void nullNameClearsTheName() {
-		abstractTag.setName("Test Name");
-		abstractTag.setName(null);
-		assertThat(abstractTag.getName(), is(Optional.<String>empty()));
+		tag.setName("Test Name");
+		tag.setName(null);
+		assertThat(tag.getName(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void settingNameClearsWhitespaceAtBeginningAndEnd() {
-		abstractTag.setName(" \tTest  Name\n\u00a0\r");
-		MatcherAssert.assertThat(abstractTag.getName(), Matchers.is(Optional.of("Test  Name")));
+		tag.setName(" \tTest  Name\n\u00a0\r");
+		MatcherAssert.assertThat(tag.getName(), Matchers.is(Optional.of("Test  Name")));
 	}
 
 	@Test
 	public void newTagContainsNoArtist() {
-		assertThat(abstractTag.getArtist(), is(Optional.<String>empty()));
+		assertThat(tag.getArtist(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreArtist() {
-		abstractTag.setArtist("Test Artist");
-		assertThat(abstractTag.getArtist(), is(of("Test Artist")));
+		tag.setArtist("Test Artist");
+		assertThat(tag.getArtist(), is(of("Test Artist")));
 	}
 
 	@Test
 	public void settingArtistStripsWhitespaceAtBeginningAndEnd() {
-		abstractTag.setArtist(" \tTest  Artist\n\u00a0\r");
-		MatcherAssert.assertThat(abstractTag.getArtist(), Matchers.is(Optional.of("Test  Artist")));
+		tag.setArtist(" \tTest  Artist\n\u00a0\r");
+		MatcherAssert.assertThat(tag.getArtist(), Matchers.is(Optional.of("Test  Artist")));
 	}
 
 	@Test
 	public void nullArtistClearTheArtist() {
-		abstractTag.setArtist("Test Artist");
-		abstractTag.setArtist(null);
-		assertThat(abstractTag.getArtist(), is(Optional.<String>empty()));
+		tag.setArtist("Test Artist");
+		tag.setArtist(null);
+		assertThat(tag.getArtist(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoAlbumArtist() {
-		assertThat(abstractTag.getAlbumArtist(), is(Optional.<String>empty()));
+		assertThat(tag.getAlbumArtist(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreAlbumArtist() {
-		abstractTag.setAlbumArtist("Test Album Artist");
-		assertThat(abstractTag.getAlbumArtist(), is(of("Test Album Artist")));
+		tag.setAlbumArtist("Test Album Artist");
+		assertThat(tag.getAlbumArtist(), is(of("Test Album Artist")));
 	}
 
 	@Test
 	public void settingAlbumArtistStripsWhitespaceAtBeginningAndEnd() {
-		abstractTag.setAlbumArtist(" \tTest  Album Artist\n\u00a0\r");
-		MatcherAssert.assertThat(abstractTag.getAlbumArtist(), Matchers.is(Optional.of("Test  Album Artist")));
+		tag.setAlbumArtist(" \tTest  Album Artist\n\u00a0\r");
+		MatcherAssert.assertThat(tag.getAlbumArtist(), Matchers.is(Optional.of("Test  Album Artist")));
 	}
 
 	@Test
 	public void nullAlbumArtistClearsTheAlbumArtist() {
-		abstractTag.setAlbumArtist("Test Album Artist");
-		abstractTag.setAlbumArtist(null);
-		assertThat(abstractTag.getAlbumArtist(), is(Optional.<String>empty()));
+		tag.setAlbumArtist("Test Album Artist");
+		tag.setAlbumArtist(null);
+		assertThat(tag.getAlbumArtist(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoAlbum() {
-		assertThat(abstractTag.getAlbum(), is(Optional.<String>empty()));
+		assertThat(tag.getAlbum(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreAlbum() {
-		abstractTag.setAlbum("Test Album");
-		assertThat(abstractTag.getAlbum(), is(of("Test Album")));
+		tag.setAlbum("Test Album");
+		assertThat(tag.getAlbum(), is(of("Test Album")));
 	}
 
 	@Test
 	public void settingAlbumStripsWhitespaceAtBeginningAndEnd() {
-		abstractTag.setAlbum(" \tTest  Album\n\u00a0\r");
-		MatcherAssert.assertThat(abstractTag.getAlbum(), Matchers.is(Optional.of("Test  Album")));
+		tag.setAlbum(" \tTest  Album\n\u00a0\r");
+		MatcherAssert.assertThat(tag.getAlbum(), Matchers.is(Optional.of("Test  Album")));
 	}
 
 	@Test
 	public void nullAlbumClearsTheAlbum() {
-		abstractTag.setAlbum("Test Album");
-		abstractTag.setAlbum(null);
-		assertThat(abstractTag.getAlbum(), is(Optional.<String>empty()));
+		tag.setAlbum("Test Album");
+		tag.setAlbum(null);
+		assertThat(tag.getAlbum(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoTrack() {
-		assertThat(abstractTag.getTrack(), is(Optional.<Integer>empty()));
+		assertThat(tag.getTrack(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void canStoreTrack() {
-		abstractTag.setTrack(13);
-		assertThat(abstractTag.getTrack(), is(of(13)));
+		tag.setTrack(13);
+		assertThat(tag.getTrack(), is(of(13)));
 	}
 
 	@Test
 	public void zeroTrackClearsTheTrack() {
-		abstractTag.setTrack(13);
-		abstractTag.setTrack(0);
-		assertThat(abstractTag.getTrack(), is(Optional.<Integer>empty()));
+		tag.setTrack(13);
+		tag.setTrack(0);
+		assertThat(tag.getTrack(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoTotalTracks() {
-		assertThat(abstractTag.getTotalTracks(), is(Optional.<Integer>empty()));
+		assertThat(tag.getTotalTracks(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void canStoreTotalTracks() {
-		abstractTag.setTotalTracks(13);
-		assertThat(abstractTag.getTotalTracks(), is(of(13)));
+		tag.setTotalTracks(13);
+		assertThat(tag.getTotalTracks(), is(of(13)));
 	}
 
 	@Test
 	public void zeroTotalTracksClearsTheTotalTracks() {
-		abstractTag.setTotalTracks(13);
-		abstractTag.setTotalTracks(0);
-		assertThat(abstractTag.getTotalTracks(), is(Optional.<Integer>empty()));
+		tag.setTotalTracks(13);
+		tag.setTotalTracks(0);
+		assertThat(tag.getTotalTracks(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoDisc() {
-		assertThat(abstractTag.getDisc(), is(Optional.<Integer>empty()));
+		assertThat(tag.getDisc(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void canStoreDisc() {
-		abstractTag.setDisc(13);
-		assertThat(abstractTag.getDisc(), is(of(13)));
+		tag.setDisc(13);
+		assertThat(tag.getDisc(), is(of(13)));
 	}
 
 	@Test
 	public void zeroDiscClearsTheDisc() {
-		abstractTag.setDisc(13);
-		abstractTag.setDisc(0);
-		assertThat(abstractTag.getDisc(), is(Optional.<Integer>empty()));
+		tag.setDisc(13);
+		tag.setDisc(0);
+		assertThat(tag.getDisc(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoTotalDiscs() {
-		assertThat(abstractTag.getTotalDiscs(), is(Optional.<Integer>empty()));
+		assertThat(tag.getTotalDiscs(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void canStoreTotalDiscs() {
-		abstractTag.setTotalDiscs(13);
-		assertThat(abstractTag.getTotalDiscs(), is(of(13)));
+		tag.setTotalDiscs(13);
+		assertThat(tag.getTotalDiscs(), is(of(13)));
 	}
 
 	@Test
 	public void zeroTotalDiscsClearsTheTotalDiscs() {
-		abstractTag.setTotalDiscs(13);
-		abstractTag.setTotalDiscs(0);
-		assertThat(abstractTag.getTotalDiscs(), is(Optional.<Integer>empty()));
+		tag.setTotalDiscs(13);
+		tag.setTotalDiscs(0);
+		assertThat(tag.getTotalDiscs(), is(Optional.<Integer>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoGenre() {
-		assertThat(abstractTag.getGenre(), is(Optional.<String>empty()));
+		assertThat(tag.getGenre(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreGenre() {
-		abstractTag.setGenre("Test Genre");
-		assertThat(abstractTag.getGenre(), is(of("Test Genre")));
+		tag.setGenre("Test Genre");
+		assertThat(tag.getGenre(), is(of("Test Genre")));
 	}
 
 	@Test
 	public void nullGenreClearsTheGenre() {
-		abstractTag.setGenre("Test Genre");
-		abstractTag.setGenre(null);
-		assertThat(abstractTag.getGenre(), is(Optional.<String>empty()));
+		tag.setGenre("Test Genre");
+		tag.setGenre(null);
+		assertThat(tag.getGenre(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoDate() {
-		assertThat(abstractTag.getDate(), is(Optional.<LocalDate>empty()));
+		assertThat(tag.getDate(), is(Optional.<LocalDate>empty()));
 	}
 
 	@Test
 	public void canStoreDate() {
 		LocalDate now = now();
-		abstractTag.setDate(now);
-		assertThat(abstractTag.getDate(), is(of(now)));
+		tag.setDate(now);
+		assertThat(tag.getDate(), is(of(now)));
 	}
 
 	@Test
 	public void nullDateClearsTheDate() {
-		abstractTag.setDate(now());
-		abstractTag.setDate(null);
-		assertThat(abstractTag.getDate(), is(Optional.<LocalDate>empty()));
+		tag.setDate(now());
+		tag.setDate(null);
+		assertThat(tag.getDate(), is(Optional.<LocalDate>empty()));
 	}
 
 	@Test
 	public void newTagContainsNoComment() {
-		assertThat(abstractTag.getComment(), is(Optional.<String>empty()));
+		assertThat(tag.getComment(), is(Optional.<String>empty()));
 	}
 
 	@Test
 	public void canStoreComment() {
-		abstractTag.setComment("Test Comment");
-		assertThat(abstractTag.getComment(), is(of("Test Comment")));
+		tag.setComment("Test Comment");
+		assertThat(tag.getComment(), is(of("Test Comment")));
 	}
 
 	@Test
 	public void settingCommentStripsWhitespaceAtBeginningAndEnd() {
-		abstractTag.setComment(" \tTest  Comment\n\u00a0\r");
-		MatcherAssert.assertThat(abstractTag.getComment(), Matchers.is(Optional.of("Test  Comment")));
+		tag.setComment(" \tTest  Comment\n\u00a0\r");
+		MatcherAssert.assertThat(tag.getComment(), Matchers.is(Optional.of("Test  Comment")));
 	}
 
 	@Test
 	public void nullCommentClearsTheComment() {
-		abstractTag.setComment("Test Comment");
-		abstractTag.setComment(null);
-		assertThat(abstractTag.getComment(), is(Optional.<String>empty()));
+		tag.setComment("Test Comment");
+		tag.setComment(null);
+		assertThat(tag.getComment(), is(Optional.<String>empty()));
 	}
 
 }
