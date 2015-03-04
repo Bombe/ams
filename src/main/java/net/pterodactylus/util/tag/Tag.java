@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class Tag {
 
-	private static final Pattern WHITESPACE_STRIPPER =Pattern.compile("^[ \t\r\n\u00a0]*(.*?)[ \t\r\n\u00a0]*$");
+	private static final Pattern WHITESPACE_STRIPPER = Pattern.compile("^[ \t\r\n\u00a0]*(.*?)[ \t\r\n\u00a0]*$");
 
 	private Optional<String> name = empty();
 	private Optional<String> artist = empty();
