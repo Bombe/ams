@@ -2,6 +2,9 @@ package net.pterodactylus.ams.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 
 import net.pterodactylus.ams.core.CommandDispatcher;
@@ -24,8 +27,9 @@ public class Main {
 	}
 
 	private void run() throws IOException {
-		try (Writer writer = System.console().writer();
-			 BufferedReader reader = new BufferedReader(System.console().reader())) {
+		try (Writer writer = new OutputStreamWriter(System.out);
+			 Reader stdinReader = new InputStreamReader(System.in);
+			 BufferedReader reader = new BufferedReader(stdinReader)) {
 			Session session = new Session();
 			Context context = new Context(session, writer);
 			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
