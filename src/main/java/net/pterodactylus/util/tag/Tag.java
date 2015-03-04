@@ -5,6 +5,7 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -151,6 +152,31 @@ public class Tag {
 	public Tag setComment(String comment) {
 		this.comment = stripWhitespace(comment);
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (object == null || getClass() != object.getClass()) {
+			return false;
+		}
+		Tag tag = (Tag) object;
+		return Objects.equals(name, tag.name) &&
+				Objects.equals(artist, tag.artist) &&
+				Objects.equals(albumArtist, tag.albumArtist) &&
+				Objects.equals(album, tag.album) &&
+				Objects.equals(track, tag.track) &&
+				Objects.equals(totalTracks, tag.totalTracks) &&
+				Objects.equals(disc, tag.disc) &&
+				Objects.equals(totalDiscs, tag.totalDiscs) &&
+				Objects.equals(genre, tag.genre) &&
+				Objects.equals(date, tag.date) &&
+				Objects.equals(comment, tag.comment);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, artist, albumArtist, album, track, totalTracks, disc, totalDiscs, genre, date,
+				comment);
 	}
 
 }

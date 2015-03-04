@@ -278,4 +278,22 @@ public class TagTest {
 		MatcherAssert.assertThat(newTag.getComment().get(), Matchers.is("Test Comment"));
 	}
 
+	@Test
+	public void copiedTagIsEqualToSource() {
+		tag.setName("Test Name");
+		tag.setArtist("Test Artist");
+		tag.setAlbumArtist("Test Album Artist");
+		tag.setAlbum("Test Album");
+		tag.setTrack(1);
+		tag.setTotalTracks(2);
+		tag.setDisc(3);
+		tag.setTotalDiscs(4);
+		tag.setGenre("Test Genre");
+		tag.setDate(now);
+		tag.setComment("Test Comment");
+		Tag newTag = new Tag(tag);
+		MatcherAssert.assertThat(newTag, Matchers.is(tag));
+		MatcherAssert.assertThat(newTag.hashCode(), Matchers.is(tag.hashCode()));
+	}
+
 }
