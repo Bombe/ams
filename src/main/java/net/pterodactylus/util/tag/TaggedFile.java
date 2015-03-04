@@ -32,4 +32,18 @@ public class TaggedFile implements Supplier<Optional<Tag>> {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		return file.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof TaggedFile)) {
+			return false;
+		}
+		TaggedFile taggedFile = (TaggedFile) object;
+		return file.equals(taggedFile.file);
+	}
+
 }
