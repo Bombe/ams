@@ -31,6 +31,16 @@ public class SessionTest {
 	}
 
 	@Test
+	public void filesCanBeRemovedFromSession() {
+		TaggedFile file1 = createTaggedFile(new Tag());
+		TaggedFile file2 = createTaggedFile(new Tag());
+		session.addFile(file1);
+		session.addFile(file2);
+		session.removeFile(file1);
+		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(file2));
+	}
+
+	@Test
 	public void addingAFileAndGettingTheTagReturnsATagWithTheSameValues() {
 		Tag tag = new Tag().setName("Test Name");
 		TaggedFile file = createTaggedFile(tag);
@@ -53,13 +63,7 @@ public class SessionTest {
 	}
 
 	private TaggedFile createTaggedFile(Tag tag) {
-		TaggedFile taggedFile = new TaggedFile(Mockito.mock(File.class)) {
-			@Override
-			public Optional<Tag> get() {
-				return Optional.ofNullable(tag);
-			}
-		};
-		return taggedFile;
+		return new TaggedFile(Mockito.mock(File.class), tag);
 	}
 
 	@Test

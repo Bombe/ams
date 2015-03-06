@@ -27,6 +27,10 @@ public class Session {
 		fileTags.put(file, file.get().isPresent() ? new Tag(file.get().get()) : new Tag());
 	}
 
+	public void removeFile(TaggedFile file) {
+		fileTags.remove(file);
+	}
+
 	public List<TaggedFile> getFiles() {
 		return new ArrayList<>(fileTags.keySet());
 	}
