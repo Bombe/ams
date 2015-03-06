@@ -96,7 +96,7 @@ public class SessionTest {
 		TaggedFile file = createTaggedFile(new Tag().setName("Test Name"));
 		session.addFile(file);
 		session.getTag(file).setName("Override Name");
-		MatcherAssert.assertThat(file.get().get().getName().get(), Matchers.is("Test Name"));
+		MatcherAssert.assertThat(file.getTag().getName().get(), Matchers.is("Test Name"));
 	}
 
 	@Test

@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class TaggedFile implements Supplier<Optional<Tag>> {
+public class TaggedFile {
 
 	private final TagReader defaultTagReaders = TagReaders.defaultTagReaders();
 	private final File file;
@@ -30,9 +30,8 @@ public class TaggedFile implements Supplier<Optional<Tag>> {
 		return file;
 	}
 
-	@Override
-	public Optional<Tag> get() {
-		return Optional.of(tag);
+	public Tag getTag() {
+		return tag;
 	}
 
 	private Optional<Tag> readTag() {

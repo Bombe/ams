@@ -24,7 +24,7 @@ public class Session {
 	private final Tag sessionTag = new Tag();
 
 	public void addFile(TaggedFile file) {
-		fileTags.put(file, file.get().isPresent() ? new Tag(file.get().get()) : new Tag());
+		fileTags.put(file, new Tag(file.getTag()));
 	}
 
 	public void removeFile(TaggedFile file) {
