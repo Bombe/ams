@@ -3,6 +3,8 @@ package net.pterodactylus.ams.core;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.pterodactylus.ams.main.Options;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -15,9 +17,10 @@ import org.mockito.Mockito;
  */
 public class ContextTest {
 
+	private final Options options = Mockito.mock(Options.class);
 	private final Session session = Mockito.mock(Session.class);
 	private final Writer writer = Mockito.mock(Writer.class);
-	private final Context context = new Context(session, writer);
+	private final Context context = new Context(options, session, writer);
 
 	@Test
 	public void newContextShouldNotExit() {
