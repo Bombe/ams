@@ -12,6 +12,8 @@ import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.ams.core.commands.QuitCommand;
+import net.pterodactylus.util.envopt.Parser;
+import net.pterodactylus.util.envopt.SystemEnvironment;
 
 /**
  * Main starter class for AMS.
@@ -27,11 +29,12 @@ public class Main {
 	}
 
 	private void run() throws IOException {
+		Options options = new Parser(new SystemEnvironment()).parseEnvironment(Options::new);
 		try (Writer writer = new OutputStreamWriter(System.out);
 			 Reader stdinReader = new InputStreamReader(System.in);
 			 BufferedReader reader = new BufferedReader(stdinReader)) {
 			Session session = new Session();
-			Context context = new Context(session, writer);
+			Context context = new Context(options, session, writer);
 			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
 			CommandReader commandReader = new CommandReader(commandDispatcher, reader, context);
 			commandReader.run();

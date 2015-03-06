@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.pterodactylus.ams.main.Options;
+
 /**
  * A context encapsulates the environment in which {@link Command}s are executed.
  *
@@ -12,10 +14,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Context {
 
 	private final AtomicBoolean shouldExit = new AtomicBoolean();
+	private final Options options;
 	private final Session session;
 	private final Writer writer;
 
-	public Context(Session session, Writer writer) {
+	public Context(Options options, Session session, Writer writer) {
+		this.options = options;
 		this.session = session;
 		this.writer = writer;
 	}
@@ -26,6 +30,10 @@ public class Context {
 
 	public boolean shouldExit() {
 		return shouldExit.get();
+	}
+
+	public Options getOptions() {
+		return options;
 	}
 
 	public Session getSession() {
