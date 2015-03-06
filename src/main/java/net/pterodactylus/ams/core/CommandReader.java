@@ -42,6 +42,7 @@ public class CommandReader implements Runnable {
 					throw el1;
 				} catch (RuntimeException re1) {
 					/* ignore, continue. */
+					context.write(re1.getClass().getName() + "\n");
 					continue;
 				}
 			}
