@@ -152,4 +152,11 @@ public class TagFormatterTest {
 		MatcherAssert.assertThat(tagFormatter.format(tag), Matchers.is("20150214"));
 	}
 
+	@Test
+	public void formatIsResetAfterTag() {
+		TagFormatter tagFormatter = new TagFormatter("${Track%02d}${Name}");
+		tag.setTrack(4).setName("Foo");
+		MatcherAssert.assertThat(tagFormatter.format(tag), Matchers.is("04Foo"));
+	}
+
 }

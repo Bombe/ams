@@ -67,6 +67,7 @@ public class TagFormatter {
 						output.append(String.format("%" + format, value.get()));
 					}
 					attribute = null;
+					format = null;
 					expression.setLength(0);
 					inDollar--;
 				} else if (c == '%') {
