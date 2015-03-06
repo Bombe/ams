@@ -2,6 +2,8 @@ package net.pterodactylus.util.envopt;
 
 import java.util.Optional;
 
+import net.pterodactylus.util.envopt.Parser.RequiredOptionIsMissing;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -37,20 +39,11 @@ public class ParserTest {
 		MatcherAssert.assertThat(finalTestOptions.getOptionOne(), Matchers.is("test"));
 	}
 
-	/**
-	 * Test class with options used by {@link Parser}.
-	 *
-	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
-	 */
-	private static class TestOptions {
-
-		@Option("foo")
-		private String optionOne;
-
-		public String getOptionOne() {
-			return optionOne;
-		}
-
+	@Test(expected = RequiredOptionIsMissing.class)
+	public void parserThrowsIfRequiredOptionIsMissing() {
+		Mockito.when(environment.getValue("foo")).thenReturn(Optional.empty());
+	    RequiredTestOptions requiredTestOptions = parser.parseEnvironment(RequiredTestOptions::new);
+		requiredTestOptions.getOptionOne();
 	}
 
 	/**
@@ -58,10 +51,10 @@ public class ParserTest {
 	 *
 	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
 	 */
-	private static class FinalTestOptions {
+	private static class TestOptions {
 
-		@Option("foo")
-		private final String optionOne = null;
+		@Option(name = "foo")
+		private String optionOne;
 
 		public String getOptionOne() {
 			return optionOne;
@@ -77,6 +70,38 @@ public class ParserTest {
 	private static class MoreTestOptions {
 
 		private String optionOne;
+
+		public String getOptionOne() {
+			return optionOne;
+		}
+
+	}
+
+	/**
+	 * Test class with options used by {@link Parser}.
+	 *
+	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+	 */
+	private static class FinalTestOptions {
+
+		@Option(name = "foo")
+		private final String optionOne = null;
+
+		public String getOptionOne() {
+			return optionOne;
+		}
+
+	}
+
+	/**
+	 * Test class with options used by {@link Parser}.
+	 *
+	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+	 */
+	private static class RequiredTestOptions {
+
+		@Option(name = "foo", required = true)
+		private final String optionOne = null;
 
 		public String getOptionOne() {
 			return optionOne;

@@ -15,6 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Option {
 
-	String value();
+	String name();
+	boolean required() default false;
 
 }

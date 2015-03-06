@@ -1,6 +1,7 @@
 package net.pterodactylus.util.envopt;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -25,11 +26,14 @@ public class Parser {
 				continue;
 			}
 			for (Option option : options) {
-				String variableName = option.value();
-				String value = environment.getValue(variableName).orElse(null);
+				String variableName = option.name();
+				Optional<String> value = environment.getValue(variableName);
+				if (option.required() && !value.isPresent()) {
+					throw new RequiredOptionIsMissing();
+				}
 				field.setAccessible(true);
 				try {
-					field.set(optionsObject, value);
+					field.set(optionsObject, value.orElse(null));
 				} catch (IllegalAccessException iae1) {
 					/* swallow. */
 				}
@@ -37,5 +41,7 @@ public class Parser {
 		}
 		return optionsObject;
 	}
+
+	public static class RequiredOptionIsMissing extends RuntimeException { }
 
 }
