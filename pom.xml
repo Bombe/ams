@@ -52,11 +52,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<archive>
-						<manifestEntries>
-							<Main-Class>net.pterodactylus.ams.main.Main</Main-Class>
-						</manifestEntries>
-					</archive>
+					<mainClass>net.pterodactylus.ams.main.Main</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
