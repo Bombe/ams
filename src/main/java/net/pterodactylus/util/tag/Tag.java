@@ -113,8 +113,8 @@ public class Tag {
 		return disc;
 	}
 
-	public Tag setDisc(int Disc) {
-		this.disc = (Disc == 0) ? empty() : of(Disc);
+	public Tag setDisc(int disc) {
+		this.disc = (disc == 0) ? empty() : of(disc);
 		return this;
 	}
 
