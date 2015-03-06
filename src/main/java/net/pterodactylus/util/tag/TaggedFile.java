@@ -14,9 +14,16 @@ public class TaggedFile implements Supplier<Optional<Tag>> {
 
 	private final TagReader defaultTagReaders = TagReaders.defaultTagReaders();
 	private final File file;
+	private final Tag tag;
 
 	public TaggedFile(File file) {
 		this.file = file;
+		this.tag = readTag().orElse(new Tag());
+	}
+
+	public TaggedFile(File file, Tag tag) {
+		this.file = file;
+		this.tag = tag;
 	}
 
 	public File getFile() {
@@ -25,6 +32,10 @@ public class TaggedFile implements Supplier<Optional<Tag>> {
 
 	@Override
 	public Optional<Tag> get() {
+		return Optional.of(tag);
+	}
+
+	private Optional<Tag> readTag() {
 		try {
 			return defaultTagReaders.readTags(file);
 		} catch (IOException ioe1) {
