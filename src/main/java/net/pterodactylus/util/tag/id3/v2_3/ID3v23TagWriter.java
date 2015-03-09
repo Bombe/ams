@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.Optional;
 
+import net.pterodactylus.util.media.Mp3Identifier;
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagWriter;
 
@@ -24,6 +25,7 @@ import net.pterodactylus.util.tag.TagWriter;
  */
 public class ID3v23TagWriter implements TagWriter {
 
+	private final Mp3Identifier mp3Identifier = new Mp3Identifier();
 	private final TagEncoder tagEncoder = new TagEncoder();
 
 	@Override
@@ -47,7 +49,7 @@ public class ID3v23TagWriter implements TagWriter {
 				removeOldTagAndWriteNewTag(headerSize.get() + 10, encodedTag, file);
 			}
 		} else {
-			if (!fileIsAnMp3File(file)) {
+			if (!mp3Identifier.isMediaFile(file)) {
 				return false;
 			}
 			insertNewTag(encodedTag, file);
@@ -82,17 +84,6 @@ public class ID3v23TagWriter implements TagWriter {
 
 	private int calculatePaddingSize(int tagLength) {
 		return 1024 * (((tagLength + 1536) / 1024) + 1);
-	}
-
-	private boolean fileIsAnMp3File(File file) throws IOException {
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
-			byte firstByte = randomAccessFile.readByte();
-			if ((firstByte & 0xff) != 0xff) {
-				return false;
-			}
-			byte secondByte = randomAccessFile.readByte();
-			return (secondByte & 0xe0) == 0xe0;
-		}
 	}
 
 }
