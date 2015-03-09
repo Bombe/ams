@@ -10,7 +10,6 @@ import static net.pterodactylus.util.tag.id3.v2_3.Header.UNSYNCHRONIZATION_FLAG;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode16Bits;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode28Bits;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.encode32Bits;
-import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.read28Bits;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

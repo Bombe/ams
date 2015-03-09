@@ -1,7 +1,5 @@
 package net.pterodactylus.ams.core;
 
-import java.time.LocalDate;
-import java.util.Optional;
 import java.nio.file.Path;
 
 import net.pterodactylus.util.tag.Tag;

@@ -22,7 +22,6 @@ import static java.util.Arrays.copyOf;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**

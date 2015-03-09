@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Wrapper around a {@link File} that can also retrieve the {@link Tag} from the file.

@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
-import net.pterodactylus.util.tag.id3.TestUtils;
 
 import org.junit.Test;
 

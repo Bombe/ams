@@ -1,8 +1,6 @@
 package net.pterodactylus.util.tag.id3.v2_3;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.primitives.Ints.tryParse;
-import static java.time.LocalDate.ofYearDay;
 import static java.util.Arrays.copyOf;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -23,7 +21,6 @@ import java.util.Optional;
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagReader;
 
-import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 
 /**
