@@ -1,17 +1,15 @@
 package net.pterodactylus.util.tag.id3.v2_3;
 
-import static com.google.common.io.Files.copy;
-import static java.io.File.createTempFile;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static net.pterodactylus.util.tag.id3.v2_3.Header.parseHeader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 import net.pterodactylus.util.media.Mp3Identifier;
@@ -35,9 +33,9 @@ public class ID3v23TagWriter implements TagWriter {
 	}
 
 	@Override
-	public boolean write(Tag tag, File file) throws IOException {
+	public boolean write(Tag tag, Path file) throws IOException {
 		Optional<Integer> headerSize;
-		try (InputStream inputStream = new FileInputStream(file)) {
+		try (InputStream inputStream = Files.newInputStream(file)) {
 			Optional<Header> header = parseHeader(inputStream);
 			headerSize = header.isPresent() ? of(header.get().getSize()) : empty();
 		}
@@ -57,28 +55,30 @@ public class ID3v23TagWriter implements TagWriter {
 		return true;
 	}
 
-	private void overwriteTag(int oldTagSize, byte[] encodedTag, File file) {
+	private void overwriteTag(int oldTagSize, byte[] encodedTag, Path file) {
 		// TODO
 	}
 
-	private void removeOldTagAndWriteNewTag(int oldTagSize, byte[] encodedTag, File file) {
+	private void removeOldTagAndWriteNewTag(int oldTagSize, byte[] encodedTag, Path file) {
 		// TODO
 	}
 
-	private void insertNewTag(byte[] encodedTag, File file) throws IOException {
+	private void insertNewTag(byte[] encodedTag, Path file) throws IOException {
 		int paddingSize = calculatePaddingSize(encodedTag.length);
-		File taggedFile = createTempFile("tagged-", ".mp3", file.getParentFile());
-		try (FileOutputStream taggedFileOutputStream = new FileOutputStream(taggedFile)) {
+		Path taggedFile = Files.createTempFile(file.getParent(), "tagged-", ".mp3");
+		try (OutputStream taggedFileOutputStream = Files.newOutputStream(taggedFile)) {
 			taggedFileOutputStream.write(encodedTag);
 			taggedFileOutputStream.write(new byte[paddingSize - encodedTag.length]);
-			copy(file, taggedFileOutputStream);
+			Files.copy(file, taggedFileOutputStream);
 		} catch (IOException ioe1) {
-			taggedFile.delete();
+			Files.deleteIfExists(taggedFile);
 			throw ioe1;
 		}
-		if (!taggedFile.renameTo(file)) {
-			taggedFile.delete();
-			throw new IOException("could not rename file");
+		try {
+			Files.move(taggedFile, file, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe1) {
+			Files.deleteIfExists(taggedFile);
+			throw ioe1;
 		}
 	}
 

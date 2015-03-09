@@ -1,13 +1,13 @@
 package net.pterodactylus.util.media;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagReader;
 
-import com.google.common.io.Files;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class Mp3IdentifierTest {
 
 	@Test
 	public void tagReaderIsConsultedFirst() throws IOException {
-		File file = Mockito.mock(File.class);
+		Path file = Mockito.mock(Path.class);
 		Tag tag = Mockito.mock(Tag.class);
 		Mockito.when(tagReader.readTags(file)).thenReturn(Optional.of(tag));
 		MatcherAssert.assertThat(identifier.isMediaFile(file), Matchers.is(true));
@@ -39,44 +39,44 @@ public class Mp3IdentifierTest {
 
 	@Test
 	public void mp3SyncBitsAreRecognizedInFileIfNoTagIsRead() throws IOException {
-		File tempFile = createFakeMp3File();
+		Path tempFile = createFakeMp3File();
 		Mockito.when(tagReader.readTags(tempFile)).thenReturn(Optional.empty());
 		MatcherAssert.assertThat(identifier.isMediaFile(tempFile), Matchers.is(true));
 		Mockito.verify(tagReader).readTags(tempFile);
 	}
 
-	private File createFakeMp3File() throws IOException {
+	private Path createFakeMp3File() throws IOException {
 		return createFile(new byte[] { 0x00, (byte) 0xff, (byte) 0xff, 0x00 });
 	}
 
-	private File createFile(byte[] from) throws IOException {
-		File tempFile = File.createTempFile("mp3-identifier-", ".mp3");
-		tempFile.deleteOnExit();
-		Files.write(from, tempFile);
+	private Path createFile(byte[] from) throws IOException {
+		Path tempFile = Files.createTempFile("mp3-identifier-", ".mp3");
+		tempFile.toFile().deleteOnExit();
+		Files.write(tempFile, from);
 		return tempFile;
 	}
 
 	@Test
 	public void fileShorterThan4KIsAbortedCleanly() throws IOException {
-		File tempFile = createShortFile();
+		Path tempFile = createShortFile();
 		Mockito.when(tagReader.readTags(tempFile)).thenReturn(Optional.empty());
 		MatcherAssert.assertThat(identifier.isMediaFile(tempFile), Matchers.is(false));
 		Mockito.verify(tagReader).readTags(tempFile);
 	}
 
-	private File createShortFile() throws IOException {
+	private Path createShortFile() throws IOException {
 		return createFile(new byte[] { 0x00 });
 	}
 
 	@Test
 	public void fileLongerThan4KIsAbortedCleanly() throws IOException {
-		File tempFile = createLongFile();
+		Path tempFile = createLongFile();
 		Mockito.when(tagReader.readTags(tempFile)).thenReturn(Optional.empty());
 		MatcherAssert.assertThat(identifier.isMediaFile(tempFile), Matchers.is(false));
 		Mockito.verify(tagReader).readTags(tempFile);
 	}
 
-	private File createLongFile() throws IOException {
+	private Path createLongFile() throws IOException {
 		return createFile(new byte[5120]);
 	}
 

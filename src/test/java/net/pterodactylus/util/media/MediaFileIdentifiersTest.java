@@ -1,7 +1,7 @@
 package net.pterodactylus.util.media;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 import org.hamcrest.MatcherAssert;
@@ -21,7 +21,7 @@ public class MediaFileIdentifiersTest {
 	private final MediaFileIdentifier identifier3 = Mockito.mock(MediaFileIdentifier.class);
 	private final MediaFileIdentifier combinedIdentifier =
 			MediaFileIdentifiers.combine(identifier1, identifier2, identifier3);
-	private final File file = Mockito.mock(File.class);
+	private final Path file = Mockito.mock(Path.class);
 
 	@Test
 	public void canCreateMediaFileIdentifiers() {

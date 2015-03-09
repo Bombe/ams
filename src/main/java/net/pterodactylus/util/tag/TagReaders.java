@@ -2,8 +2,6 @@ package net.pterodactylus.util.tag;
 
 import static java.util.Optional.empty;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.id3.v1.ID3v1TagReader;

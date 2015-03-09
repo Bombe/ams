@@ -7,8 +7,8 @@ import static net.pterodactylus.util.tag.id3.TestUtils.createFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
@@ -27,7 +27,7 @@ public class ID3v1TagReaderTest {
 
 	@Test
 	public void readValidTagFromFile() throws IOException {
-		File file = createFile("files/second.id3v1.mp3", getClass());
+		Path file = createFile("files/second.id3v1.mp3", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(true));
 		assertThat(tag.get().getName(), is(of("Some Song")));
@@ -40,14 +40,14 @@ public class ID3v1TagReaderTest {
 
 	@Test
 	public void dontReadTagFromFile() throws IOException {
-		File file = createFile("files/c/second.vorbis.ogg", getClass());
+		Path file = createFile("files/c/second.vorbis.ogg", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(false));
 	}
 
 	@Test
 	public void dontReadTagFromTooSmallFile() throws IOException {
-		File file = createFile("files/test.unknown", getClass());
+		Path file = createFile("files/test.unknown", getClass());
 		Optional<Tag> tag = id3v1TagReader.readTags(file);
 		assertThat(tag.isPresent(), is(false));
 	}

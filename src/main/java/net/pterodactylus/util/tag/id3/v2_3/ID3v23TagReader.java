@@ -13,10 +13,10 @@ import static net.pterodactylus.util.tag.id3.v2_3.Header.parseHeader;
 import static net.pterodactylus.util.tag.id3.v2_3.ID3v23Utils.readBuffer;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -36,8 +36,8 @@ public class ID3v23TagReader implements TagReader {
 	private final Unsynchronizer unsynchronizer = new Unsynchronizer();
 
 	@Override
-	public Optional<Tag> readTags(File file) throws IOException {
-		try (InputStream fileInputStream = new FileInputStream(file)) {
+	public Optional<Tag> readTags(Path file) throws IOException {
+		try (InputStream fileInputStream = Files.newInputStream(file)) {
 			Optional<Header> header = parseHeader(fileInputStream);
 			if (!header.isPresent()) {
 				return empty();

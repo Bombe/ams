@@ -1,13 +1,10 @@
 package net.pterodactylus.util.tag.id3;
 
-import static com.google.common.io.ByteStreams.copy;
-import static java.io.File.createTempFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
  * Utility methods for testing.
@@ -16,11 +13,11 @@ import java.io.OutputStream;
  */
 public class TestUtils {
 
-	public static File createFile(String resourceName, Class<?> someClass) throws IOException {
-		File temporaryFile = createTempFile("test-", ".dat");
-		temporaryFile.deleteOnExit();
-		try (InputStream inputStream = someClass.getClassLoader().getResourceAsStream(resourceName); OutputStream outputStream = new FileOutputStream(temporaryFile)) {
-			copy(inputStream, outputStream);
+	public static Path createFile(String resourceName, Class<?> someClass) throws IOException {
+		Path temporaryFile = Files.createTempFile("test-", ".dat");
+		temporaryFile.toFile().deleteOnExit();
+		try (InputStream inputStream = someClass.getClassLoader().getResourceAsStream(resourceName)) {
+			Files.copy(inputStream, temporaryFile, StandardCopyOption.REPLACE_EXISTING);
 		}
 		return temporaryFile;
 	}

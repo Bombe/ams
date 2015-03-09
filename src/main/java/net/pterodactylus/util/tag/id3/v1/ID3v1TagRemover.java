@@ -1,8 +1,10 @@
 package net.pterodactylus.util.tag.id3.v1;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import net.pterodactylus.util.tag.TagRemover;
 
@@ -16,7 +18,7 @@ public class ID3v1TagRemover implements TagRemover {
 	private static final ID3v1TagReader tagReader = new ID3v1TagReader();
 
 	@Override
-	public boolean removeTag(File file) throws IOException {
+	public boolean removeTag(Path file) throws IOException {
 		if (tagReader.readTags(file).isPresent()) {
 			removeTagFromFile(file);
 			return true;
@@ -24,9 +26,9 @@ public class ID3v1TagRemover implements TagRemover {
 		return false;
 	}
 
-	private void removeTagFromFile(File file) throws IOException {
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
-			randomAccessFile.getChannel().truncate(randomAccessFile.length() - 128);
+	private void removeTagFromFile(Path file) throws IOException {
+		try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(file, StandardOpenOption.WRITE)) {
+			seekableByteChannel.truncate(seekableByteChannel.size() - 128);
 		}
 	}
 

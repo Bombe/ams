@@ -1,7 +1,7 @@
 package net.pterodactylus.util.tag;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * A tag remover can remove a single tag from a file.
@@ -21,6 +21,6 @@ public interface TagRemover {
 	 * @throws IOException
 	 * 		if an I/O error occurs
 	 */
-	boolean removeTag(File file) throws IOException;
+	boolean removeTag(Path file) throws IOException;
 
 }

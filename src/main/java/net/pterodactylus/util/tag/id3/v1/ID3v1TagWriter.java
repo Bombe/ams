@@ -8,9 +8,12 @@ import static net.pterodactylus.util.tag.id3.v1.Genre.getNumber;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.MAX_TRACK_NUMBER;
 import static net.pterodactylus.util.tag.id3.v1.ID3v1Constants.REDUCED_MAX_COMMENT_LENGTH;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TagWriter;
@@ -66,7 +69,7 @@ public class ID3v1TagWriter implements TagWriter {
 	}
 
 	@Override
-	public boolean write(Tag tag, File file) throws IOException {
+	public boolean write(Tag tag, Path file) throws IOException {
 		if (tagReader.readTags(file).isPresent()) {
 			overwriteOldTag(file, tag);
 		}
@@ -74,22 +77,21 @@ public class ID3v1TagWriter implements TagWriter {
 		return false;
 	}
 
-	private void overwriteOldTag(File file, Tag tag) throws IOException {
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
-			randomAccessFile.seek(randomAccessFile.length() - 128);
-			writeTagToFile(randomAccessFile, tag);
+	private void overwriteOldTag(Path file, Tag tag) throws IOException {
+		try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(file, StandardOpenOption.WRITE)) {
+			seekableByteChannel.position(seekableByteChannel.size() - 128);
+			writeTagToFile(seekableByteChannel, tag);
 		}
 	}
 
-	private void appendTag(File file, Tag tag) throws IOException {
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw")) {
-			randomAccessFile.seek(randomAccessFile.length());
-			writeTagToFile(randomAccessFile, tag);
+	private void appendTag(Path file, Tag tag) throws IOException {
+		try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(file, StandardOpenOption.APPEND)) {
+			writeTagToFile(seekableByteChannel, tag);
 		}
 	}
 
-	private void writeTagToFile(RandomAccessFile randomAccessFile, Tag tag) throws IOException {
-		randomAccessFile.write(tagEncoder.encode(tag));
+	private void writeTagToFile(SeekableByteChannel seekableByteChannel, Tag tag) throws IOException {
+		seekableByteChannel.write(ByteBuffer.wrap(tagEncoder.encode(tag)));
 	}
 
 }

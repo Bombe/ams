@@ -1,11 +1,13 @@
 package net.pterodactylus.util.tag.id3.v1;
 
 import static java.util.Optional.empty;
-import static net.pterodactylus.util.tag.id3.v1.ID3v1Utils.readBuffer;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
@@ -21,20 +23,24 @@ public class ID3v1TagReader implements TagReader {
 	private static final ID3v1TagDecoder tagDecoder = new ID3v1TagDecoder();
 
 	@Override
-	public Optional<Tag> readTags(File file) throws IOException {
-		if (file.length() < 128) {
+	public Optional<Tag> readTags(Path file) throws IOException {
+		if (Files.size(file) < 128) {
 			return empty();
 		}
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
-			byte[] tagBuffer = readTag(randomAccessFile);
+		try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(file)) {
+			byte[] tagBuffer = readTag(seekableByteChannel);
 			Optional<Tag> id3v1Tag = tagDecoder.parse(tagBuffer);
 			return id3v1Tag;
 		}
 	}
 
-	private byte[] readTag(RandomAccessFile randomAccessFile) throws IOException {
-		randomAccessFile.seek(randomAccessFile.length() - 128);
-		byte[] tagBuffer = readBuffer(randomAccessFile);
+	private byte[] readTag(SeekableByteChannel seekableByteChannel) throws IOException {
+		seekableByteChannel.position(seekableByteChannel.size() - 128);
+		ByteBuffer byteBuffer = ByteBuffer.allocate(128);
+		seekableByteChannel.read(byteBuffer);
+		byteBuffer.flip();
+		byte[] tagBuffer = new byte[128];
+		byteBuffer.get(tagBuffer);
 		return tagBuffer;
 	}
 

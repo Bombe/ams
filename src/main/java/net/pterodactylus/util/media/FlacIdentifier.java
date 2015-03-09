@@ -1,9 +1,9 @@
 package net.pterodactylus.util.media;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * {@link MediaFileIdentifier} that can identify FLAC files. The file is only checked for the “fLaC” header, as detailed
@@ -14,8 +14,8 @@ import java.io.InputStream;
 public class FlacIdentifier implements MediaFileIdentifier {
 
 	@Override
-	public boolean isMediaFile(File file) throws IOException {
-		try (InputStream inputStream = new FileInputStream(file)) {
+	public boolean isMediaFile(Path file) throws IOException {
+		try (InputStream inputStream = Files.newInputStream(file)) {
 			return hasFlacHeader(inputStream);
 		}
 	}

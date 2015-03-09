@@ -1,9 +1,9 @@
 package net.pterodactylus.util.media;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * {@link MediaFileIdentifier} implementation that can detect Microsoft WAVE files.
@@ -13,8 +13,8 @@ import java.io.InputStream;
 public class RiffWaveIdentifier implements MediaFileIdentifier {
 
 	@Override
-	public boolean isMediaFile(File file) throws IOException {
-		try (InputStream fileInputStream = new FileInputStream(file)) {
+	public boolean isMediaFile(Path file) throws IOException {
+		try (InputStream fileInputStream = Files.newInputStream(file)) {
 			if (invalidRiffHeader(fileInputStream)) {
 				return false;
 			}

@@ -2,6 +2,7 @@ package net.pterodactylus.util.tag;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -13,20 +14,20 @@ import java.util.function.Supplier;
 public class TaggedFile {
 
 	private final TagReader defaultTagReaders = TagReaders.defaultTagReaders();
-	private final File file;
+	private final Path file;
 	private final Tag tag;
 
-	public TaggedFile(File file) {
+	public TaggedFile(Path file) {
 		this.file = file;
 		this.tag = readTag().orElse(new Tag());
 	}
 
-	public TaggedFile(File file, Tag tag) {
+	public TaggedFile(Path file, Tag tag) {
 		this.file = file;
 		this.tag = tag;
 	}
 
-	public File getFile() {
+	public Path getFile() {
 		return file;
 	}
 

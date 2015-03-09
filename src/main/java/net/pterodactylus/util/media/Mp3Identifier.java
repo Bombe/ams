@@ -1,8 +1,9 @@
 package net.pterodactylus.util.media;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import net.pterodactylus.util.tag.TagReader;
 import net.pterodactylus.util.tag.TagReaders;
@@ -31,13 +32,13 @@ public class Mp3Identifier implements MediaFileIdentifier {
 	}
 
 	@Override
-	public boolean isMediaFile(File file) throws IOException {
+	public boolean isMediaFile(Path file) throws IOException {
 		return tagReader.readTags(file).isPresent()
 				|| fileHasMp3SyncBitsInTheFirst4K(file);
 	}
 
-	private boolean fileHasMp3SyncBitsInTheFirst4K(File file) throws IOException {
-		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+	private boolean fileHasMp3SyncBitsInTheFirst4K(Path file) throws IOException {
+		try (InputStream fileInputStream = Files.newInputStream(file)) {
 			boolean lastByteWas0xFF = false;
 			int bytesRead = 0;
 			while (bytesRead < 4096) {

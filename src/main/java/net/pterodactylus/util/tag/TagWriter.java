@@ -1,7 +1,7 @@
 package net.pterodactylus.util.tag;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Interface for format-specific tag writers.
@@ -20,6 +20,6 @@ public interface TagWriter {
 	 */
 	boolean isEncodable(Tag tag);
 
-	boolean write(Tag tag, File file) throws IOException;
+	boolean write(Tag tag, Path file) throws IOException;
 
 }

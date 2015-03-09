@@ -6,8 +6,8 @@ import static net.pterodactylus.util.tag.id3.TestUtils.createFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
@@ -25,7 +25,7 @@ public class ID3v23TagReaderTest {
 
 	@Test
 	public void canRecognizeId3V23Tags() throws IOException {
-		File file = createFile("files/a/second.id3v2.mp3", getClass());
+		Path file = createFile("files/a/second.id3v2.mp3", getClass());
 		Optional<Tag> tag = tagReader.readTags(file);
 		assertThat(tag.isPresent(), is(true));
 		assertThat(tag.get().getArtist(), is(of("Some Artist")));

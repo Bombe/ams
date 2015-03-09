@@ -2,6 +2,7 @@ package net.pterodactylus.util.tag;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -25,6 +26,6 @@ public interface TagReader {
 	 * @throws IOException
 	 * 		if an I/O error occurs
 	 */
-	Optional<Tag> readTags(File file) throws IOException;
+	Optional<Tag> readTags(Path file) throws IOException;
 
 }

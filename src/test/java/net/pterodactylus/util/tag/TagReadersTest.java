@@ -11,8 +11,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -29,8 +29,8 @@ public class TagReadersTest {
 	private final TagReader nonMatchingTagReader = mock(TagReader.class);
 
 	public TagReadersTest() throws IOException {
-		when(matchingTagReader.readTags(any(File.class))).thenReturn(of(tag));
-		when(nonMatchingTagReader.readTags(any(File.class))).thenReturn(empty());
+		when(matchingTagReader.readTags(any(Path.class))).thenReturn(of(tag));
+		when(nonMatchingTagReader.readTags(any(Path.class))).thenReturn(empty());
 	}
 
 	@Test
@@ -41,19 +41,19 @@ public class TagReadersTest {
 	@Test
 	public void firstMatchingTagReaderTerminatesTagReading() throws IOException {
 		TagReader combinedTagReaders = combine(matchingTagReader, nonMatchingTagReader);
-		Optional<Tag> readTag = combinedTagReaders.readTags(mock(File.class));
+		Optional<Tag> readTag = combinedTagReaders.readTags(mock(Path.class));
 		assertThat(readTag, is(of(tag)));
-		verify(matchingTagReader).readTags(any(File.class));
-		verify(nonMatchingTagReader, never()).readTags(any(File.class));
+		verify(matchingTagReader).readTags(any(Path.class));
+		verify(nonMatchingTagReader, never()).readTags(any(Path.class));
 	}
 
 	@Test
 	public void allTagReadersAreTried() throws IOException {
 		TagReader combinedTagReaders = combine(nonMatchingTagReader, matchingTagReader);
-		Optional<Tag> readTag = combinedTagReaders.readTags(mock(File.class));
+		Optional<Tag> readTag = combinedTagReaders.readTags(mock(Path.class));
 		assertThat(readTag, is(of(tag)));
-		verify(nonMatchingTagReader).readTags(any(File.class));
-		verify(matchingTagReader).readTags(any(File.class));
+		verify(nonMatchingTagReader).readTags(any(Path.class));
+		verify(matchingTagReader).readTags(any(Path.class));
 	}
 
 }

@@ -1,8 +1,8 @@
 package net.pterodactylus.ams.core;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.nio.file.Path;
 
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TaggedFile;
@@ -41,7 +41,7 @@ public class SessionTest {
 	}
 
 	private TaggedFile createTaggedFile(Tag tag) {
-		return new TaggedFile(Mockito.mock(File.class), tag);
+		return new TaggedFile(Mockito.mock(Path.class), tag);
 	}
 
 }
