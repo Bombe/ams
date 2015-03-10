@@ -11,6 +11,7 @@ import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
+import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
 import net.pterodactylus.ams.core.commands.QuitCommand;
 import net.pterodactylus.util.envopt.Parser;
@@ -46,6 +47,7 @@ public class Main {
 		CommandDispatcher commandDispatcher = new CommandDispatcher(context);
 		commandDispatcher.addCommand(new QuitCommand());
 		commandDispatcher.addCommand(new LoadCommand());
+		commandDispatcher.addCommand(new ListCommand());
 		return commandDispatcher;
 	}
 
