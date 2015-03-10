@@ -12,6 +12,7 @@ import net.pterodactylus.util.media.MediaFileIdentifier;
 import net.pterodactylus.util.tag.TaggedFile;
 import net.pterodactylus.util.tag.TaggedFileTest;
 
+import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -28,7 +29,8 @@ import org.mockito.Mockito;
  */
 public class LoadCommandTest {
 
-	private final FileSystem fileSystem = Jimfs.newFileSystem();
+	private final Configuration configuration = Configuration.unix().toBuilder().setWorkingDirectory("/foo").build();
+	private final FileSystem fileSystem = Jimfs.newFileSystem(configuration);
 	private final MediaFileIdentifier mediaFileIdentifier = Mockito.mock(MediaFileIdentifier.class);
 	private final LoadCommand command = new LoadCommand(fileSystem, mediaFileIdentifier);
 	private final Session session = Mockito.mock(Session.class);
@@ -53,6 +55,7 @@ public class LoadCommandTest {
 
 	private void verifyMediaFileIsAdded() {
 		Mockito.verify(session).addFile(org.mockito.Matchers.argThat(TaggedFileTest.isTaggedFile("/foo/bar/media-file")));
+		Mockito.verifyNoMoreInteractions(session);
 	}
 
 	private void createMediaFile() throws IOException {
@@ -73,7 +76,7 @@ public class LoadCommandTest {
 		return new TypeSafeDiagnosingMatcher<Path>() {
 			@Override
 			protected boolean matchesSafely(Path file, Description mismatchDescription) {
-				if (!file.toString().equals(filename)) {
+				if (!file.toAbsolutePath().normalize().toString().equals(filename)) {
 					mismatchDescription.appendText("file is at ").appendValue(file.toString());
 					return false;
 				}
@@ -132,6 +135,14 @@ public class LoadCommandTest {
 	public void invalidFilesWithoutWildcardsAreSkipped() throws IOException {
 		command.execute(context, Arrays.asList("/foo/bar/missing"));
 		verifyNoFileIsAdded();
+	}
+
+	@Test
+	public void addingFilesWithWildcardAndCurrentDirectoryAddsCorrectFiles() throws IOException {
+		createMediaFile();
+		createNonMediaFile();
+		command.execute(context, Arrays.asList("./bar**m*"));
+		verifyMediaFileIsAdded();
 	}
 
 }

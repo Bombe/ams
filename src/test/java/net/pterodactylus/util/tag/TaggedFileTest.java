@@ -21,7 +21,7 @@ public class TaggedFileTest {
 		return new TypeSafeDiagnosingMatcher<TaggedFile>() {
 			@Override
 			protected boolean matchesSafely(TaggedFile taggedFile, Description mismatchDescription) {
-				if (!taggedFile.getFile().toString().equals(filename)) {
+				if (!taggedFile.getFile().toAbsolutePath().normalize().toString().equals(filename)) {
 					mismatchDescription.appendText("file is at ").appendValue(taggedFile.getFile().toString());
 					return false;
 				}

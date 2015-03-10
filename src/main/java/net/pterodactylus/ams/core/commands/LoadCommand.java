@@ -69,7 +69,8 @@ public class LoadCommand implements Command {
 	}
 
 	private void addWithGlob(Context context, String parameter) throws IOException {
-		String rootPath = parameter.substring(0, parameter.lastIndexOf('/', parameter.indexOf('*')));
+		int lastSlashBeforeAsterisk = parameter.lastIndexOf('/', parameter.indexOf('*'));
+		String rootPath = (lastSlashBeforeAsterisk != -1) ? parameter.substring(0, lastSlashBeforeAsterisk) : ".";
 		PathMatcher pathMatcher = fileSystem.getPathMatcher("glob:" + parameter);
 		Files.walkFileTree(fileSystem.getPath(rootPath), matchingFileAdder(pathMatcher, f -> addFile(context, f)));
 	}
