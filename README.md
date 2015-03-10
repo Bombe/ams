@@ -27,7 +27,7 @@ AMS already supports everything listed above. However, there are some restrictio
 
 ## How Do I Use It?
 
-> \# java -jar ams.jar
+> $ java -jar ams.jar
 
 This will start a session in the current directory.
 
