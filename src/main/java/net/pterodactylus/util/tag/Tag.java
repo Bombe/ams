@@ -7,6 +7,7 @@ import static java.util.Optional.ofNullable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
 /**
@@ -177,6 +178,29 @@ public class Tag {
 	public int hashCode() {
 		return Objects.hash(name, artist, albumArtist, album, track, totalTracks, disc, totalDiscs, genre, date,
 				comment);
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner stringJoiner = new StringJoiner(", ");
+		addAttribute(stringJoiner, "Artist", artist);
+		addAttribute(stringJoiner, "Name", name);
+		addAttribute(stringJoiner, "Album Artist", albumArtist);
+		addAttribute(stringJoiner, "Album", album);
+		addAttribute(stringJoiner, "Track", track);
+		addAttribute(stringJoiner, "Total Tracks", totalTracks);
+		addAttribute(stringJoiner, "Disc", disc);
+		addAttribute(stringJoiner, "Total Discs", totalDiscs);
+		addAttribute(stringJoiner, "Date", date);
+		addAttribute(stringJoiner, "Genre", genre);
+		addAttribute(stringJoiner, "Comment", comment);
+		return stringJoiner.toString();
+	}
+
+	private void addAttribute(StringJoiner stringJoiner, String name, Optional<?> value) {
+		if (value.isPresent()) {
+			stringJoiner.add(String.format(name + ": %s", value.get()));
+		}
 	}
 
 }
