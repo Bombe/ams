@@ -19,6 +19,7 @@ import net.pterodactylus.ams.core.commands.SetAlbumCommand;
 import net.pterodactylus.ams.core.commands.SetArtistCommand;
 import net.pterodactylus.ams.core.commands.SetDiscCommand;
 import net.pterodactylus.ams.core.commands.SetNameCommand;
+import net.pterodactylus.ams.core.commands.SetTotalDiscsCommand;
 import net.pterodactylus.ams.core.commands.SetTrackCommand;
 import net.pterodactylus.util.envopt.Parser;
 import net.pterodactylus.util.envopt.SystemEnvironment;
@@ -60,6 +61,7 @@ public class Main {
 		commandDispatcher.addCommand(new SetAlbumArtistCommand());
 		commandDispatcher.addCommand(new SetTrackCommand());
 		commandDispatcher.addCommand(new SetDiscCommand());
+		commandDispatcher.addCommand(new SetTotalDiscsCommand());
 		return commandDispatcher;
 	}
 
