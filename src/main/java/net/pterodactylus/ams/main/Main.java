@@ -11,6 +11,7 @@ import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
+import net.pterodactylus.ams.core.commands.ConvertCommand;
 import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
 import net.pterodactylus.ams.core.commands.QuitCommand;
@@ -66,6 +67,7 @@ public class Main {
 		commandDispatcher.addCommand(new SetTotalDiscsCommand());
 		commandDispatcher.addCommand(new SetDateCommand());
 		commandDispatcher.addCommand(new SetGenreCommand());
+		commandDispatcher.addCommand(new ConvertCommand());
 		return commandDispatcher;
 	}
 
