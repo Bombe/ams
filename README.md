@@ -21,6 +21,7 @@ AMS already supports everything listed above. However, there are some restrictio
 * Converting does not use a temporary path for the new files, it tries to put them into the same directory as the source files. This will fail if the source files are on a read-only medium, such as a CD-ROM.
 * Converting is limited to conversion from WAV or FLAC to MP3.
 * Quality parameters for the format conversion are not specifiable by parameters to the `convert` command.
+* Trying to convert files without having specified the locations of required binaries results in an error.
 * Error handling is limited to printing the name of the exception that occured and leaving the session in a probably working but undefined state.
 * Converting, renaming, and saving files can only be applied to all files in the session.
 * Saving tags currently only works for MP3 files, only as ID3v2 version 2.3 tags, and only as long as there are no previous tags in the files.
@@ -70,3 +71,10 @@ Renames all files in the session according to the pattern.
 > \> save
 
 Saves all tag information to the files.
+
+## Configuration
+
+When using the `convert` command you need to tell AMS where the LAME binary (and the FLAC binary, if necessary) are located. This happens using environment variables:
+
+> $ LAME_BINARY=/usr/bin/lame FLAC_BINARY=/usr/bin/flac java -jar ams.jar
+
