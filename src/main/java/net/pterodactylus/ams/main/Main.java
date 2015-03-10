@@ -14,6 +14,7 @@ import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
 import net.pterodactylus.ams.core.commands.QuitCommand;
+import net.pterodactylus.ams.core.commands.SetAlbumCommand;
 import net.pterodactylus.ams.core.commands.SetArtistCommand;
 import net.pterodactylus.ams.core.commands.SetNameCommand;
 import net.pterodactylus.util.envopt.Parser;
@@ -52,6 +53,7 @@ public class Main {
 		commandDispatcher.addCommand(new ListCommand());
 		commandDispatcher.addCommand(new SetArtistCommand());
 		commandDispatcher.addCommand(new SetNameCommand());
+		commandDispatcher.addCommand(new SetAlbumCommand());
 		return commandDispatcher;
 	}
 
