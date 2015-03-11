@@ -1,11 +1,13 @@
 package net.pterodactylus.ams.core.commands;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 import net.pterodactylus.ams.conversion.FlacSource;
 import net.pterodactylus.ams.conversion.LamePathSink;
@@ -23,6 +25,8 @@ import net.pterodactylus.util.tag.TaggedFile;
  */
 public class ConvertCommand implements Command {
 
+	private final Supplier<Path> tempFileSupplier;
+
 	private static final ExecutorService executorService = Executors.newCachedThreadPool(target -> {
 		Thread thread = new Thread(target);
 		thread.setDaemon(true);
@@ -38,11 +42,18 @@ public class ConvertCommand implements Command {
 			}
 			Pipeline pipeline = pipelineBuilder.to(new LamePathSink(context.getOptions().lameBinary, destination));
 			pipeline.run(executorService);
+		}, () -> {
+			try {
+				return Files.createTempFile("ams-", ".music");
+			} catch (IOException ioe1) {
+				throw new RuntimeException(ioe1);
+			}
 		});
 	}
 
-	public ConvertCommand(Converter converter) {
+	public ConvertCommand(Converter converter, Supplier<Path> tempFileSupplier) {
 		this.converter = converter;
+		this.tempFileSupplier = tempFileSupplier;
 	}
 
 	@Override
@@ -55,7 +66,7 @@ public class ConvertCommand implements Command {
 		Session session = context.getSession();
 		for (TaggedFile taggedFile : new ArrayList<>(context.getSession().getFiles())) {
 			Path sourceFile = taggedFile.getFile();
-			Path destinationFile = sourceFile.resolveSibling(sourceFile.getFileName().toString() + ".mp3");
+			Path destinationFile = tempFileSupplier.get();
 			converter.convert(context, sourceFile, destinationFile);
 			session.addFile(new TaggedFile(destinationFile, taggedFile.getTag()));
 			session.removeFile(taggedFile);
