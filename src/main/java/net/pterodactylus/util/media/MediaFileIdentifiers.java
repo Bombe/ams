@@ -11,7 +11,7 @@ import java.io.IOException;
 public class MediaFileIdentifiers {
 
 	public static MediaFileIdentifier defaultMediaFileIdentifiers() {
-		return combine(new Mp3Identifier(), new FlacIdentifier(), new RiffWaveIdentifier());
+		return combine(new Mp3Identifier(), new FlacIdentifier(), new RiffWaveIdentifier(), new AiffIdentifier());
 	}
 
 	public static MediaFileIdentifier combine(MediaFileIdentifier... mediaFileIdentifiers) {
