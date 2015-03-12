@@ -16,6 +16,7 @@ import net.pterodactylus.ams.core.commands.ConvertCommand;
 import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
 import net.pterodactylus.ams.core.commands.QuitCommand;
+import net.pterodactylus.ams.core.commands.RemoveCommand;
 import net.pterodactylus.ams.core.commands.RenameCommand;
 import net.pterodactylus.ams.core.commands.SaveCommand;
 import net.pterodactylus.ams.core.commands.SetAlbumArtistCommand;
@@ -61,6 +62,7 @@ public class Main {
 		commandDispatcher.addCommand(new QuitCommand());
 		commandDispatcher.addCommand(new LoadCommand());
 		commandDispatcher.addCommand(new ListCommand());
+		commandDispatcher.addCommand(new RemoveCommand());
 		commandDispatcher.addCommand(new SetArtistCommand());
 		commandDispatcher.addCommand(new SetNameCommand());
 		commandDispatcher.addCommand(new SetAlbumCommand());
