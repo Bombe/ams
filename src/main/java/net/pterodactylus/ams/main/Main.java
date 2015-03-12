@@ -15,6 +15,7 @@ import net.pterodactylus.ams.core.commands.ContextBuilder;
 import net.pterodactylus.ams.core.commands.ConvertCommand;
 import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
+import net.pterodactylus.ams.core.commands.ParseCommand;
 import net.pterodactylus.ams.core.commands.QuitCommand;
 import net.pterodactylus.ams.core.commands.RemoveCommand;
 import net.pterodactylus.ams.core.commands.RenameCommand;
@@ -72,6 +73,7 @@ public class Main {
 		commandDispatcher.addCommand(new SetTotalDiscsCommand());
 		commandDispatcher.addCommand(new SetDateCommand());
 		commandDispatcher.addCommand(new SetGenreCommand());
+		commandDispatcher.addCommand(new ParseCommand());
 		commandDispatcher.addCommand(new ConvertCommand());
 		commandDispatcher.addCommand(new RenameCommand());
 		commandDispatcher.addCommand(new SaveCommand());
