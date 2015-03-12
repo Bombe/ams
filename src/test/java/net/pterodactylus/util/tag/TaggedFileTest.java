@@ -1,5 +1,6 @@
 package net.pterodactylus.util.tag;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.hamcrest.Description;
@@ -35,6 +36,31 @@ public class TaggedFileTest {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("file at ").appendValue(filename);
+				if (tag.isPresent()) {
+					description.appendText(" with tag ").appendValue(tag);
+				}
+			}
+		};
+	}
+
+	public static Matcher<TaggedFile> isTaggedFile(Path file, Optional<Tag> tag) {
+		return new TypeSafeDiagnosingMatcher<TaggedFile>() {
+			@Override
+			protected boolean matchesSafely(TaggedFile taggedFile, Description mismatchDescription) {
+				if (!taggedFile.getFile().equals(file)) {
+					mismatchDescription.appendText("file is at ").appendValue(taggedFile.getFile());
+					return false;
+				}
+				if (tag.isPresent() && !taggedFile.getTag().equals(tag.get())) {
+					mismatchDescription.appendText("tag is ").appendValue(taggedFile.getTag());
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("file at ").appendValue(file);
 				if (tag.isPresent()) {
 					description.appendText(" with tag ").appendValue(tag);
 				}

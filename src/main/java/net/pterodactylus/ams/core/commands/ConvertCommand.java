@@ -3,7 +3,6 @@ package net.pterodactylus.ams.core.commands;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +22,7 @@ import net.pterodactylus.util.tag.TaggedFile;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class ConvertCommand implements Command {
+public class ConvertCommand extends AbstractCommand {
 
 	private final Supplier<Path> tempFileSupplier;
 
@@ -62,14 +61,14 @@ public class ConvertCommand implements Command {
 	}
 
 	@Override
-	public void execute(Context context, List<String> parameters) throws IOException {
+	protected void executeForFiles(Context context, List<TaggedFile> selectedFiles, List<String> parameters)
+	throws IOException {
 		Session session = context.getSession();
-		for (TaggedFile taggedFile : new ArrayList<>(context.getSession().getFiles())) {
+		for (TaggedFile taggedFile : selectedFiles) {
 			Path sourceFile = taggedFile.getFile();
 			Path destinationFile = tempFileSupplier.get();
 			converter.convert(context, sourceFile, destinationFile);
-			session.addFile(new TaggedFile(destinationFile, taggedFile.getTag()));
-			session.removeFile(taggedFile);
+			session.replaceFile(taggedFile, new TaggedFile(destinationFile, taggedFile.getTag()));
 		}
 	}
 
