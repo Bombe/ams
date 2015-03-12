@@ -23,6 +23,14 @@ public class Session {
 		taggedFiles.remove(file);
 	}
 
+	public void replaceFile(TaggedFile oldFile, TaggedFile newFile) {
+		int oldIndex = taggedFiles.indexOf(oldFile);
+		if (oldIndex == -1) {
+			return;
+		}
+		taggedFiles.set(oldIndex, newFile);
+	}
+
 	public List<TaggedFile> getFiles() {
 		return Collections.unmodifiableList(taggedFiles);
 	}

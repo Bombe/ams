@@ -18,11 +18,12 @@ import org.mockito.Mockito;
 public class SessionTest {
 
 	private final Session session = new Session();
+	private final TaggedFile file1 = new TaggedFile(Mockito.mock(Path.class), new Tag());
+	private final TaggedFile file2 = new TaggedFile(Mockito.mock(Path.class), new Tag());
+	private final TaggedFile file3 = new TaggedFile(Mockito.mock(Path.class), new Tag());
 
 	@Test
 	public void sessionRetainsAddedFiles() {
-		TaggedFile file1 = createTaggedFile(new Tag());
-		TaggedFile file2 = createTaggedFile(new Tag());
 		session.addFile(file1);
 		session.addFile(file2);
 		MatcherAssert.assertThat(session.getFiles(), Matchers.containsInAnyOrder(file1, file2));
@@ -30,16 +31,18 @@ public class SessionTest {
 
 	@Test
 	public void filesCanBeRemovedFromSession() {
-		TaggedFile file1 = createTaggedFile(new Tag());
-		TaggedFile file2 = createTaggedFile(new Tag());
 		session.addFile(file1);
 		session.addFile(file2);
 		session.removeFile(file1);
 		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(file2));
 	}
 
-	private TaggedFile createTaggedFile(Tag tag) {
-		return new TaggedFile(Mockito.mock(Path.class), tag);
+	@Test
+	public void filesCanBeReplacedInSession() {
+		session.addFile(file1);
+		session.addFile(file2);
+		session.replaceFile(file1, file3);
+		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(file3, file2));
 	}
 
 }
