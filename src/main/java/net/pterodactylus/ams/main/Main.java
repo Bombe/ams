@@ -11,6 +11,7 @@ import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
+import net.pterodactylus.ams.core.commands.ContextBuilder;
 import net.pterodactylus.ams.core.commands.ConvertCommand;
 import net.pterodactylus.ams.core.commands.ListCommand;
 import net.pterodactylus.ams.core.commands.LoadCommand;
@@ -48,7 +49,7 @@ public class Main {
 			 Reader stdinReader = new InputStreamReader(System.in);
 			 BufferedReader reader = new BufferedReader(stdinReader)) {
 			Session session = new Session();
-			Context context = new Context(options, session, writer);
+			Context context = ContextBuilder.from(session).withOptions(options).withWriter(writer).build();
 			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
 			CommandReader commandReader = new CommandReader(commandDispatcher, reader, context);
 			commandReader.run();

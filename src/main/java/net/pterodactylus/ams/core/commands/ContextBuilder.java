@@ -21,22 +21,19 @@ public class ContextBuilder {
 	private ContextBuilder() {
 	}
 
-	private ContextBuilder(Options options, Session session, Writer writer) {
-		this.options = options;
-		this.session = session;
-		this.writer = writer;
-	}
-
 	public ContextBuilder withOptions(Options options) {
-		return new ContextBuilder(options, session, writer);
+		this.options = options;
+		return this;
 	}
 
 	public ContextBuilder withSession(Session session) {
-		return new ContextBuilder(options, session, writer);
+		this.session = session;
+		return this;
 	}
 
 	public ContextBuilder withWriter(Writer writer) {
-		return new ContextBuilder(options, session, writer);
+		this.writer = writer;
+		return this;
 	}
 
 	public Context build() {
