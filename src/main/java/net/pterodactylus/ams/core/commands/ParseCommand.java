@@ -51,13 +51,13 @@ public class ParseCommand extends AbstractCommand {
 		Pattern pattern = createPattern(options.patternValues.stream().collect(Collectors.joining(" ")));
 		Path baseDirectory = fileSystem.getPath(options.baseDirectory).toAbsolutePath();
 		for (TaggedFile taggedFile : selectedFiles) {
-			String relativPath = baseDirectory.relativize(taggedFile.getFile().toAbsolutePath().normalize()).toString();
-			Matcher matcher = pattern.matcher(relativPath);
+			String relativePath = baseDirectory.relativize(taggedFile.getFile().toAbsolutePath().normalize()).toString();
+			Matcher matcher = pattern.matcher(relativePath);
 			if (!matcher.matches()) {
-				if (relativPath.lastIndexOf('.') > relativPath.lastIndexOf('/')) {
-					relativPath = relativPath.substring(0, relativPath.lastIndexOf('.'));
+				if (relativePath.lastIndexOf('.') > relativePath.lastIndexOf('/')) {
+					relativePath = relativePath.substring(0, relativePath.lastIndexOf('.'));
 				}
-				matcher = pattern.matcher(relativPath);
+				matcher = pattern.matcher(relativePath);
 				if (!matcher.matches()) {
 					continue;
 				}
