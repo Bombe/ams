@@ -48,7 +48,7 @@ public class ParseCommand extends AbstractCommand {
 	throws IOException {
 		Options options = new Options();
 		new JCommander(options).parse(parameters.toArray(new String[parameters.size()]));
-		Pattern pattern = Pattern.compile(options.patternValues.stream().collect(Collectors.joining(" ")));
+		Pattern pattern = createPattern(options.patternValues.stream().collect(Collectors.joining(" ")));
 		Path baseDirectory = fileSystem.getPath(options.baseDirectory).toAbsolutePath();
 		for (TaggedFile taggedFile : selectedFiles) {
 			String relativPath = baseDirectory.relativize(taggedFile.getFile().toAbsolutePath().normalize()).toString();
@@ -64,6 +64,18 @@ public class ParseCommand extends AbstractCommand {
 			getValueFromMatcher(taggedFile, matcher, "Disc", (tag, disc) -> tag.setDisc(disc), Integer::valueOf);
 			getValueFromMatcher(taggedFile, matcher, "Date", (tag, date) -> tag.setDate(LocalDate.of(date, 1, 1)), Integer::valueOf);
 		}
+	}
+
+	private Pattern createPattern(String pattern) {
+		String regexPattern = pattern
+				.replaceAll(Pattern.quote("${Track}"), "(?<Track>\\\\d+)")
+				.replaceAll(Pattern.quote("${Artist}"), "(?<Artist>.+)")
+				.replaceAll(Pattern.quote("${AlbumArtist}"), "(?<AlbumArtist>.+)")
+				.replaceAll(Pattern.quote("${Name}"), "(?<Name>.+)")
+				.replaceAll(Pattern.quote("${Album}"), "(?<Album>.+)")
+				.replaceAll(Pattern.quote("${Disc}"), "(?<Disc>\\\\d+)")
+				.replaceAll(Pattern.quote("${Date}"), "(?<Date>\\\\d+)");
+		return Pattern.compile(regexPattern);
 	}
 
 	private <T> void getValueFromMatcher(TaggedFile taggedFile, Matcher matcher, String name, BiConsumer<Tag, T> setter, Function<String, T> converter) {
