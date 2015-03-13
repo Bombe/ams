@@ -2,6 +2,7 @@ package net.pterodactylus.ams.core.commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,20 @@ public class CleanCommandTest {
 						new Tag().setAlbumArtist("Name an Album Artist Of"),
 						new Tag().setComment("Comment for the Album"),
 						new Tag().setGenre("The Style the Stuff Goes By")
+				));
+	}
+
+	@Test
+	public void cleaningCanBeRestrictedToSelectedFiles() throws IOException {
+		session.addFile(new TaggedFile(Mockito.mock(Path.class), new Tag().setArtist("the artist")));
+		session.addFile(new TaggedFile(Mockito.mock(Path.class), new Tag().setName("song by an ARTIST")));
+		session.addFile(new TaggedFile(Mockito.mock(Path.class), new Tag().setAlbum("a name fRoM the ALbum")));
+		command.execute(context, Arrays.asList("-t", "1-2"));
+		MatcherAssert.assertThat(session.getFiles().stream().map(TaggedFile::getTag).collect(Collectors.toList()),
+				Matchers.contains(
+						new Tag().setArtist("The Artist"),
+						new Tag().setName("Song by an Artist"),
+						new Tag().setAlbum("a name fRoM the ALbum")
 				));
 	}
 
