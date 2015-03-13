@@ -68,4 +68,16 @@ public class ParseCommandTest {
 		MatcherAssert.assertThat(file.getTag(), Matchers.is(new Tag()));
 	}
 
+	@Test
+	public void fileExtensionIsIgnoredIfThatAllowsAFileToMatch() throws IOException {
+		command.execute(context,
+				Arrays.asList("-d", "/foo",
+						"bar/${Date}_${Album}/${Track}_${Artist}_${Name}-tag"));
+		MatcherAssert.assertThat(file.getTag().getTrack().get(), Matchers.is(1));
+		MatcherAssert.assertThat(file.getTag().getArtist().get(), Matchers.is("the-band"));
+		MatcherAssert.assertThat(file.getTag().getName().get(), Matchers.is("the-song"));
+		MatcherAssert.assertThat(file.getTag().getAlbum().get(), Matchers.is("supercool"));
+		MatcherAssert.assertThat(file.getTag().getDate().get(), Matchers.is(LocalDate.of(2015, 1, 1)));
+	}
+
 }

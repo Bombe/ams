@@ -54,7 +54,13 @@ public class ParseCommand extends AbstractCommand {
 			String relativPath = baseDirectory.relativize(taggedFile.getFile().toAbsolutePath().normalize()).toString();
 			Matcher matcher = pattern.matcher(relativPath);
 			if (!matcher.matches()) {
-				continue;
+				if (relativPath.lastIndexOf('.') > relativPath.lastIndexOf('/')) {
+					relativPath = relativPath.substring(0, relativPath.lastIndexOf('.'));
+				}
+				matcher = pattern.matcher(relativPath);
+				if (!matcher.matches()) {
+					continue;
+				}
 			}
 			getValueFromMatcher(taggedFile, matcher, "Track", (tag, track) -> tag.setTrack(track), Integer::valueOf);
 			getValueFromMatcher(taggedFile, matcher, "Artist", (tag, artist) -> tag.setArtist(artist), Function.identity());
