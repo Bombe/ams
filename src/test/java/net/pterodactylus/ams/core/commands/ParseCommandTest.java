@@ -43,7 +43,6 @@ public class ParseCommandTest {
 
 	@Test
 	public void filenameIsParsedAccordingToPattern() throws IOException {
-		Files.createDirectories(fileSystem.getPath("/foo/bar"));
 		TaggedFile file =
 				new TaggedFile(fileSystem.getPath("/foo/bar/2015_supercool/1_the-band_the-song-tag.music"), new Tag());
 		session.addFile(file);
