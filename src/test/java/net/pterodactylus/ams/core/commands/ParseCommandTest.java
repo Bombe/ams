@@ -2,7 +2,6 @@ package net.pterodactylus.ams.core.commands;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -15,6 +14,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,6 +30,13 @@ public class ParseCommandTest {
 	private final ParseCommand command = new ParseCommand(fileSystem);
 	private final Session session = new Session();
 	private final Context context = ContextBuilder.from(session).build();
+	private final TaggedFile file =
+			new TaggedFile(fileSystem.getPath("/foo/bar/2015_supercool/1_the-band_the-song-tag.music"), new Tag());
+
+	@Before
+	public void setupSession() {
+		session.addFile(file);
+	}
 
 	@Test
 	public void defaultConstructorCanBeCalled() {
@@ -43,9 +50,6 @@ public class ParseCommandTest {
 
 	@Test
 	public void filenameIsParsedAccordingToPattern() throws IOException {
-		TaggedFile file =
-				new TaggedFile(fileSystem.getPath("/foo/bar/2015_supercool/1_the-band_the-song-tag.music"), new Tag());
-		session.addFile(file);
 		command.execute(context,
 				Arrays.asList("-d", "/foo",
 						"bar/${Date}_${Album}/${Track}_${Artist}_${Name}-tag.music"));
@@ -54,6 +58,14 @@ public class ParseCommandTest {
 		MatcherAssert.assertThat(file.getTag().getName().get(), Matchers.is("the-song"));
 		MatcherAssert.assertThat(file.getTag().getAlbum().get(), Matchers.is("supercool"));
 		MatcherAssert.assertThat(file.getTag().getDate().get(), Matchers.is(LocalDate.of(2015, 1, 1)));
+	}
+
+	@Test
+	public void nonMatchingFilesAreIgnored() throws IOException {
+		command.execute(context,
+				Arrays.asList("-d", "/foo",
+						"bar/${Date}_${Album}/${Track}_-_${Artist}_${Name}.music"));
+		MatcherAssert.assertThat(file.getTag(), Matchers.is(new Tag()));
 	}
 
 }
