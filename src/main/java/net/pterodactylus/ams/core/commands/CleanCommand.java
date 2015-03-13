@@ -12,6 +12,9 @@ import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TaggedFile;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
 /**
  * Fixes capitalization of text-based tags.
  *
@@ -31,14 +34,30 @@ public class CleanCommand extends AbstractCommand {
 	@Override
 	protected void executeForFiles(Context context, List<TaggedFile> selectedFiles, List<String> parameters)
 	throws IOException {
+		Options options = new Options();
+		new JCommander(options, parameters.toArray(new String[parameters.size()]));
+		boolean cleaningIsRestricted = options.cleanArtists || options.cleanNames || options.cleanAlbums
+				|| options.cleanAlbumArtists || options.cleanComments || options.cleanGenres;
 		for (TaggedFile taggedFile : selectedFiles) {
 			Tag tag = taggedFile.getTag();
-			cleanValue(tag, Tag::getArtist, Tag::setArtist);
-			cleanValue(tag, Tag::getName, Tag::setName);
-			cleanValue(tag, Tag::getAlbum, Tag::setAlbum);
-			cleanValue(tag, Tag::getAlbumArtist, Tag::setAlbumArtist);
-			cleanValue(tag, Tag::getComment, Tag::setComment);
-			cleanValue(tag, Tag::getGenre, Tag::setGenre);
+			if (!cleaningIsRestricted || options.cleanArtists) {
+				cleanValue(tag, Tag::getArtist, Tag::setArtist);
+			}
+			if (!cleaningIsRestricted || options.cleanNames) {
+				cleanValue(tag, Tag::getName, Tag::setName);
+			}
+			if (!cleaningIsRestricted || options.cleanAlbums) {
+				cleanValue(tag, Tag::getAlbum, Tag::setAlbum);
+			}
+			if (!cleaningIsRestricted || options.cleanAlbumArtists) {
+				cleanValue(tag, Tag::getAlbumArtist, Tag::setAlbumArtist);
+			}
+			if (!cleaningIsRestricted || options.cleanComments) {
+				cleanValue(tag, Tag::getComment, Tag::setComment);
+			}
+			if (!cleaningIsRestricted || options.cleanGenres) {
+				cleanValue(tag, Tag::getGenre, Tag::setGenre);
+			}
 		}
 	}
 
@@ -69,6 +88,28 @@ public class CleanCommand extends AbstractCommand {
 
 	private String capitalizeWord(String word) {
 		return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+	}
+
+	private static class Options {
+
+		@Parameter(names = { "--artist" })
+		private boolean cleanArtists;
+
+		@Parameter(names = { "--name" })
+		private boolean cleanNames;
+
+		@Parameter(names = { "--album" })
+		private boolean cleanAlbums;
+
+		@Parameter(names = { "--albumartist" })
+		private boolean cleanAlbumArtists;
+
+		@Parameter(names = { "--comment" })
+		private boolean cleanComments;
+
+		@Parameter(names = { "--genre" })
+		private boolean cleanGenres;
+
 	}
 
 }
