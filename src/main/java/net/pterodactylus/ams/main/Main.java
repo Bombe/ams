@@ -11,6 +11,7 @@ import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
+import net.pterodactylus.ams.core.commands.BatchCommand;
 import net.pterodactylus.ams.core.commands.CleanCommand;
 import net.pterodactylus.ams.core.commands.ContextBuilder;
 import net.pterodactylus.ams.core.commands.ConvertCommand;
@@ -76,6 +77,7 @@ public class Main {
 		commandDispatcher.addCommand(new SetGenreCommand());
 		commandDispatcher.addCommand(new ParseCommand());
 		commandDispatcher.addCommand(new CleanCommand());
+		commandDispatcher.addCommand(new BatchCommand());
 		commandDispatcher.addCommand(new ConvertCommand());
 		commandDispatcher.addCommand(new RenameCommand());
 		commandDispatcher.addCommand(new SaveCommand());
