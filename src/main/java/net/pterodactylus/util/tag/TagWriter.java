@@ -20,6 +20,6 @@ public interface TagWriter {
 	 */
 	boolean isEncodable(Tag tag);
 
-	boolean write(Tag tag, Path file) throws IOException;
+	void write(Tag tag, Path file) throws IOException;
 
 }

@@ -33,7 +33,7 @@ public class ID3v23TagWriter implements TagWriter {
 	}
 
 	@Override
-	public boolean write(Tag tag, Path file) throws IOException {
+	public void write(Tag tag, Path file) throws IOException {
 		Optional<Integer> headerSize;
 		try (InputStream inputStream = Files.newInputStream(file)) {
 			Optional<Header> header = parseHeader(inputStream);
@@ -46,13 +46,9 @@ public class ID3v23TagWriter implements TagWriter {
 			} else {
 				removeOldTagAndWriteNewTag(headerSize.get() + 10, encodedTag, file);
 			}
-		} else {
-			if (!mp3Identifier.isMediaFile(file)) {
-				return false;
-			}
+		} else if (mp3Identifier.isMediaFile(file)) {
 			insertNewTag(encodedTag, file);
 		}
-		return true;
 	}
 
 	private void overwriteTag(int oldTagSize, byte[] encodedTag, Path file) {

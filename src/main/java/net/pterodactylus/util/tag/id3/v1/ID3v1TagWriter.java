@@ -69,12 +69,11 @@ public class ID3v1TagWriter implements TagWriter {
 	}
 
 	@Override
-	public boolean write(Tag tag, Path file) throws IOException {
+	public void write(Tag tag, Path file) throws IOException {
 		if (tagReader.readTags(file).isPresent()) {
 			overwriteOldTag(file, tag);
 		}
 		appendTag(file, tag);
-		return false;
 	}
 
 	private void overwriteOldTag(Path file, Tag tag) throws IOException {
