@@ -35,7 +35,7 @@ public class ID3v23TagWriterTest {
 	@Test
 	public void nonMp3FileIsNotChanged() throws IOException {
 		Path nonMp3File = Files.createTempFile("non-mp3-", ".dat");
-		nonMp3File.toFile().delete();
+		nonMp3File.toFile().deleteOnExit();
 		Files.write(nonMp3File, "NotAnMp3".getBytes(StandardCharsets.UTF_8));
 		tagWriter.write(tag, nonMp3File);
 		assertThat(Files.readAllBytes(nonMp3File), is("NotAnMp3".getBytes(StandardCharsets.UTF_8)));
