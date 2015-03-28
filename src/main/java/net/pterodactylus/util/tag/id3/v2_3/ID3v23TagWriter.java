@@ -34,6 +34,9 @@ public class ID3v23TagWriter implements TagWriter {
 
 	@Override
 	public void write(Tag tag, Path file) throws IOException {
+		if (tag.equals(new Tag())) {
+			return;
+		}
 		Optional<Integer> headerSize;
 		try (InputStream inputStream = Files.newInputStream(file)) {
 			Optional<Header> header = parseHeader(inputStream);

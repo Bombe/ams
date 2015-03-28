@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import net.pterodactylus.util.tag.Tag;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -42,7 +43,14 @@ public class ID3v23TagWriterTest {
 	}
 
 	@Test
+	public void emptyTagIsNotWrittenToFile() throws IOException {
+		tagWriter.write(tag, mp3File);
+		assertThat(Files.readAllBytes(mp3File).length, Matchers.is(2));
+	}
+
+	@Test
 	public void mp3FileIsChanged() throws IOException {
+		tag.setName("Name");
 		tagWriter.write(tag, mp3File);
 		assertThat(Files.readAllBytes(mp3File).length, greaterThan(2));
 	}
