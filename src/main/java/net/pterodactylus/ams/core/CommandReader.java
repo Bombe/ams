@@ -29,7 +29,9 @@ public class CommandReader implements Runnable {
 	}
 
 	public void addLine(String line) {
-		additionalLines.addLast(line);
+		synchronized (additionalLines) {
+			additionalLines.addLast(line);
+		}
 	}
 
 	@Override
@@ -57,8 +59,10 @@ public class CommandReader implements Runnable {
 	}
 
 	private String getNextLine() throws IOException {
-		if (!additionalLines.isEmpty()) {
-			return additionalLines.removeFirst();
+		synchronized (additionalLines) {
+			if (!additionalLines.isEmpty()) {
+				return additionalLines.removeFirst();
+			}
 		}
 		context.write("> ");
 		context.flush();
