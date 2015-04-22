@@ -37,14 +37,7 @@ public class CommandReader implements Runnable {
 		try {
 			while (!context.shouldExit()) {
 				try {
-					String line;
-					if (!additionalLines.isEmpty()) {
-						line = additionalLines.removeFirst();
-					} else {
-						context.write("> ");
-						context.flush();
-						line = reader.readLine();
-					}
+					String line = getNextLine();
 					Optional<Result> result = lineParser.parse(line);
 					if (!result.isPresent()) {
 						continue;
@@ -61,6 +54,15 @@ public class CommandReader implements Runnable {
 		} catch (EmptyLine | IOException e) {
 			/* just end this. */
 		}
+	}
+
+	private String getNextLine() throws IOException {
+		if (!additionalLines.isEmpty()) {
+			return additionalLines.removeFirst();
+		}
+		context.write("> ");
+		context.flush();
+		return reader.readLine();
 	}
 
 }
