@@ -82,11 +82,4 @@ public class LineParserTest {
 		MatcherAssert.assertThat(result.getParameters(), Matchers.contains("foo", "bar"));
 	}
 
-	@Test
-	public void parserCanEscapeStringsWithAllSpecialCharacters() {
-		String escaped = lineParser.escape("test \"foo' \\bar");
-		Result result = lineParser.parse(escaped).get();
-		MatcherAssert.assertThat(result.getCommand(), Matchers.is("test \"foo' \\bar"));
-	}
-
 }

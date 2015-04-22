@@ -65,10 +65,6 @@ public class LineParser {
 		return words;
 	}
 
-	public static String escape(String argument) {
-		return argument.replaceAll("([ \"'\\\\])", "\\\\$1");
-	}
-
 	/**
 	 * The result of {@link LineParser#parse(String)}, consisting of a command name and a list of parameters.
 	 *
