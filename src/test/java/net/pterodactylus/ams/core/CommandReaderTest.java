@@ -58,4 +58,11 @@ public class CommandReaderTest {
 		Mockito.verify(commandDispatcher).runCommand(Matchers.eq("test"), Matchers.eq(Arrays.asList("foo", "bar")));
 	}
 
+	@Test
+	public void addingALinePreventsReadingFromTheReader() throws IOException {
+		commandReader.addLine("test foo bar");
+		commandReader.run();
+		Mockito.verify(commandDispatcher).runCommand(Matchers.eq("test"), Matchers.eq(Arrays.asList("foo", "bar")));
+	}
+
 }
