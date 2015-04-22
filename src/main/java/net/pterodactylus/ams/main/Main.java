@@ -6,10 +6,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import net.pterodactylus.ams.core.CommandDispatcher;
 import net.pterodactylus.ams.core.CommandReader;
 import net.pterodactylus.ams.core.Context;
+import net.pterodactylus.ams.core.LineEscaper;
 import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.ams.core.commands.BatchCommand;
 import net.pterodactylus.ams.core.commands.CleanCommand;
@@ -41,6 +44,7 @@ import net.pterodactylus.util.envopt.SystemEnvironment;
  */
 public class Main {
 
+	private final LineEscaper lineEscaper = new LineEscaper();
 	private final String[] arguments;
 
 	public Main(String[] arguments) {
@@ -56,6 +60,12 @@ public class Main {
 			Context context = ContextBuilder.from(session).withOptions(options).withWriter(writer).build();
 			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
 			CommandReader commandReader = new CommandReader(commandDispatcher, reader, context);
+			if (arguments.length > 0) {
+				commandReader.addLine("load " + Arrays.asList(arguments)
+						.stream()
+						.map(lineEscaper::escape)
+						.collect(Collectors.joining(" ")));
+			}
 			commandReader.run();
 		}
 	}
