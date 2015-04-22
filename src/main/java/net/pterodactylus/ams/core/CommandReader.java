@@ -2,6 +2,8 @@ package net.pterodactylus.ams.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Optional;
 
 import net.pterodactylus.ams.core.LineParser.EmptyLine;
@@ -18,6 +20,7 @@ public class CommandReader implements Runnable {
 	private final CommandDispatcher commandDispatcher;
 	private final BufferedReader reader;
 	private final Context context;
+	private final Deque<String> additionalLines = new LinkedList<>();
 
 	public CommandReader(CommandDispatcher commandDispatcher, BufferedReader reader, Context context) {
 		this.commandDispatcher = commandDispatcher;
@@ -25,14 +28,23 @@ public class CommandReader implements Runnable {
 		this.context = context;
 	}
 
+	public void addLine(String line) {
+		additionalLines.addLast(line);
+	}
+
 	@Override
 	public void run() {
 		try {
 			while (!context.shouldExit()) {
 				try {
-					context.write("> ");
-					context.flush();
-					String line = reader.readLine();
+					String line;
+					if (!additionalLines.isEmpty()) {
+						line = additionalLines.removeFirst();
+					} else {
+						context.write("> ");
+						context.flush();
+						line = reader.readLine();
+					}
 					Optional<Result> result = lineParser.parse(line);
 					if (!result.isPresent()) {
 						continue;
