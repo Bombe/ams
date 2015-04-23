@@ -19,10 +19,7 @@ public class AiffIdentifier implements MediaFileIdentifier {
 				return false;
 			}
 			ignore4Bytes(fileInputStream);
-			if (invalidAiffOrAifcHeader(fileInputStream)) {
-				return false;
-			}
-			return true;
+			return validAiffOrAifcHeader(fileInputStream);
 		}
 	}
 
@@ -38,12 +35,12 @@ public class AiffIdentifier implements MediaFileIdentifier {
 		fileInputStream.read();
 	}
 
-	private boolean invalidAiffOrAifcHeader(InputStream fileInputStream) throws IOException {
+	private boolean validAiffOrAifcHeader(InputStream fileInputStream) throws IOException {
 		if (fileInputStream.read() != 'A' || fileInputStream.read() != 'I' || fileInputStream.read() != 'F') {
-			return true;
+			return false;
 		}
 		int lastByte = fileInputStream.read();
-		return (lastByte != 'F') && (lastByte != 'C');
+		return (lastByte == 'F') || (lastByte == 'C');
 	}
 
 }
