@@ -49,7 +49,7 @@ public class ID3v23TagWriterTest {
 	}
 
 	@Test
-	public void mp3FileIsChanged() throws IOException {
+	public void tagIsWrittenToMp3FileWithoutTag() throws IOException {
 		tag.setName("Name");
 		tagWriter.write(tag, mp3File);
 		assertThat(Files.readAllBytes(mp3File).length, greaterThan(2));
