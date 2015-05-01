@@ -64,7 +64,7 @@ public class ID3v23TagReader implements TagReader {
 	}
 
 	private void processFrame(Frame frame, Tag tag) {
-		String frameIdentifier = frame.getIdentifier();
+		String frameIdentifier = frame.getFrameId();
 		if (frameIdentifier.equals("TPE1")) {
 			tag.setArtist(frame.getDecodedText());
 		} else if (frameIdentifier.equals("TALB")) {
