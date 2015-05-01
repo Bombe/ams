@@ -6,6 +6,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.pterodactylus.util.bits.ByteArrayDecoders;
+
 /**
  * Utility methods for handling ID3 v2.3 tags.
  *
@@ -15,7 +17,7 @@ class ID3v23Utils {
 
 	public static int read16Bits(InputStream inputStream) throws IOException {
 		byte[] buffer = readBuffer(inputStream, new byte[2]);
-		return ((buffer[0] & 0xff) << 8) | (buffer[1] & 0xff);
+		return ByteArrayDecoders.integer16BitMsbFirstDecoder().apply(buffer);
 	}
 
 	public static byte[] encode28Bits(int data) {
@@ -38,7 +40,7 @@ class ID3v23Utils {
 
 	public static int read32Bits(InputStream inputStream) throws IOException {
 		byte[] buffer = readBuffer(inputStream, new byte[4]);
-		return (buffer[0] << 24) | ((buffer[1] & 0xff) << 16) | ((buffer[2] & 0xff) << 8) | (buffer[3] & 0xff);
+		return ByteArrayDecoders.integer32BitMsbFirstDecoder().apply(buffer);
 	}
 
 	public static byte readByte(InputStream inputStream) throws IOException {
