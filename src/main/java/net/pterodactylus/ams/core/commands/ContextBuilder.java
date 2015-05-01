@@ -1,5 +1,6 @@
 package net.pterodactylus.ams.core.commands;
 
+import java.io.BufferedReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -17,6 +18,7 @@ public class ContextBuilder {
 	private Options options = new Options();
 	private Session session;
 	private Writer writer = new StringWriter();
+	private BufferedReader reader;
 
 	private ContextBuilder() {
 	}
@@ -36,8 +38,13 @@ public class ContextBuilder {
 		return this;
 	}
 
+	public ContextBuilder reading(BufferedReader reader) {
+		this.reader = reader;
+		return this;
+	}
+
 	public Context build() {
-		return new Context(options, session, writer);
+		return new Context(options, session, writer, reader);
 	}
 
 	public static ContextBuilder from(Session session) {

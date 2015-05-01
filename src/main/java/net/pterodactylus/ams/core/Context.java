@@ -1,7 +1,10 @@
 package net.pterodactylus.ams.core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.pterodactylus.ams.main.Options;
@@ -17,11 +20,14 @@ public class Context {
 	private final Options options;
 	private final Session session;
 	private final Writer writer;
+	private final BufferedReader reader;
+	private final Deque<String> additionalLines = new LinkedList<>();
 
-	public Context(Options options, Session session, Writer writer) {
+	public Context(Options options, Session session, Writer writer, BufferedReader reader) {
 		this.options = options;
 		this.session = session;
 		this.writer = writer;
+		this.reader = reader;
 	}
 
 	public void exit() {
@@ -46,6 +52,23 @@ public class Context {
 
 	public void flush() throws IOException {
 		writer.flush();
+	}
+
+	public String getNextLine() throws IOException {
+		synchronized (additionalLines) {
+			if (!additionalLines.isEmpty()) {
+				return additionalLines.removeFirst();
+			}
+		}
+		write("> ");
+		flush();
+		return reader.readLine();
+	}
+
+	public void addLine(String line) {
+		synchronized (additionalLines) {
+			additionalLines.addLast(line);
+		}
 	}
 
 }

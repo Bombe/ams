@@ -57,11 +57,11 @@ public class Main {
 			 Reader stdinReader = new InputStreamReader(System.in);
 			 BufferedReader reader = new BufferedReader(stdinReader)) {
 			Session session = new Session();
-			Context context = ContextBuilder.from(session).withOptions(options).withWriter(writer).build();
+			Context context = ContextBuilder.from(session).withOptions(options).withWriter(writer).reading(reader).build();
 			CommandDispatcher commandDispatcher = createCommandDispatcher(context);
-			CommandReader commandReader = new CommandReader(commandDispatcher, reader, context);
+			CommandReader commandReader = new CommandReader(commandDispatcher, context);
 			if (arguments.length > 0) {
-				commandReader.addLine("load " + Arrays.asList(arguments)
+				context.addLine("load " + Arrays.asList(arguments)
 						.stream()
 						.map(lineEscaper::escape)
 						.collect(Collectors.joining(" ")));

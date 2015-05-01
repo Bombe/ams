@@ -2,8 +2,6 @@ package net.pterodactylus.ams.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Optional;
 
 import net.pterodactylus.ams.core.LineParser.EmptyLine;
@@ -18,20 +16,11 @@ public class CommandReader implements Runnable {
 
 	private final LineParser lineParser = new LineParser();
 	private final CommandDispatcher commandDispatcher;
-	private final BufferedReader reader;
 	private final Context context;
-	private final Deque<String> additionalLines = new LinkedList<>();
 
-	public CommandReader(CommandDispatcher commandDispatcher, BufferedReader reader, Context context) {
+	public CommandReader(CommandDispatcher commandDispatcher, Context context) {
 		this.commandDispatcher = commandDispatcher;
-		this.reader = reader;
 		this.context = context;
-	}
-
-	public void addLine(String line) {
-		synchronized (additionalLines) {
-			additionalLines.addLast(line);
-		}
 	}
 
 	@Override
@@ -39,7 +28,7 @@ public class CommandReader implements Runnable {
 		try {
 			while (!context.shouldExit()) {
 				try {
-					String line = getNextLine();
+					String line = context.getNextLine();
 					Optional<Result> result = lineParser.parse(line);
 					if (!result.isPresent()) {
 						continue;
@@ -56,17 +45,6 @@ public class CommandReader implements Runnable {
 		} catch (EmptyLine | IOException e) {
 			/* just end this. */
 		}
-	}
-
-	private String getNextLine() throws IOException {
-		synchronized (additionalLines) {
-			if (!additionalLines.isEmpty()) {
-				return additionalLines.removeFirst();
-			}
-		}
-		context.write("> ");
-		context.flush();
-		return reader.readLine();
 	}
 
 }
