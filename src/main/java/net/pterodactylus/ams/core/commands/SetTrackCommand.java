@@ -3,6 +3,7 @@ package net.pterodactylus.ams.core.commands;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TaggedFile;
@@ -20,7 +21,7 @@ public class SetTrackCommand extends SetAttributeCommand {
 	}
 
 	@Override
-	protected void setAttributes(List<TaggedFile> selectedFiles, String value) {
+	protected void setAttributes(Context context, List<TaggedFile> selectedFiles, String value) {
 		AtomicInteger index = new AtomicInteger();
 		selectedFiles.stream().map(TaggedFile::getTag).forEach(tag -> {
 			index.incrementAndGet();

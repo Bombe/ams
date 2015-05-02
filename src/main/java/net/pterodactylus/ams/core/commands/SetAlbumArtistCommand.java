@@ -2,6 +2,7 @@ package net.pterodactylus.ams.core.commands;
 
 import java.util.List;
 
+import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.ams.core.Session;
 import net.pterodactylus.util.tag.Tag;
 import net.pterodactylus.util.tag.TaggedFile;
@@ -19,7 +20,7 @@ public class SetAlbumArtistCommand extends SetAttributeCommand {
 	}
 
 	@Override
-	protected void setAttributes(List<TaggedFile> selectedFiles, String value) {
+	protected void setAttributes(Context context, List<TaggedFile> selectedFiles, String value) {
 		selectedFiles.stream().map(TaggedFile::getTag).forEach(tag -> tag.setAlbumArtist(value));
 	}
 

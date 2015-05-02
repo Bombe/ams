@@ -20,9 +20,9 @@ public abstract class SetAttributeCommand extends AbstractCommand {
 	protected void executeForFiles(Context context, List<TaggedFile> selectedFiles, List<String> parameters)
 	throws IOException {
 		String attributeValue = parameters.stream().collect(Collectors.joining(" "));
-		setAttributes(selectedFiles, attributeValue);
+		setAttributes(context, selectedFiles, attributeValue);
 	}
 
-	protected abstract void setAttributes(List<TaggedFile> files, String value);
+	protected abstract void setAttributes(Context context, List<TaggedFile> files, String value);
 
 }
