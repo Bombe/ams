@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import net.pterodactylus.ams.core.Context;
 import net.pterodactylus.util.tag.TaggedFile;
 
-import com.beust.jcommander.Parameter;
-
 /**
  * Modifies an attribute of all files or a range of files in the session.
  *
