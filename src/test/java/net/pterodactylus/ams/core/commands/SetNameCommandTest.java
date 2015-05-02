@@ -63,7 +63,7 @@ public class SetNameCommandTest {
 
 	@Test
 	public void nameOfARangeOfTracksCanBeSet() throws IOException {
-		Mockito.when(context.getNextLine()).thenReturn("Other Name");
+		Mockito.when(context.getNextLine(org.mockito.Matchers.anyString())).thenReturn("Other Name");
 		command.execute(context, Arrays.asList("--tracks", "1-2", "New", "Name"));
 		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(
 				TaggedFileTest.isTaggedFile("/foo/bar/file1.music", new Tag().setName("New Name")),
@@ -75,7 +75,7 @@ public class SetNameCommandTest {
 	@Test
 	public void namesOfAllFilesAreReadFromSupplier() throws IOException {
 		Iterator<String> names = Arrays.asList("name1", "name 2", "name three").iterator();
-		Mockito.when(context.getNextLine()).thenAnswer(invocation -> names.next());
+		Mockito.when(context.getNextLine(org.mockito.Matchers.anyString())).thenAnswer(invocation -> names.next());
 		command.execute(context, Arrays.asList());
 		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(
 				TaggedFileTest.isTaggedFile("/foo/bar/file1.music", new Tag().setName("name1")),
@@ -84,15 +84,10 @@ public class SetNameCommandTest {
 		));
 	}
 
-	@Test
+	@Test(expected = IOException.class)
 	public void ioExceptionWhenReadingNextLineTerminatesSettingNames() throws IOException {
-		Mockito.when(context.getNextLine()).thenThrow(IOException.class);
+		Mockito.when(context.getNextLine(org.mockito.Matchers.anyString())).thenThrow(IOException.class);
 		command.execute(context, Arrays.asList("New Name"));
-		MatcherAssert.assertThat(session.getFiles(), Matchers.contains(
-				TaggedFileTest.isTaggedFile("/foo/bar/file1.music", new Tag().setName("New Name")),
-				TaggedFileTest.isTaggedFile("/foo/bar/file2.music", new Tag()),
-				TaggedFileTest.isTaggedFile("/foo/bar/file3.music", new Tag())
-		));
 	}
 
 }

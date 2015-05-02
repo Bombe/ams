@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 /**
  * Unit test for {@link CommandReader}.
@@ -34,35 +32,35 @@ public class CommandReaderTest {
 
 	@Test
 	public void emptyLineTerminatesCommandReader() throws IOException {
-		Mockito.when(context.getNextLine()).thenReturn(null);
+		Mockito.when(context.getNextLine(Matchers.anyString())).thenReturn(null);
 		commandReader.run();
 		Mockito.verify(commandDispatcher, Mockito.never()).runCommand(Matchers.anyString(), Matchers.anyList());
 	}
 
 	@Test
 	public void ioExceptionTerminatesCommandReader() throws IOException {
-		Mockito.when(context.getNextLine()).thenThrow(IOException.class);
+		Mockito.when(context.getNextLine(Matchers.anyString())).thenThrow(IOException.class);
 		commandReader.run();
 		Mockito.verify(commandDispatcher, Mockito.never()).runCommand(Matchers.anyString(), Matchers.anyList());
 	}
 
 	@Test
 	public void emptyLineIsIgnored() throws IOException {
-		Mockito.when(context.getNextLine()).thenReturn("").thenReturn(null);
+		Mockito.when(context.getNextLine(Matchers.anyString())).thenReturn("").thenReturn(null);
 		commandReader.run();
 		Mockito.verify(commandDispatcher, Mockito.never()).runCommand(Matchers.anyString(), Matchers.anyList());
 	}
 
 	@Test
 	public void readingALineForwardsToCommandDispatcher() throws IOException {
-		Mockito.when(context.getNextLine()).thenReturn("test foo bar").thenReturn(null);
+		Mockito.when(context.getNextLine(Matchers.anyString())).thenReturn("test foo bar").thenReturn(null);
 		commandReader.run();
 		Mockito.verify(commandDispatcher).runCommand(Matchers.eq("test"), Matchers.eq(Arrays.asList("foo", "bar")));
 	}
 
 	@Test
 	public void runtimeExceptionInCommandDispatcherIsIgnored() throws IOException {
-		Mockito.when(context.getNextLine()).thenReturn("test foo bar").thenReturn(null);
+		Mockito.when(context.getNextLine(Matchers.anyString())).thenReturn("test foo bar").thenReturn(null);
 		Mockito.doThrow(RuntimeException.class)
 				.when(commandDispatcher)
 				.runCommand(Matchers.anyString(), Matchers.anyList());

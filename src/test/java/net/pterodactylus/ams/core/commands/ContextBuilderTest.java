@@ -59,7 +59,7 @@ public class ContextBuilderTest {
 	@Test
 	public void contextRetainsReader() throws IOException {
 		contextBuilder.reading(reader);
-		contextBuilder.build().getNextLine();
+		contextBuilder.build().getNextLine("> ");
 		Mockito.verify(reader).readLine();
 	}
 

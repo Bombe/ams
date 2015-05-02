@@ -55,21 +55,21 @@ public class ContextTest {
 	@Test
 	public void contextCanSupplyNextLines() throws IOException {
 		Mockito.when(reader.readLine()).thenReturn("first", "second", null);
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("first"));
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("second"));
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.nullValue());
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("first"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("second"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.nullValue());
 	}
 
 	@Test
 	public void contextCanBeFilledWithAdditionalLines() throws IOException {
 	    context.addLine("very first");
 		Mockito.when(reader.readLine()).thenReturn("first", "second", null);
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("very first"));
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("first"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("very first"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("first"));
 		context.addLine("insertion");
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("insertion"));
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.is("second"));
-		MatcherAssert.assertThat(context.getNextLine(), Matchers.nullValue());
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("insertion"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.is("second"));
+		MatcherAssert.assertThat(context.getNextLine("> "), Matchers.nullValue());
 	}
 
 }

@@ -2,7 +2,6 @@ package net.pterodactylus.ams.core.commands;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -26,28 +25,19 @@ public class SetNameCommand extends AbstractCommand {
 	@Override
 	protected void executeForFiles(Context context, List<TaggedFile> selectedFiles, List<String> parameters)
 	throws IOException {
-		Supplier<String> nameSupplier = new Supplier<String>() {
-			private boolean returnedFirst = parameters.isEmpty();
-			private String firstParameter = parameters.stream().collect(Collectors.joining(" "));
-			@Override
-			public String get() {
-				if (!returnedFirst) {
-					returnedFirst = true;
-					return firstParameter;
-				}
-				try {
-					return context.getNextLine();
-				} catch (IOException ioe1) {
-					return null;
-				}
-			}
-		};
+		boolean returnedFirst = parameters.isEmpty();
+		int index = returnedFirst ? 0 : 1;
 		for (TaggedFile selectedFile : selectedFiles) {
-			String name = nameSupplier.get();
-			if (name == null) {
-				break;
+			if (!returnedFirst) {
+				selectedFile.getTag().setName(parameters.stream().collect(Collectors.joining(" ")));
+				returnedFirst = true;
+			} else {
+				String name = context.getNextLine(String.format("%d/%d: ", ++index, selectedFiles.size()));
+				if (name == null) {
+					break;
+				}
+				selectedFile.getTag().setName(name);
 			}
-			selectedFile.getTag().setName(name);
 		}
 	}
 

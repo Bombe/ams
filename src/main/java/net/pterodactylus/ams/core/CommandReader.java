@@ -28,7 +28,7 @@ public class CommandReader implements Runnable {
 		try {
 			while (!context.shouldExit()) {
 				try {
-					String line = context.getNextLine();
+					String line = context.getNextLine("> ");
 					Optional<Result> result = lineParser.parse(line);
 					if (!result.isPresent()) {
 						continue;

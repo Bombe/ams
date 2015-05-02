@@ -54,13 +54,13 @@ public class Context {
 		writer.flush();
 	}
 
-	public String getNextLine() throws IOException {
+	public String getNextLine(String inputPrompt) throws IOException {
 		synchronized (additionalLines) {
 			if (!additionalLines.isEmpty()) {
 				return additionalLines.removeFirst();
 			}
 		}
-		write("> ");
+		write(inputPrompt);
 		flush();
 		return reader.readLine();
 	}
