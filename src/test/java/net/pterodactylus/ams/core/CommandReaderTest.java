@@ -2,10 +2,14 @@ package net.pterodactylus.ams.core;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * Unit test for {@link CommandReader}.
@@ -17,6 +21,16 @@ public class CommandReaderTest {
 	private final CommandDispatcher commandDispatcher = Mockito.mock(CommandDispatcher.class);
 	private final Context context = Mockito.mock(Context.class);
 	private final CommandReader commandReader = new CommandReader(commandDispatcher, context);
+
+	@Before
+	public void setupContext() {
+		AtomicBoolean shouldExit = new AtomicBoolean();
+		Mockito.doAnswer(invocation -> {
+			shouldExit.set(true);
+			return null;
+		}).when(context).exit();
+		Mockito.when(context.shouldExit()).thenAnswer(invocation -> shouldExit.get());
+	}
 
 	@Test
 	public void emptyLineTerminatesCommandReader() throws IOException {

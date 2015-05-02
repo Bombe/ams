@@ -35,14 +35,14 @@ public class CommandReader implements Runnable {
 					}
 					commandDispatcher.runCommand(result.get().getCommand(), result.get().getParameters());
 				} catch (EmptyLine el1) {
-					throw el1;
+					context.exit();
 				} catch (RuntimeException re1) {
 					/* ignore, continue. */
 					context.write(re1.getClass().getName() + "\n");
 					continue;
 				}
 			}
-		} catch (EmptyLine | IOException e) {
+		} catch (IOException e) {
 			/* just end this. */
 		}
 	}
