@@ -1,5 +1,6 @@
 package net.pterodactylus.ams.core.commands;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -22,6 +23,7 @@ public class ContextBuilderTest {
 	private final Options options = Mockito.mock(Options.class);
 	private final Session session = Mockito.mock(Session.class);
 	private final Writer writer = Mockito.mock(Writer.class);
+	private final BufferedReader reader = Mockito.mock(BufferedReader.class);
 	private final ContextBuilder contextBuilder = ContextBuilder.from(session);
 
 	@Test
@@ -52,6 +54,13 @@ public class ContextBuilderTest {
 		contextBuilder.withWriter(writer);
 		contextBuilder.build().write("test");
 		Mockito.verify(writer).write("test");
+	}
+
+	@Test
+	public void contextRetainsReader() throws IOException {
+		contextBuilder.reading(reader);
+		contextBuilder.build().getNextLine();
+		Mockito.verify(reader).readLine();
 	}
 
 }
