@@ -74,7 +74,7 @@ Simply press ENTER after every name and AMS asks for the next name. Continue unt
 
 > \> convert
 
-Converts all files to MP3. (Currently requires that source files are either FLAC and named accordingly, i.e. ending in “.flac” or WAV files.)
+Converts all files to MP3. (Currently requires that source files are either FLAC or WAV/AIFF/AIFC files, and named accordingly, i.e. ending in “.flac” or “.wav”.)
 
 The original files are replaced by the newly produced files but the previously assigned tags are kept.
 
