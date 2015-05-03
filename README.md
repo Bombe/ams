@@ -80,7 +80,7 @@ The original files are replaced by the newly produced files but the previously a
 
 > \> rename ${Track%02d}\_${Artist}\_${Name}.mp3
 
-Renames all files in the session according to the pattern.
+Renames all files in the session according to the pattern. Renaming files can also change their directories; simply put the directory into the rename pattern, such as `/path/to/music/${Artist}/${Name}.mp3`
 
 > \> save
 
