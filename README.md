@@ -63,6 +63,15 @@ This command can also be combined with the `-t` (or `--tracks`) option to allow 
 
 This will automatically assing disc and total discs information to all files in the session. It will use the track information to find out how many different discs are defined in this session by scanning the files sequentially and starting a new disc every time the track of a file is a smaller number than the previous file’s track. In combination with `track -t 1-x auto` and `track -t x- auto` this can quickly be used to automatically assign track and disc numbers to all files of a larger set.
 
+> \> name
+
+The `name` command differs from other commands by allowing you to enter the names of the tracks one after another. When not using the `-t` (or `--track`) parameter to select tracks, all tracks are selected. The command will ask for the name of each track, showing the number of the current track and total number of tracks during entry:
+
+> \> name  
+> 1/12:
+
+Simply press ENTER after every name and AMS asks for the next name. Continue until all tracks have their names set.
+
 > \> convert
 
 Converts all files to MP3. (Currently requires that source files are either FLAC and named accordingly, i.e. ending in “.flac” or WAV files.)
