@@ -31,7 +31,11 @@ AMS already supports everything listed above. However, there are some restrictio
 
 > $ java -jar ams.jar
 
-This will start a session in the current directory.
+This will start a session in the current directory. You can also specify files that should be loaded:
+
+> $ java -jar ams.jar .
+
+This will load all recognized media files from the current directory. Or you can use the `load` command inside AMS:
 
 > \> load /path/to/files
 
