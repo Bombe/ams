@@ -18,7 +18,7 @@ In some possible futures it might also get a GUI that makes using it even More E
 AMS already supports everything listed above. However, there are some restrictions one needs to be aware of:
 
 * Loading files with wildcards requires a path to be specified, at least a relative one. Relying on not specifying the current directory does not work.
-* Converting does not use a temporary path for the new files, it tries to put them into the same directory as the source files. This will fail if the source files are on a read-only medium, such as a CD-ROM.
+* Converting files creates temporary files which are not removed automatically if the situation requires it, i.e. if you exit AMS after converting but without saving/renaming the current files.
 * Converting is limited to conversion from WAV/AIFF or FLAC to MP3.
 * When converting from WAV/AIFF/AIFC, the source format has to be understandable directly by the encoder (in this case, LAME). No other conversion is performed before encoding.
 * Quality parameters for the format conversion are not specifiable by parameters to the `convert` command.
